@@ -18,7 +18,7 @@ export class LoginComponent {
   email: any;
   password: any;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,7 +32,7 @@ export class LoginComponent {
     .subscribe({
       next: (response) => {
         console.log("Login successful!", response);
-        // Redirect user after login
+        this.router.navigate(['diagnosis']); 
       },
       error: (error) => {
         console.error("Login failed!", error);

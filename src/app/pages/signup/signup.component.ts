@@ -35,7 +35,7 @@ export class SignupComponent {
     this.authService.signUp(this.userModel).subscribe({
       next: (response) => {
         console.log('Registration successful! Please log in.');
-        this.router.navigate(['']); 
+        this.router.navigate(['diagnosis']); 
       },
       error: (err) => {
         console.error('Registration failed. Please try again.', err.error.message);
