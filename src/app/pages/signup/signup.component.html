@@ -1,1 +1,57 @@
-<p>signup works!</p>
+<section class="signup-container">
+    <div class="signup-card">
+      <h2>📝 Create Account</h2>
+      <p>Sign up to start using Smart Diagnosis</p>
+  
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label for="fisrtName">👤 Fisrt Name</label>
+          <input type="text" id="fisrtName" required [(ngModel)]="userModel.firstName" name="fullName" />
+        </div>
+
+        <div class="input-group">
+            <label for="lastName">👤 Last Name</label>
+            <input type="text" id="lastName" required [(ngModel)]="userModel.lastName" name="fullName" />
+          </div>
+  
+        <div class="input-group">
+          <label for="email">📧 Email</label>
+          <input type="email" id="email"  required [(ngModel)]="userModel.email" name="email" />
+        </div>
+  
+        <div class="input-group">
+          <label for="phone">📞 Phone Number</label>
+          <input type="tel" id="phone"  required [(ngModel)]="userModel.phoneNumber" name="phone" />
+        </div>
+  
+        <div class="input-group">
+          <label for="age">🎂 Age</label>
+          <input type="number" id="age"  required [(ngModel)]="userModel.age" name="age" min="18" />
+        </div>
+  
+        <div class="input-group">
+          <label>⚤ Gender</label>
+          <div class="gender-options">
+            <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="male" required /> Male</label>
+            <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="female" required /> Female</label>
+          </div>
+        </div>
+  
+        <div class="input-group">
+          <label for="password">🔑 Password</label>
+          <input type="password" id="password" required [(ngModel)]="userModel.password" name="password" />
+        </div>
+  
+        <div class="input-group">
+          <label for="confirmPassword">🔒 Confirm Password</label>
+          <input type="password" id="confirmPassword" required [(ngModel)]="userModel.confirmPassword" name="confirmPassword" />
+        </div>
+    
+        <button type="submit" class="btn-primary">Sign Up</button>
+  
+        <p class="login-text">Already have an account? 
+          <a href="/login" class="login-link">Login</a>
+        </p>
+      </form>
+    </div>
+</section>
