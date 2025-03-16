@@ -1,7 +1,23 @@
 <div class="diagnosis-container">
-    <h1 @fadeIn>👨‍⚕️ Smart Diagnosis</h1>
-    <p @slideIn>Get a quick medical diagnosis based on your symptoms.</p>
-  
-    <button class="start-btn" @pulse (click)="startDiagnosis()">Start Diagnosis</button>
+  <h1>👨‍⚕️ Smart Diagnosis</h1>
+  <p>Get a quick medical diagnosis based on your symptoms.</p>
+  <button class="start-btn" (click)="openPopup()">Start Diagnosis</button>
+</div>
+
+<div class="chat-modal" *ngIf="isPopupOpen">
+  <div class="chat-modal-content">
+    <div class="chat-header">
+      <h5>Welcome, start chatting...</h5>
+      <button class="close-btn" (click)="closePopup()">✖</button>
+    </div>
+    <div class="chat-body">
+      <div *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+        {{ message.text }}
+      </div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" placeholder="اكتب رسالتك..." [(ngModel)]="userMessage"/>
+      <button class="send-btn" (click)="sendMessage()">Send</button>
+    </div>
   </div>
-  
+</div>

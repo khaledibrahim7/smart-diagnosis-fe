@@ -1,46 +1,61 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UserModel } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { CountryISO } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule],
-  standalone:true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    FormsModule,
+    NgxIntlTelInputModule,
+  ],
+  standalone: true,
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
-  signupForm: FormGroup;
   userModel: UserModel = new UserModel();
+  preferredCountries: CountryISO[] = [
+    CountryISO.UnitedStates,
+    CountryISO.UnitedKingdom,
+    CountryISO.Egypt,
+  ];
+  SearchCountryField: any;
+  phoneNumber?: string;
+  selectedCountryCode: string = '+1';
+  isSubmitting = false; // Loading state
 
-
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
-    this.signupForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-      age: ['', [Validators.required, Validators.min(18)]],
-    });
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
 
   onSubmit() {
-    console.log('User registered:', this.userModel);
+    if (this.isSubmitting) return; // Prevent multiple submissions
+    this.isSubmitting = true;
   
+    this.userModel.phoneNumber = this.getFullPhoneNumber();
+    
     this.authService.signUp(this.userModel).subscribe({
       next: (response) => {
-        console.log('Registration successful! Please log in.');
-        this.router.navigate(['diagnosis']); 
+        console.log('Registration successful!....');
+        this.router.navigate(['diagnosis']);
+        this.isSubmitting = false; // Re-enable the button
       },
       error: (err) => {
         console.error('Registration failed. Please try again.', err.error.message);
-      }
+        this.isSubmitting = false; // Re-enable the button on error
+      },
     });
   }
+  
 
-}  
+  getFullPhoneNumber(): string {
+    return this.selectedCountryCode! + this.phoneNumber;
+  }
+}

@@ -1,57 +1,136 @@
 <section class="signup-container">
-    <div class="signup-card">
-      <h2>📝 Create Account</h2>
-      <p>Sign up to start using Smart Diagnosis</p>
-  
-      <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
-        <div class="input-group">
-          <label for="fisrtName">👤 Fisrt Name</label>
-          <input type="text" id="fisrtName" required [(ngModel)]="userModel.firstName" name="fullName" />
-        </div>
+  <div class="signup-card">
+    <h2>📝 Create Account</h2>
+    <p>Sign up to start using Smart Diagnosis</p>
 
-        <div class="input-group">
-            <label for="lastName">👤 Last Name</label>
-            <input type="text" id="lastName" required [(ngModel)]="userModel.lastName" name="fullName" />
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="firstName">👤 First Name</label>
+        <input type="text" id="firstName" required [(ngModel)]="userModel.firstName" name="firstName" #firstName="ngModel" />
+        <div class="error" *ngIf="firstName.invalid && firstName.touched">
+          First name is required.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="lastName">👤 Last Name</label>
+        <input type="text" id="lastName" required [(ngModel)]="userModel.lastName" name="lastName" #lastName="ngModel"/>
+        <div class="error" *ngIf="lastName.invalid && lastName.touched">
+          Last name is required.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="email">📧 Email</label>
+        <input type="email" id="email" required [(ngModel)]="userModel.email" name="email" #email="ngModel" />
+        
+        <div class="error" *ngIf="email.invalid && email.touched">
+          <span *ngIf="email.errors?.['required']">Email is required.</span>
+          <span *ngIf="email.errors?.['email']">Invalid email format.</span>
+        </div>
+      </div>
+      
+
+      <div class="input-group phone-group">
+        <label>📞 Phone Number</label>
+        <div class="custom-phone-input">
+          <select [(ngModel)]="selectedCountryCode" class="country-code" name="countryCode">
+            <option value="+1">🇺🇸 USA (+1)</option>
+            <option value="+44">🇬🇧 UK (+44)</option>
+            <option value="+20">🇪🇬 Egypt (+20)</option>
+            <option value="+93">🇦🇫 Afghanistan (+93)</option>
+            <option value="+355">🇦🇱 Albania (+355)</option>
+            <option value="+213">🇩🇿 Algeria (+213)</option>
+            <option value="+376">🇦🇩 Andorra (+376)</option>
+            <option value="+244">🇦🇴 Angola (+244)</option>
+            <option value="+54">🇦🇷 Argentina (+54)</option>
+            <option value="+61">🇦🇺 Australia (+61)</option>
+            <option value="+43">🇦🇹 Austria (+43)</option>
+            <option value="+880">🇧🇩 Bangladesh (+880)</option>
+            <option value="+32">🇧🇪 Belgium (+32)</option>
+            <option value="+55">🇧🇷 Brazil (+55)</option>
+            <option value="+359">🇧🇬 Bulgaria (+359)</option>
+            <option value="+1">🇨🇦 Canada (+1)</option>
+            <option value="+86">🇨🇳 China (+86)</option>
+            <option value="+45">🇩🇰 Denmark (+45)</option>
+            <option value="+33">🇫🇷 France (+33)</option>
+            <option value="+49">🇩🇪 Germany (+49)</option>
+            <option value="+91">🇮🇳 India (+91)</option>
+            <option value="+39">🇮🇹 Italy (+39)</option>
+            <option value="+81">🇯🇵 Japan (+81)</option>
+            <option value="+962">🇯🇴 Jordan (+962)</option>
+            <option value="+965">🇰🇼 Kuwait (+965)</option>
+            <option value="+961">🇱🇧 Lebanon (+961)</option>
+            <option value="+218">🇱🇾 Libya (+218)</option>
+            <option value="+212">🇲🇦 Morocco (+212)</option>
+            <option value="+92">🇵🇰 Pakistan (+92)</option>
+            <option value="+351">🇵🇹 Portugal (+351)</option>
+            <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+            <option value="+27">🇿🇦 South Africa (+27)</option>
+            <option value="+34">🇪🇸 Spain (+34)</option>
+            <option value="+90">🇹🇷 Turkey (+90)</option>
+            <option value="+971">🇦🇪 UAE (+971)</option>
+            <option value="+598">🇺🇾 Uruguay (+598)</option>
+            <option value="+998">🇺🇿 Uzbekistan (+998)</option>
+            <option value="+58">🇻🇪 Venezuela (+58)</option>
+            <option value="+84">🇻🇳 Vietnam (+84)</option>
+            <option value="+967">🇾🇪 Yemen (+967)</option>
+            <option value="+260">🇿🇲 Zambia (+260)</option>
+            <option value="+263">🇿🇼 Zimbabwe (+263)</option>
+          </select>
+          <input type="tel" [(ngModel)]="phoneNumber" placeholder="Enter your phone number" required name="phoneNum" #phoneNum="ngModel"/>
+          <div class="error" *ngIf="phoneNum.invalid && phoneNum.touched">
+            Phone number is required.
           </div>
-  
-        <div class="input-group">
-          <label for="email">📧 Email</label>
-          <input type="email" id="email"  required [(ngModel)]="userModel.email" name="email" />
         </div>
-  
-        <div class="input-group">
-          <label for="phone">📞 Phone Number</label>
-          <input type="tel" id="phone"  required [(ngModel)]="userModel.phoneNumber" name="phone" />
+      </div>
+      
+
+      <div class="input-group">
+        <label for="age">🎂 Age</label>
+        <input type="number" id="age" required [(ngModel)]="userModel.age" name="age" min="18" #age="ngModel"/>
+        <div class="error" *ngIf="age.invalid && age.touched">
+          <span *ngIf="age.errors?.['required']">Age is required.</span>
+          <span *ngIf="age.errors?.['min']">Age must be 18 or older.</span>
         </div>
-  
-        <div class="input-group">
-          <label for="age">🎂 Age</label>
-          <input type="number" id="age"  required [(ngModel)]="userModel.age" name="age" min="18" />
+      </div>
+
+      <div class="input-group">
+        <label>⚤ Gender</label>
+        <div class="gender-options">
+          <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="male" required #gender="ngModel" /> Male</label>
+          <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="female" required /> Female</label>
         </div>
-  
-        <div class="input-group">
-          <label>⚤ Gender</label>
-          <div class="gender-options">
-            <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="male" required /> Male</label>
-            <label><input type="radio" [(ngModel)]="userModel.gender" name="gender" value="female" required /> Female</label>
-          </div>
+        <div class="error" *ngIf="gender.invalid && gender.touched">
+          Please select your gender.
         </div>
-  
-        <div class="input-group">
-          <label for="password">🔑 Password</label>
-          <input type="password" id="password" required [(ngModel)]="userModel.password" name="password" />
+      </div>
+
+      <div class="input-group">
+        <label for="password">🔑 Password</label>
+        <input type="password" id="password" required [(ngModel)]="userModel.password" name="password" #password="ngModel" />
+        <div class="error" *ngIf="password.invalid && password.touched">
+          Password is required.
         </div>
-  
-        <div class="input-group">
-          <label for="confirmPassword">🔒 Confirm Password</label>
-          <input type="password" id="confirmPassword" required [(ngModel)]="userModel.confirmPassword" name="confirmPassword" />
+      </div>
+      
+
+      <div class="input-group">
+        <label for="confirmPassword">🔒 Confirm Password</label>
+        <input type="password" id="confirmPassword" required [(ngModel)]="userModel.confirmPassword" name="confirmPassword" #confirmPassword="ngModel" />
+        <div class="error" *ngIf="confirmPassword.invalid && confirmPassword.touched">
+          Confirm password is required.
         </div>
-    
-        <button type="submit" class="btn-primary">Sign Up</button>
-  
-        <p class="login-text">Already have an account? 
-          <a href="/login" class="login-link">Login</a>
-        </p>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="signupForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
+      </button>
+    </form>
+
+    <p class="login-text">Already have an account? 
+      <a href="/login" class="login-link">Login</a>
+    </p>
+
+  </div>
 </section>
