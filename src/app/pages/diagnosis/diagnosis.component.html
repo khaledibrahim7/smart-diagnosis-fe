@@ -1,8 +1,25 @@
 <div class="diagnosis-container">
   <h1>👨‍⚕️ Smart Diagnosis</h1>
   <p>Get a quick medical diagnosis based on your symptoms.</p>
-  <button class="start-btn" (click)="openPopup()">Start Diagnosis</button>
+  <button class="start-btn" (click)="openPopup(true)">
+    🎙️Start Diagnosis
+  </button>
 </div>
+
+<div class="chat-button-container" *ngIf="!isPopupOpen">
+  <button class="ask-me-btn" (click)="openPopup(false)">✨👨‍⚕️ اسألني</button>
+</div>
+
+<div class="language-switcher">
+  <button [class.active]="userLang === 'en'" (click)="setLanguage('en')">
+    🇬🇧 English
+  </button>
+  <button [class.active]="userLang === 'ar'" (click)="setLanguage('ar')">
+    🇸🇦 العربية
+  </button>
+</div>
+
+
 
 <div class="chat-modal" *ngIf="isPopupOpen">
   <div class="chat-modal-content">
@@ -10,14 +27,16 @@
       <h5>Welcome, start chatting...</h5>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
+    
     <div class="chat-body">
       <div *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
         {{ message.text }}
       </div>
     </div>
+    
     <div class="chat-footer">
       <input type="text" placeholder="اكتب رسالتك..." [(ngModel)]="userMessage"/>
-      <button class="send-btn" (click)="sendMessage()">Send</button>
+      <button class="send-btn" (click)="sendMessage()">إرسال</button>
     </div>
   </div>
 </div>
