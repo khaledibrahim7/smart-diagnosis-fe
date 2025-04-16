@@ -239,9 +239,9 @@ $user-message-bg: $primary-color;
     background-color: #ffffff;
     border: 2px solid #007bff;
     color: #007bff;
-    padding: 6px 12px;  // تقليل الحواف الداخلية للأزرار
-    font-size: 14px;  // تقليل حجم الخط
-    border-radius: 20px;  // تقليل الزوايا
+    padding: 6px 12px;  
+    font-size: 14px;  
+    border-radius: 20px;  
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: bold;
@@ -267,4 +267,5 @@ $user-message-bg: $primary-color;
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 

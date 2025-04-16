@@ -142,4 +142,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  goToFeedback() {
+    this.router.navigate(['/feedback']);
+  }
 }

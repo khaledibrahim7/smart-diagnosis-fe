@@ -18,7 +18,7 @@ export class DiagnosisComponent implements OnInit {
   recognition: any;
   userLang: string = 'en';
   isListening = false;
-  isDarkMode = false; // إضافة خاصية الوضع الداكن
+  isDarkMode = false; 
 
   constructor(private router: Router, private http: HttpClient) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;

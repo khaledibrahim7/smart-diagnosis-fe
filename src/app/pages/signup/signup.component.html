@@ -12,7 +12,6 @@
         </div>
       </div>
 
-      <!-- Last Name -->
       <div class="input-group">
         <label for="lastName">Last Name</label>
         <input type="text" id="lastName" formControlName="lastName" />
@@ -21,7 +20,6 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" formControlName="email" />
@@ -31,7 +29,6 @@
         </div>
       </div>
 
-      <!-- Phone Number -->
       <div class="input-group">
         <label for="phoneNumber">📞 Phone Number</label>
         <ngx-intl-tel-input
@@ -54,7 +51,6 @@
         </div>
       </div>
 
-      <!-- Age -->
       <div class="input-group">
         <label for="age">Age</label>
         <input type="number" id="age" formControlName="age" min="18" />
@@ -63,7 +59,6 @@
         </div>
       </div>
 
-      <!-- Gender -->
       <div class="input-group">
         <label>Gender</label>
         <div class="gender-options">
@@ -75,7 +70,6 @@
         </div>
       </div>
 
-      <!-- Password -->
       <div class="input-group password-group">
         <label for="password">Password</label>
         <div class="password-input">
@@ -90,7 +84,6 @@
         </div>
       </div>
 
-      <!-- Confirm Password -->
       <div class="input-group password-group">
         <label for="confirmPassword">Confirm Password</label>
         <div class="password-input">
@@ -108,16 +101,15 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
       <button type="submit" class="btn-primary" [disabled]="signupForm.invalid || isSubmitting">
         {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
       </button>
     </form>
 
-    <!-- Already have account -->
     <p class="login-text">
       Already have an account?
-      <a routerLink="/login" class="login-link">Login</a>
+      <a routerLink="/login">Login</a>
     </p>
+    
   </div>
 </section>

@@ -131,10 +131,12 @@ export class SignupComponent {
       },
       complete: () => {
         this.isSubmitting = false;
-        this.signupForm.enable(); // Re-enable the form after submission
+        this.signupForm.enable(); 
       },
     });
   }
-  
+  navigateLogin() {
+    this.router.navigate(['/']);
+  }
   
 }

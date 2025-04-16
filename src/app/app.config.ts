@@ -20,6 +20,7 @@ import { AuthGuard } from './auth.guard';
 
 import { LucideAngularModule } from 'lucide-angular';
 import { Eye, EyeOff } from 'lucide';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const icons = {
   Eye,
@@ -34,6 +35,8 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'contact', component: ContactComponent },
+  { path: 'feedback' , component: FeedbackComponent},
+
   { path: 'verify-reset-code', component: VerifyResetCodeComponent },
   {
     path: 'emergency-help',
@@ -54,6 +57,10 @@ const routes: Routes = [
     path: 'reset-password',
     loadComponent: () => import('./pages/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
   },
+  {
+    path: 'feedback',
+    loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
+  }  
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -65,7 +72,7 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
       ReactiveFormsModule,
       MatSnackBarModule,
-      LucideAngularModule // ✅ إضافة LucideAngularModule بدون forRoot
+      LucideAngularModule
     ),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
