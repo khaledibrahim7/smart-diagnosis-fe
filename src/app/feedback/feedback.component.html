@@ -1,0 +1,61 @@
+<div class="feedback-container">
+  <h2 class="title">شاركنا تقييمك وملاحظاتك</h2>
+
+  <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+
+    <div class="form-group">
+      <label class="label">تقييم الخدمة:</label>
+      <div class="rating-stars">
+        <label *ngFor="let star of [1, 2, 3, 4, 5]">
+          <input type="radio" [value]="star" formControlName="rating" class="hidden" />
+          <span class="star" [ngClass]="{ 'active': feedbackForm.get('rating')?.value >= star }">★</span>
+        </label>
+      </div>
+      <div *ngIf="feedbackForm.get('rating')?.errors?.['required']" class="error-msg">
+        التقييم مطلوب.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="label">الإيميل:</label>
+      <input type="email" formControlName="email" placeholder="example@mail.com" class="input" />
+      <div *ngIf="feedbackForm.get('email')?.errors?.['email']" class="error-msg">
+        يجب إدخال إيميل صحيح.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="label">نوع الشكوى:</label>
+      <select formControlName="feedbackType" class="input">
+        <option *ngFor="let type of feedbackTypes" [value]="type">{{ type }}</option>
+      </select>
+      <div *ngIf="feedbackForm.get('feedbackType')?.errors?.['required']" class="error-msg">
+        نوع الشكوى مطلوب.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="label">ملاحظتك أو اقتراحك:</label>
+      <textarea formControlName="feedbackText" rows="4" placeholder="اكتب تعليقك هنا..." class="input"></textarea>
+      <div *ngIf="feedbackForm.get('feedbackText')?.errors?.['minlength']" class="error-msg">
+        يجب أن تحتوي الشكوى على 5 كلمات على الأقل.
+      </div>
+      <div *ngIf="feedbackForm.get('feedbackText')?.errors?.['maxlength']" class="error-msg">
+        يجب أن تحتوي الشكوى على 2000 كلمة كحد أقصى.
+      </div>
+    </div>
+
+    
+    <button type="submit" class="submit-btn" [disabled]="feedbackForm.invalid || isSubmitting">
+      <span *ngIf="isSubmitting" class="animate-spin mr-2">⏳</span>
+      <span *ngIf="!isSubmitting">إرسال</span>
+    </button>
+  </form>
+
+  <div *ngIf="successMessage" class="success-msg">
+    ✅ تم إرسال الشكوى بنجاح، شكرًا لمساهمتك!
+  </div>
+  <div *ngIf="errorMessage" class="error-msg text-center">
+    ❌ حدث خطأ أثناء إرسال الشكوى. حاول مجددًا.
+  </div>
+</div>
