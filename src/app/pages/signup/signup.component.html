@@ -1,0 +1,123 @@
+<section class="signup-container">
+  <div class="signup-card">
+    <h2>Create Account</h2>
+    <p>Sign up to start using Smart Diagnosis</p>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="input-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" formControlName="firstName" />
+        <div class="error" *ngIf="signupForm.get('firstName')?.touched && signupForm.get('firstName')?.invalid">
+          First name is required and must be at least 3 characters.
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="input-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" />
+        <div class="error" *ngIf="signupForm.get('lastName')?.touched && signupForm.get('lastName')?.invalid">
+          Last name is required and must be at least 3 characters.
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" />
+        <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors">
+          <div class="error" *ngIf="signupForm.get('email')?.hasError('required')">Email is required.</div>
+          <div class="error" *ngIf="signupForm.get('email')?.hasError('email')">Invalid email format.</div>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="input-group">
+        <label for="phoneNumber">📞 Phone Number</label>
+        <ngx-intl-tel-input
+          [cssClass]="'form-control'"
+          [preferredCountries]="preferredCountries"
+          [enableAutoCountrySelect]="true"
+          [separateDialCode]="separateDialCode"
+          [numberFormat]="phoneFormat"
+          [phoneValidation]="true"
+          formControlName="phoneNumber">
+        </ngx-intl-tel-input>
+
+        <div *ngIf="signupForm.get('phoneNumber')?.touched">
+          <div class="error" *ngIf="signupForm.get('phoneNumber')?.hasError('required')">
+            Phone number is required.
+          </div>
+          <div class="error" *ngIf="!isPhoneNumberValid() && signupForm.get('phoneNumber')?.value">
+            Invalid phone number format.
+          </div>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="input-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" formControlName="age" min="18" />
+        <div class="error" *ngIf="signupForm.get('age')?.touched && signupForm.get('age')?.invalid">
+          Age must be 18 or older.
+        </div>
+      </div>
+
+      <!-- Gender -->
+      <div class="input-group">
+        <label>Gender</label>
+        <div class="gender-options">
+          <label><input type="radio" formControlName="gender" value="male" /> Male</label>
+          <label><input type="radio" formControlName="gender" value="female" /> Female</label>
+        </div>
+        <div class="error" *ngIf="signupForm.get('gender')?.touched && signupForm.get('gender')?.invalid">
+          Please select your gender.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group password-group">
+        <label for="password">Password</label>
+        <div class="password-input">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" />
+          <button type="button" class="toggle-visibility" (click)="showPassword = !showPassword">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors">
+          <div class="error" *ngIf="signupForm.get('password')?.hasError('required')">Password is required.</div>
+          <div class="error" *ngIf="signupForm.get('password')?.hasError('minlength')">Minimum 8 characters.</div>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group password-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-input">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword" />
+          <button type="button" class="toggle-visibility" (click)="showConfirmPassword = !showConfirmPassword">
+            {{ showConfirmPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <div *ngIf="signupForm.get('confirmPassword')?.touched">
+          <div class="error" *ngIf="signupForm.get('confirmPassword')?.hasError('required')">Please confirm password.</div>
+          <div class="error" *ngIf="signupForm.errors?.['mismatch']">Passwords do not match.</div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary" [disabled]="signupForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
+      </button>
+    </form>
+
+    <!-- Already have account -->
+    <p class="login-text">
+      Already have an account?
+      <a routerLink="/login" class="login-link">Login</a>
+    </p>
+  </div>
+</section>

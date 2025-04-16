@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+$primary-blue: #1476e6;    
+$white: #ffffff;
+$text-color: #333;
+$bg-color: $white;        
+$card-bg: $white;          
+$border-radius: 10px;
+$shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: $bg-color;
+  color: $text-color;
+  margin: 0;
+  padding: 0;
+}
+
+.about-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: $primary-blue;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeIn 1s ease-out forwards;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-description {
+  font-size: 1.2rem;
+  color: darken($primary-blue, 20%);
+  margin-bottom: 40px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+@mixin card-style {
+  background: $card-bg;
+  padding: 25px;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  color: $text-color;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.about-intro-card    { @include card-style; }
+.features-card       { @include card-style; }
+.innovation-card     { @include card-style; }
+.research-card       { @include card-style; }
+.applications-card   { @include card-style; }
+.difference-card     { 
+  @include card-style; 
+  grid-column: 1 / -1; 
+}
+.privacy-card        { @include card-style; }
+.tech-stack-card     { @include card-style; }
+.future-card         { @include card-style; }
+
+@mixin icon-style($color) {
+  font-size: 2.2rem;
+  color: $color;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.about-icon         { @include icon-style($primary-blue); }
+.features-icon      { @include icon-style($primary-blue); }
+.innovation-icon    { @include icon-style($primary-blue); }
+.research-icon      { @include icon-style($primary-blue); }
+.applications-icon  { @include icon-style($primary-blue); }
+.difference-icon    { @include icon-style($primary-blue); }
+.privacy-icon       { @include icon-style($primary-blue); }
+.tech-stack-icon    { @include icon-style($primary-blue); }
+.future-icon        { @include icon-style($primary-blue); }
+
+.about-grid h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: $primary-blue;
+  text-align: center;
+}
+
+.about-grid p,
+.about-grid ul {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+  color: $text-color;
+}
+
+.features-list, .difference-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 280px;
+
+  :host {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  li {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &::before {
+      content: "✔"; // علامة الاختيار
+      margin-right: 8px;
+      color: $primary-blue;
+      font-weight: bold;
+    }
+  }
+}
+
+// قسم الأسئلة الشائعة (FAQ)
+.faq-section {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  text-align: left;
+  
+  .faq-title {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: $primary-blue;
+  }
+  
+  .faq-item {
+    background: lighten($primary-blue, 40%);
+    border-radius: $border-radius;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: lighten($primary-blue, 45%);
+    }
+    
+    .faq-question {
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: $primary-blue;
+    }
+    
+    .faq-answer {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: $text-color;
+    }
+  }
+}
+
+// تحسين التصميم على الشاشات الصغيرة
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2rem;
+  }
+  .about-description {
+    font-size: 1rem;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .faq-title {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,61 @@
+<div class="settings-container">
+  <h2>إعدادات الحساب</h2>
+
+  <form [formGroup]="settingsForm">
+    <div class="section">
+      <h3>بيانات الحساب</h3>
+
+      <label>الاسم الأول:</label>
+      <input type="text" formControlName="firstName" />
+
+      <label>اسم العائلة:</label>
+      <input type="text" formControlName="lastName" />
+
+      <label>البريد الإلكتروني:</label>
+      <input type="email" [value]="settingsForm.get('email')?.value" disabled />
+
+      <label>رقم الهاتف:</label>
+      <input type="text" formControlName="phoneNumber" />
+
+      <label>العمر:</label>
+      <input type="number" formControlName="age" />
+
+      <label>الجنس:</label>
+      <select formControlName="gender">
+        <option value="male">ذكر</option>
+        <option value="female">أنثى</option>
+      </select>
+
+      <label>اللغة:</label>
+      <select formControlName="language">
+        <option value="en">الإنجليزية</option>
+        <option value="ar">العربية</option>
+      </select>
+
+      <label class="checkbox">
+        <input type="checkbox" formControlName="darkMode" />
+        <span>تفعيل الوضع الداكن</span>
+      </label>
+    </div>
+
+    <div class="section">
+      <h3>تغيير كلمة المرور</h3>
+
+      <label>كلمة المرور الجديدة:</label>
+      <input type="password" formControlName="newPassword" />
+
+      <label>تأكيد كلمة المرور:</label>
+      <input type="password" formControlName="confirmNewPassword" />
+    </div>
+
+    <div class="section actions">
+      <button type="button" class="save" (click)="saveSettings()" [disabled]="isLoading">
+        {{ isLoading ? 'جارِ الحفظ...' : 'حفظ التغييرات' }}
+      </button>
+
+      <button type="button" class="delete" (click)="deleteAccount()" [disabled]="isLoading">
+        {{ isLoading ? 'جارِ الحذف...' : 'حذف الحساب' }}
+      </button>
+    </div>
+  </form>
+</div>

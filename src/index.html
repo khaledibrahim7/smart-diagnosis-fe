@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SmartDiagnosis</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+   
+  <style>
+  /* Floating Chat Button - Shiny and Animated */
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* moved to right */
+  z-index: 999;
+  background-color: #084ed0;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  box-shadow: 0 0 15px 5px rgba(8, 78, 208, 0.6), 0 0 5px rgba(255, 255, 255, 0.2) inset;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-glow 2s infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.chatbot-btn:hover {
+  transform: scale(1.1);
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px #084ed0, 0 0 20px #084ed0;
+  }
+  50% {
+    box-shadow: 0 0 20px #0a64ff, 0 0 30px #0a64ff;
+  }
+  100% {
+    box-shadow: 0 0 10px #084ed0, 0 0 20px #084ed0;
+  }
+}
+
+/* Chat Box Styling */
+.chatbox {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 998;
+}
+
+.chatbox-header {
+  background-color: #084ed0;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.chatbox-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.chatbox-footer {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+}
+
+#userInput {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+#userInput:focus {
+  border-color: #084ed0;
+  box-shadow: 0 0 8px rgba(8, 78, 208, 0.4);
+}
+
+   </style>
+</head>
+<body class="mat-typography">
+  <app-root></app-root>
+  <button class="chatbot-btn" onclick="toggleChatbox()">
+    <i class="fas fa-robot"></i>
+  </button>
+  
+  <!-- Chatbox Widget -->
+  <div class="chatbox" id="chatbox">
+    <div class="chatbox-header">Smart Diagnoses Chatbot</div>
+    <div class="chatbox-body" id="chatBody">
+      <p><strong>🤖 Smart Diagnoses Bot:</strong> أهلاً بك! كيف يمكنني مساعدتك اليوم؟</p>
+    </div>
+    <div class="chatbox-footer">
+      <input type="text" id="userInput" placeholder="اكتب رسالتك..." class="form-control" onkeydown="sendMessage(event)">
+    </div>
+  </div>
+  <script>
+    function toggleChatbox() {
+   const chatbox = document.getElementById("chatbox");
+   chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+ }
+ 
+ async function sendMessage(event) {
+   if (event.key === "Enter") {
+     const input = document.getElementById("userInput");
+     const chatBody = document.getElementById("chatBody");
+     const message = input.value.trim();
+ 
+     if (message) {
+       const uniqueId = "bot_" + Date.now();
+       chatBody.innerHTML += `<p dir="rtl"><strong>🧑 أنت:</strong> ${message}</p>`;
+       input.value = "";
+ 
+       // Spinner with unique ID
+       chatBody.innerHTML += `
+         <p dir="rtl" id="${uniqueId}">
+           <strong>🤖 البوت:</strong> 
+           <span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+           <span class="ms-2">جاري المعالجة...</span>
+         </p>`;
+       chatBody.scrollTop = chatBody.scrollHeight;
+ 
+       try {
+         const response = await fetch("http://localhost:5000/chat", {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json"
+           },
+           body: JSON.stringify({ message: message })
+         });
+ 
+         const data = await response.json();
+         document.getElementById(uniqueId).innerHTML = `<strong>🤖 البوت:</strong> ${data.response}`;
+         chatBody.scrollTop = chatBody.scrollHeight;
+       } catch (error) {
+         document.getElementById(uniqueId).innerHTML =
+           `<strong>🤖 البوت:</strong> حصل خطأ أثناء الاتصال بالخادم.`;
+       }
+     }
+   }
+ }
+ 
+   </script>
+</body>
+</html>

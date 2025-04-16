@@ -1,0 +1,40 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>🔑 Login</h2>
+    <p>Login to continue using Smart Diagnosis</p>
+    
+    <!-- Success message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <strong>🎉 {{ successMessage }} 🎉</strong>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      <strong>⚠️ {{ errorMessage }} ⚠️</strong>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <span>📧</span>
+        <input type="email" formControlName="email" placeholder="Email">
+        <div class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Invalid email format.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <span>🔑</span>
+        <input type="password" formControlName="password" placeholder="Password">
+        <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <button type="submit" class="auth-button" [disabled]="loginForm.invalid">Login</button>
+    </form>
+
+    <p><a routerLink="/forgot-password">Forgot password?</a></p>
+    <p>Don't have an account? <a routerLink="/signup">Sign Up</a></p>
+  </div>
+</div>

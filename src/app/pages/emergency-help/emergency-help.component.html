@@ -1,0 +1,48 @@
+<div class="emergency-container">
+  <h1>🚨 Emergency Help</h1>
+
+  <form [formGroup]="emergencyForm" (ngSubmit)="makeCall()">
+    <div class="form-group">
+      <label for="country">🌍 Select Country</label>
+      <select formControlName="country" id="country" required>
+        <option value="" disabled>Select a country</option>
+        <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="emergencyForm.get('country')?.value">
+      <label>📞 Emergency Number:</label>
+      <div class="number-display">
+        {{ getEmergencyNumber(emergencyForm.get('country')?.value) || 'Not available' }}
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="!emergencyForm.valid || !getEmergencyNumber(emergencyForm.get('country')?.value)">
+      📲 Call Emergency Number
+    </button>
+  </form>
+
+  <hr />
+
+  <div class="emergency-info">
+    <h2>🌐 Emergency Numbers</h2>
+    <ul>
+      <li *ngFor="let country of countryList">
+        <strong>{{ country }}:</strong> {{ getEmergencyNumber(country) }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="first-aid-tips">
+    <h2>🩺 First Aid Tips</h2>
+    <ul>
+      <li><strong>Cuts & Wounds:</strong> Clean with water, stop bleeding with pressure, bandage the wound.</li>
+      <li><strong>Burns:</strong> Run cool water, avoid ice, apply sterile dressing.</li>
+      <li><strong>Choking:</strong> Perform abdominal thrusts (Heimlich maneuver).</li>
+      <li><strong>Fainting:</strong> Lay the person down and raise their legs.</li>
+      <li><strong>Fractures:</strong> Immobilize the area, avoid moving it.</li>
+      <li><strong>CPR:</strong> If not breathing, start chest compressions (100–120/min).</li>
+      <li><strong>Seizures:</strong> Clear area around person, don’t hold them down.</li>
+    </ul>
+  </div>
+</div>

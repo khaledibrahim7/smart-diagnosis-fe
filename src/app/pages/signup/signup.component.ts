@@ -1,0 +1,140 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxIntlTelInputModule, PhoneNumberFormat } from 'ngx-intl-tel-input';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-signup',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [NgxIntlTelInputModule, ReactiveFormsModule, CommonModule],
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss'],
+})
+export class SignupComponent {
+  signupForm: FormGroup;
+  isSubmitting = false;
+  showPassword = false;
+  showConfirmPassword = false;
+  errorMessage: string | null = null;
+
+  separateDialCode = true;
+  preferredCountries: string[] = ['us', 'gb', 'sa', 'eg'];
+  phoneFormat = PhoneNumberFormat.International;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.signupForm = this.fb.group(
+      {
+        firstName: ['', [Validators.required, Validators.minLength(3)]],
+        lastName: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.email]],
+        phoneNumber: new FormControl(null, [Validators.required]),
+        age: [null, [Validators.required, Validators.min(18)]],
+        gender: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8), this.passwordComplexityValidator]],
+        confirmPassword: ['', [Validators.required]],
+      },
+      { validators: this.passwordMatchValidator }
+    );
+  }
+
+  passwordComplexityValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.value;
+    if (!password) return null;
+
+    const errors: any = {};
+    if (!/[A-Z]/.test(password)) errors.missingUpperCase = true;
+    if (!/[a-z]/.test(password)) errors.missingLowerCase = true;
+    if (!/\d/.test(password)) errors.missingNumber = true;
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) errors.missingSpecialChar = true;
+
+    return Object.keys(errors).length ? errors : null;
+  }
+
+  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { mismatch: true };
+  }
+
+  isPhoneNumberValid(): boolean {
+    const phoneControl = this.signupForm.get('phoneNumber');
+    return phoneControl?.valid ?? false;
+  }
+
+  // Clear error messages after any submission attempt
+  clearErrorMessages(): void {
+    this.errorMessage = null;
+  }
+
+  onSubmit(): void {
+    if (this.signupForm.invalid || this.isSubmitting || !this.isPhoneNumberValid()) {
+      this.signupForm.markAllAsTouched();
+      this.snackBar.open('يرجى التأكد من ملء جميع الحقول بشكل صحيح قبل التسجيل.', 'إغلاق', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+  
+    this.isSubmitting = true;
+    this.signupForm.disable(); // Disable form to prevent multiple submissions
+  
+    const formData = this.signupForm.value;
+  
+    // إرسال الرقم بصيغة محلية
+    formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.nationalNumber : '';
+  
+    this.authService.signUp(formData).subscribe({
+      next: (response) => {
+        console.log('✅ تم التسجيل بنجاح!', response);
+        if (response.token && response.id) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('patientId', response.id.toString());
+        }
+  
+        this.snackBar.open('تم التسجيل بنجاح!', 'إغلاق', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+  
+        this.router.navigate(['/diagnosis']);
+      },
+      error: (err) => {
+        console.error('❌ فشل في التسجيل', err.error?.message || err);
+        this.snackBar.open('فشل التسجيل، حاول مرة أخرى.', 'إغلاق', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      },
+      complete: () => {
+        this.isSubmitting = false;
+        this.signupForm.enable(); // Re-enable the form after submission
+      },
+    });
+  }
+  
+  
+}

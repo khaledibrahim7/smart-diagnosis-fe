@@ -1,0 +1,215 @@
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #021c36, #11b0ff);
+}
+.signup-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(5, 62, 220, 0.984);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.input-group,
+.phone-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.input-group label {
+  min-width: 120px;
+  font-weight: bold;
+}
+.input-group input,
+.phone-group input,
+.custom-phone-input input,
+.password-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+.custom-phone-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+}
+.country-code {
+  width: 60px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f8f8f8;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  max-width: 600px;
+}
+.btn-primary:hover {
+  background: #0056b3;
+}
+.gender-options {
+  display: flex;
+  gap: 15px;
+}
+.gender-options label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.gender-options input {
+  accent-color: #007bff;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.input-group input.ng-invalid.ng-touched {
+  border-color: red;
+}
+.success-snackbar,
+.error-snackbar {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px 40px;
+  border-radius: 8px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 80%;
+  max-width: 600px;
+}
+.success-snackbar {
+  background-color: #4caf50;
+}
+.error-snackbar {
+  background-color: #f44336;
+}
+.toggle-visibility {
+  font-size: 10px;
+  padding: 6px 9px;
+  background: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-left: 1px;
+}
+.toggle-visibility:hover {
+  color: #1977a7;
+}
+.ngx-intl-tel-input .ng-select {
+  max-height: 150px;
+  overflow-y: auto;
+}
+::ng-deep .ngx-intl-tel-input .iti__country-list {
+  max-height: 200px;
+  overflow-y: scroll;
+  width: 100%;
+  font-size: 13.5px;
+}
+
+
+::ng-deep .ngx-intl-tel-input .iti__country-list {
+  max-height: 200px;  
+  overflow-y: scroll;
+  width: 100%; 
+}
+::ng-deep .ngx-intl-tel-input .iti__preferred-countries {
+  max-height: 100px;  
+  overflow-y: scroll; 
+}
+::ng-deep .ngx-intl-tel-input .iti__country {
+  height: 20px; 
+  font-size: 10px;  
+}
+::ng-deep .iti__country-list {
+  max-height: 190px;
+  overflow-y: scroll;
+  font-size: 13.5px;  
+}
+
+::ng-deep .ngx-intl-tel-input .iti__country-list {
+  max-height: 200px;
+  overflow-y: scroll;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+::ng-deep .ngx-intl-tel-input .iti__preferred-countries {
+  max-height: 100px;
+  overflow-y: scroll;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ccc;
+}
+::ng-deep .ngx-intl-tel-input .iti__country {
+  height: 20px;
+  font-size: 10px;
+  padding: 4px 8px;
+  transition: background-color 0.2s;
+}
+::ng-deep .ngx-intl-tel-input .iti__country:hover {
+  background-color: #e6f0ff;
+}
+::ng-deep .iti__country-list {
+  max-height: 190px;
+  overflow-y: scroll;
+  font-size: 13.5px;
+  scrollbar-width: thin;
+  scrollbar-color: #066fc5 #e0e0e0;
+}
+::ng-deep .iti__country-list::-webkit-scrollbar {
+  width: 6px;
+}
+::ng-deep .iti__country-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::ng-deep .iti__country-list::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+:host {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
