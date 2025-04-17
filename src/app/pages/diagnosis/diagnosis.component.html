@@ -19,14 +19,15 @@
 
 <div class="chat-button-container" *ngIf="!isPopupOpen">
   <button class="ask-me-btn" (click)="openPopup(false)">
-    👨‍⚕️ {{ userLang === 'ar' ? 'اسألني' : 'Ask me' }}
+    🤖
   </button>
 </div>
+
 
 <div class="chat-modal" *ngIf="isPopupOpen">
   <div class="chat-modal-content">
     <div class="chat-header">
-      <h5>{{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة...' : 'Welcome, start chatting...' }}</h5>
+      <h5>{{ userLang === 'ar' ? '  مرحبًا ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting Smart Diagnosis...' }}</h5>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
@@ -43,6 +44,9 @@
       </button>
     </div>
   </div>
+</div>
+<div *ngIf="isLoading" class="loading-message">
+  {{ userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...' }}
 </div>
 
 

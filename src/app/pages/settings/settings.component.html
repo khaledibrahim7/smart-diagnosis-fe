@@ -31,11 +31,16 @@
         <option value="en">الإنجليزية</option>
         <option value="ar">العربية</option>
       </select>
-
+    
       <label class="checkbox">
         <input type="checkbox" formControlName="darkMode" />
         <span>تفعيل الوضع الداكن</span>
       </label>
+      <div class="feedback-button-container">
+        <button (click)="goToFeedback()" class="feedback-button">
+          تقييم الخدمة
+        </button>
+      </div>
     </div>
 
     <div class="section">

@@ -58,29 +58,35 @@ $user-message-bg: $primary-color;
 
 .chat-button-container {
   position: fixed;
-  bottom: 75px;
-  right: 10px;
+  bottom: 80px;
+  right: 20px;    
   text-align: right;
-
+  
   .ask-me-btn {
-    background: $primary-color;
-    color: $text-color;
-    padding: 15px 70px;
+    background:rgb(5, 189, 245);
+    color: rgb(2, 175, 255);
+    padding: 15px;
     border: none;
-    border-radius: 15px;
-    font-size: 1rem;
+    border-radius: 50%; 
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px lab(98.27% 0.01 -0.01);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @include button-hover;
   }
 }
+
 
 .chat-modal {
   position: fixed;
   top: 62%;
   transform: translateY(-50%);
-  right: 20px;
-  width: 400px;
+  right: 15px;
+  width: 650px;
   height: 400px;
   background: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -103,7 +109,7 @@ $user-message-bg: $primary-color;
 
     button {
       background: white;
-      border: 2px solid #007bff;
+      border: 2px solid #000000;
       padding: 10px 20px;
       border-radius: 25px;
       font-size: 16px;
@@ -118,13 +124,13 @@ $user-message-bg: $primary-color;
       justify-content: center;
 
       &:hover {
-        background: #007bff;
+        background: #e2e5e9;
         color: white;
         transform: scale(1.05);
       }
 
       &.active {
-        background: #007bff;
+        background: #000000;
         color: white;
         border-color: #0056b3;
         box-shadow: 0 4px 6px rgba(0, 123, 255, 0.4);
@@ -141,7 +147,7 @@ $user-message-bg: $primary-color;
     align-items: center;
     font-size: 16px;
     font-weight: bold;
-
+    height: 30px;
     .close-btn {
       background: transparent;
       border: none;
@@ -221,19 +227,21 @@ $user-message-bg: $primary-color;
   }
 }
 .language-switcher {
-  position: absolute;
-  top: 60px;  
-  right: 20px;
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
   display: flex;
-  gap: 8px;  
+  gap: 8px;
   background-color: #f0f0f0;
-  padding: 6px 12px;  
-  border-radius: 25px; 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  
+  padding: 6px 12px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: auto;
   max-width: 250px;
-  margin: 10px auto; 
+  margin: 0;
   z-index: 999;
+}
+
 
   button {
     background-color: #ffffff;
@@ -261,7 +269,7 @@ $user-message-bg: $primary-color;
       outline: none;
     }
   }
-}
+
 :host {
   background-color: var(--bg-color);
   color: var(--text-color);

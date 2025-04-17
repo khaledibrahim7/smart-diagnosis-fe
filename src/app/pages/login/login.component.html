@@ -3,17 +3,14 @@
     <h2>🔑 Login</h2>
     <p>Login to continue using Smart Diagnosis</p>
     
-    <!-- Success message -->
     <div *ngIf="successMessage" class="alert alert-success">
       <strong>🎉 {{ successMessage }} 🎉</strong>
     </div>
 
-    <!-- Error message -->
     <div *ngIf="errorMessage" class="alert alert-danger">
       <strong>⚠️ {{ errorMessage }} ⚠️</strong>
     </div>
 
-    <!-- Login Form -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="input-group">
         <span>📧</span>

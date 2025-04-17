@@ -190,6 +190,5 @@ export class MedicalTipsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // يمكنك إضافة أي منطق تهيئة إضافي هنا
   }
 }
