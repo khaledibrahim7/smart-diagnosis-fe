@@ -19,6 +19,7 @@ export class DiagnosisComponent implements OnInit {
   userLang: string = 'en';
   isListening = false;
   isDarkMode = false; 
+  isLoading = false;
 
   constructor(private router: Router, private http: HttpClient) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -31,13 +32,7 @@ export class DiagnosisComponent implements OnInit {
     this.recognition.onresult = (event: any) => {
       const speechResult = event.results[0][0].transcript;
       this.messages.push({ text: speechResult, isUser: true });
-
-      setTimeout(() => {
-        this.messages.push({
-          text: this.userLang === 'ar' ? "أنا هنا لمساعدتك!" : "I'm here to help!",
-          isUser: false
-        });
-      }, 1000);
+      this.sendTextToBot(speechResult);
     };
 
     this.recognition.onerror = (event: any) => {
@@ -89,24 +84,55 @@ export class DiagnosisComponent implements OnInit {
   sendMessage() {
     if (this.userMessage.trim()) {
       this.messages.push({ text: this.userMessage, isUser: true });
-      this.getDiagnosisResponse(this.userMessage);
+      this.sendTextToBot(this.userMessage);
       this.userMessage = '';  
     }
   }
 
-  getDiagnosisResponse(question: string) {
-    this.http.post('http://localhost:2020/api/diagnosis', { question })
-      .subscribe(
-        (response: any) => {
+  sendTextToBot(message: string) {
+    this.isLoading = true;
+
+    // ➡️ إضافة رسالة "جاري الكتابة..."
+    const typingText = this.userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...';
+    this.messages.push({ text: typingText, isUser: false });
+
+    const localModelApi = this.http.post('http://127.0.0.1:9000/chat', { message }).toPromise();
+    const geminiApi = this.http.post('http://127.0.0.1:5000/chat', { message }).toPromise();
+
+    Promise.all([localModelApi, geminiApi])
+      .then(([localResponse, geminiResponse]: [any, any]) => {
+        const localText = localResponse?.response || null;
+        const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
+
+        // ➡️ حذف رسالة "جاري الكتابة..." قبل إضافة الردود
+        this.messages = this.messages.filter(msg => msg.text !== typingText);
+
+        if (localText) {
           this.messages.push({
-            text: response.text,  
+            text: localText,
             isUser: false
           });
-        },
-        (error) => {
-          console.error('خطأ في التواصل مع API:', error);
         }
-      );
+
+        this.messages.push({
+          text: geminiText,
+          isUser: false
+        });
+      })
+      .catch((error) => {
+        console.error('❌ Error communicating with APIs:', error);
+
+        // ➡️ حذف رسالة "جاري الكتابة..." في حالة الخطأ
+        this.messages = this.messages.filter(msg => msg.text !== typingText);
+
+        this.messages.push({
+          text: this.userLang === 'ar' ? 'حدث خطأ أثناء التواصل مع الخوادم.' : 'An error occurred while communicating with servers.',
+          isUser: false
+        });
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   toggleListening() {
@@ -122,7 +148,7 @@ export class DiagnosisComponent implements OnInit {
         this.isListening = true;
       })
       .catch((err) => {
-        console.error('❌ فشل في الحصول على إذن الميكروفون:', err);
+        console.error('❌ Microphone access failed:', err);
       });
   }
 
