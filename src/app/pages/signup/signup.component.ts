@@ -8,7 +8,7 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgxIntlTelInputModule, PhoneNumberFormat } from 'ngx-intl-tel-input';
@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-signup',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgxIntlTelInputModule, ReactiveFormsModule, CommonModule],
+  imports: [NgxIntlTelInputModule, ReactiveFormsModule, CommonModule,RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
@@ -73,10 +73,15 @@ export class SignupComponent {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
+  get phoneNumberControl() {
+    return this.signupForm.get('phoneNumber');
+  }
+  
   isPhoneNumberValid(): boolean {
-    const phoneControl = this.signupForm.get('phoneNumber');
+    const phoneControl = this.phoneNumberControl;
     return phoneControl?.valid ?? false;
   }
+  
 
   // Clear error messages after any submission attempt
   clearErrorMessages(): void {
@@ -135,8 +140,8 @@ export class SignupComponent {
       },
     });
   }
-  navigateLogin() {
-    this.router.navigate(['/']);
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
   
 }

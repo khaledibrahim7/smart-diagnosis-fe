@@ -51,7 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   closeDropdownOnClickOutside(event: MouseEvent) {
-    // Check if the click was outside the dropdown
     const dropdownElement = document.querySelector('.dropdown');
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
       this.dropdownOpen = false;
@@ -59,7 +58,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    // Ensure localStorage is only accessed in the browser environment
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
     }
@@ -71,7 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   updateLoginState() {
-    // Ensure localStorage is only accessed in the browser environment
     if (isPlatformBrowser(this.platformId)) {
       this.isLoggedIn = !!localStorage.getItem('token');
     }

@@ -18,30 +18,16 @@ export class DiagnosisComponent implements OnInit {
   recognition: any;
   userLang: string = 'en';
   isListening = false;
-  isDarkMode = false; 
+  isDarkMode = false;
   isLoading = false;
+  isTyping = false;
 
   constructor(private router: Router, private http: HttpClient) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     this.recognition = new SpeechRecognition();
 
     this.setLanguage('en');
-    this.recognition.continuous = false;
-    this.recognition.interimResults = false;
-
-    this.recognition.onresult = (event: any) => {
-      const speechResult = event.results[0][0].transcript;
-      this.messages.push({ text: speechResult, isUser: true });
-      this.sendTextToBot(speechResult);
-    };
-
-    this.recognition.onerror = (event: any) => {
-      console.error("Speech recognition error", event);
-    };
-
-    this.recognition.onend = () => {
-      this.isListening = false;
-    };
+    this.setupRecognition();
   }
 
   ngOnInit() {
@@ -51,16 +37,33 @@ export class DiagnosisComponent implements OnInit {
     this.loadTheme();
   }
 
-  isBrowser(): boolean {
+  private setupRecognition() {
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+
+    this.recognition.onresult = (event: any) => {
+      const speechResult = event.results[0][0].transcript;
+      this.addUserMessage(speechResult);
+      this.sendTextToBot(speechResult);
+    };
+
+    this.recognition.onerror = (event: any) => {
+      console.error("❌ Speech recognition error:", event);
+    };
+
+    this.recognition.onend = () => {
+      this.isListening = false;
+    };
+  }
+
+  private isBrowser(): boolean {
     return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
   }
 
-  updateLoginState() {
-    if (this.isBrowser()) {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        this.router.navigate(['/login']);
-      }
+  private updateLoginState() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
     }
   }
 
@@ -83,18 +86,31 @@ export class DiagnosisComponent implements OnInit {
 
   sendMessage() {
     if (this.userMessage.trim()) {
-      this.messages.push({ text: this.userMessage, isUser: true });
+      this.addUserMessage(this.userMessage);
       this.sendTextToBot(this.userMessage);
-      this.userMessage = '';  
+      this.userMessage = '';
     }
+  }
+
+  private addUserMessage(message: string) {
+    this.messages.push({ text: message, isUser: true });
+  }
+
+  private addTypingIndicator() {
+    const typingText = this.userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...';
+    this.isTyping = true;
+    this.messages.push({ text: typingText, isUser: false });
+  }
+
+  private removeTypingIndicator() {
+    const typingText = this.userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...';
+    this.messages = this.messages.filter(msg => msg.text !== typingText);
+    this.isTyping = false;
   }
 
   sendTextToBot(message: string) {
     this.isLoading = true;
-
-    // ➡️ إضافة رسالة "جاري الكتابة..."
-    const typingText = this.userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...';
-    this.messages.push({ text: typingText, isUser: false });
+    this.addTypingIndicator();
 
     const localModelApi = this.http.post('http://127.0.0.1:9000/chat', { message }).toPromise();
     const geminiApi = this.http.post('http://127.0.0.1:5000/chat', { message }).toPromise();
@@ -104,31 +120,26 @@ export class DiagnosisComponent implements OnInit {
         const localText = localResponse?.response || null;
         const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
 
-        // ➡️ حذف رسالة "جاري الكتابة..." قبل إضافة الردود
-        this.messages = this.messages.filter(msg => msg.text !== typingText);
+        this.removeTypingIndicator();
 
-        if (localText) {
-          this.messages.push({
-            text: localText,
-            isUser: false
-          });
+        const unwantedReplies = [
+          "أهلاً! إزاي أقدر أساعدك في مشاكل صحتك",
+          "مرحباً! إزاي أقدر أساعدك في صحتك النهاردة"
+        ];
+
+        if (localText && !unwantedReplies.includes(localText.trim())) {
+          this.messages.push({ text: localText, isUser: false });
         }
 
-        this.messages.push({
-          text: geminiText,
-          isUser: false
-        });
+        this.messages.push({ text: geminiText, isUser: false });
       })
       .catch((error) => {
         console.error('❌ Error communicating with APIs:', error);
-
-        // ➡️ حذف رسالة "جاري الكتابة..." في حالة الخطأ
-        this.messages = this.messages.filter(msg => msg.text !== typingText);
-
-        this.messages.push({
-          text: this.userLang === 'ar' ? 'حدث خطأ أثناء التواصل مع الخوادم.' : 'An error occurred while communicating with servers.',
-          isUser: false
-        });
+        this.removeTypingIndicator();
+        const errorText = this.userLang === 'ar' 
+          ? 'حدث خطأ أثناء التواصل مع الخوادم.' 
+          : 'An error occurred while communicating with servers.';
+        this.messages.push({ text: errorText, isUser: false });
       })
       .finally(() => {
         this.isLoading = false;
@@ -153,7 +164,9 @@ export class DiagnosisComponent implements OnInit {
   }
 
   stopListening() {
-    this.recognition.stop();
+    if (this.recognition) {
+      this.recognition.stop();
+    }
     this.isListening = false;
   }
 
@@ -172,9 +185,7 @@ export class DiagnosisComponent implements OnInit {
   }
 
   logout() {
-    if (this.isBrowser()) {
-      localStorage.removeItem('token'); 
-    }
-    this.router.navigate(['/login']); 
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

@@ -31,6 +31,7 @@
 
       <div class="input-group">
         <label for="phoneNumber">📞 Phone Number</label>
+      
         <ngx-intl-tel-input
           [cssClass]="'form-control'"
           [preferredCountries]="preferredCountries"
@@ -40,16 +41,17 @@
           [phoneValidation]="true"
           formControlName="phoneNumber">
         </ngx-intl-tel-input>
-
-        <div *ngIf="signupForm.get('phoneNumber')?.touched">
-          <div class="error" *ngIf="signupForm.get('phoneNumber')?.hasError('required')">
+      
+        <div class="error" *ngIf="phoneNumberControl?.touched && phoneNumberControl?.errors">
+          <ng-container *ngIf="phoneNumberControl?.hasError('required')">
             Phone number is required.
-          </div>
-          <div class="error" *ngIf="!isPhoneNumberValid() && signupForm.get('phoneNumber')?.value">
+          </ng-container>
+          <ng-container *ngIf="!phoneNumberControl?.hasError('required') && !isPhoneNumberValid() && phoneNumberControl?.value">
             Invalid phone number format.
-          </div>
+          </ng-container>
         </div>
       </div>
+      
 
       <div class="input-group">
         <label for="age">Age</label>
@@ -110,6 +112,5 @@
       Already have an account?
       <a routerLink="/login">Login</a>
     </p>
-    
   </div>
 </section>
