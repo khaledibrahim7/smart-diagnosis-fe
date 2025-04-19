@@ -59,15 +59,15 @@ $user-message-bg: $primary-color;
 .chat-button-container {
   position: fixed;
   bottom: 75px;
-  right: 20px;    
+  right: 10px;
   text-align: right;
-  
+
   .ask-me-btn {
     background:rgb(5, 189, 245);
     color: rgb(2, 175, 255);
     padding: 15px;
     border: none;
-    border-radius: 50%; 
+    border-radius: 50%;
     width: 60px;
     height: 60px;
     font-size: 24px;

@@ -136,8 +136,8 @@ export class DiagnosisComponent implements OnInit {
       .catch((error) => {
         console.error('❌ Error communicating with APIs:', error);
         this.removeTypingIndicator();
-        const errorText = this.userLang === 'ar' 
-          ? 'حدث خطأ أثناء التواصل مع الخوادم.' 
+        const errorText = this.userLang === 'ar'
+          ? 'حدث خطأ أثناء التواصل مع الخوادم.'
           : 'An error occurred while communicating with servers.';
         this.messages.push({ text: errorText, isUser: false });
       })
