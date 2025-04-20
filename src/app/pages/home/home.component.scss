@@ -44,11 +44,13 @@
 .features {
   padding: 3rem 2rem;
   text-align: center;
+  color: #000;
 }
 
 .features h2 {
   font-size: 2rem;
   margin-bottom: 2rem;
+  color: #00101c;
 }
 
 .feature-list {
@@ -56,6 +58,7 @@
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 2rem;
+  color: #00101c;
 }
 
 .feature {
@@ -151,6 +154,7 @@
 
 .testimonial-card p {
   font-style: italic;
+  color: #000;
 }
 
 .stats {
@@ -242,7 +246,7 @@
 
 .step p {
   font-size: 1rem;
-  color: #333;
+  color: #000000;
 }
 :host {
   background-color: var(--bg-color);

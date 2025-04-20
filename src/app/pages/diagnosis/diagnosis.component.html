@@ -1,12 +1,9 @@
 <div class="top-bar">
   <div class="language-switcher">
-    <button [class.active]="userLang === 'en'" (click)="setLanguage('en')">
-      🇬🇧 English
-    </button>
-    <button [class.active]="userLang === 'ar'" (click)="setLanguage('ar')">
-      🇸🇦 العربية
-    </button>
+    <button [class.active]="userLang === 'en'" (click)="setLanguage('en')">🇬🇧 English</button>
+    <button [class.active]="userLang === 'ar'" (click)="setLanguage('ar')">🇸🇦 العربية</button>
   </div>
+
 </div>
 
 <div class="diagnosis-container">
@@ -18,37 +15,45 @@
 </div>
 
 <div class="chat-button-container" *ngIf="!isPopupOpen">
-  <button class="ask-me-btn" (click)="openPopup(false)">
-    🤖
-  </button>
+  <button class="ask-me-btn" (click)="openPopup(false)">🤖</button>
 </div>
-
 
 <div class="chat-modal" *ngIf="isPopupOpen">
   <div class="chat-modal-content">
     <div class="chat-header">
-      <h5>{{ userLang === 'ar' ? '  مرحبًا ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting Smart Diagnosis...' }}</h5>
+      <h5>{{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting with Smart Diagnosis...'
+       }}</h5>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
     <div class="chat-body">
-      <div *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+      <div *ngFor="let message of messages" [ngClass]="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
         {{ message.text }}
+      </div>
+
+      <div *ngIf="isTyping" class="typing-indicator">
+        {{ userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...' }}
       </div>
     </div>
 
     <div class="chat-footer">
-      <input type="text" placeholder="{{ userLang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...'}}" [(ngModel)]="userMessage" (keydown.enter)="sendMessage()"/>
+      <input
+        type="text"
+        placeholder="{{ userLang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...' }}"
+        [(ngModel)]="userMessage"
+        (keydown.enter)="sendMessage()"
+      />
       <button class="send-btn" (click)="sendMessage()">
         {{ userLang === 'ar' ? 'إرسال' : 'Send' }}
+      </button>
+      <button class="mic-btn" (click)="toggleListening()">
+        {{ isListening ? '🛑' : '🎤' }}
       </button>
     </div>
   </div>
 </div>
-<div *ngIf="isLoading" class="loading-message">
-  {{ userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...' }}
+
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>{{ userLang === 'ar' ? 'جاري التحميل...' : 'Loading...' }}</p>
 </div>
-
-
-
-

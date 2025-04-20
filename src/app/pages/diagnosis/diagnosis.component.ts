@@ -107,31 +107,41 @@ export class DiagnosisComponent implements OnInit {
     this.messages = this.messages.filter(msg => msg.text !== typingText);
     this.isTyping = false;
   }
-
   sendTextToBot(message: string) {
     this.isLoading = true;
     this.addTypingIndicator();
-
+  
     const localModelApi = this.http.post('http://127.0.0.1:9000/chat', { message }).toPromise();
     const geminiApi = this.http.post('http://127.0.0.1:5000/chat', { message }).toPromise();
-
+  
     Promise.all([localModelApi, geminiApi])
       .then(([localResponse, geminiResponse]: [any, any]) => {
         const localText = localResponse?.response || null;
         const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
-
+  
         this.removeTypingIndicator();
+  
+        const unwantedKeywords = [
+          "مرحباً",
+          "  أهلاً وسهلاً! قولي بقى، عاوز تطمن على صحتك؟",
+          "منورنا والله! قولي مالك كده شكلك مش رايق؟",
+          "منورنا والله! قولي مالك كده وشك مش رايق؟",
+          "Munawarna by God! Say that your money is like this and not?"
 
-        const unwantedReplies = [
-          "أهلاً! إزاي أقدر أساعدك في مشاكل صحتك",
-          "مرحباً! إزاي أقدر أساعدك في صحتك النهاردة"
         ];
-
-        if (localText && !unwantedReplies.includes(localText.trim())) {
-          this.messages.push({ text: localText, isUser: false });
+  
+        if (localText) {
+          if (unwantedKeywords.some(keyword => localText.includes(keyword))) {
+            this.messages.push({ text: '👇🏼', isUser: false });
+          } else {
+            this.messages.push({ text: localText, isUser: false });
+          }
         }
-
-        this.messages.push({ text: geminiText, isUser: false });
+  
+        const formattedGeminiLines = this.formatGeminiResponse(geminiText);
+        formattedGeminiLines.forEach(line => {
+          this.messages.push({ text: line, isUser: false });
+        });
       })
       .catch((error) => {
         console.error('❌ Error communicating with APIs:', error);
@@ -145,6 +155,19 @@ export class DiagnosisComponent implements OnInit {
         this.isLoading = false;
       });
   }
+  
+  formatGeminiResponse(text: string): string[] {
+    const lines = text.split(/\n|\. /);
+    return lines
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => `🔹 ${line}`);
+  }
+  
+  
+  
+
+
 
   toggleListening() {
     this.isListening ? this.stopListening() : this.startListening();
@@ -182,10 +205,5 @@ export class DiagnosisComponent implements OnInit {
     if (darkMode) {
       document.body.classList.add('dark-mode');
     }
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
   }
 }
