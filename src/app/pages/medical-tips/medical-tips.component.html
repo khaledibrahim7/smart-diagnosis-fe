@@ -1,17 +1,16 @@
 <div class="tips-container">
-    <header class="header">
-      <h1>أفضل نصائح للصحة والعافية</h1>
-      <p>تجد أدناه مجموعة من النصائح الهامة لتحسين نمط حياتك والحفاظ على صحتك.</p>
-    </header>
-  
-    <section class="tips-list">
-      <div *ngFor="let tip of tips; let i = index" class="tip-card">
-        <div class="tip-number">{{ i + 1 }}</div>
-        <div class="tip-content">
-          <h2>{{ tip.title }}</h2>
-          <p>{{ tip.description }}</p>
-        </div>
+  <header class="header">
+    <h1>Top Health and Wellness Tips</h1>
+    <p>Below you'll find a collection of important tips to improve your lifestyle and maintain your health.</p>
+  </header>
+
+  <section class="tips-list">
+    <div *ngFor="let tip of tips; let i = index" class="tip-card">
+      <div class="tip-number">{{ i + 1 }}</div>
+      <div class="tip-content">
+        <h2>{{ tip.title }}</h2>
+        <p>{{ tip.description }}</p>
       </div>
-    </section>
-  </div>
-  
+    </div>
+  </section>
+</div>

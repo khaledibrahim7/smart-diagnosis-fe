@@ -1,10 +1,10 @@
 <div class="feedback-container">
-  <h2 class="title">شاركنا تقييمك وملاحظاتك</h2>
+  <h2 class="title">Share Your Feedback and Rating</h2>
 
   <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
 
     <div class="form-group">
-      <label class="label">تقييم الخدمة:</label>
+      <label class="label">Service Rating:</label>
       <div class="rating-stars">
         <label *ngFor="let star of [1, 2, 3, 4, 5]">
           <input type="radio" [value]="star" formControlName="rating" class="hidden" />
@@ -12,50 +12,49 @@
         </label>
       </div>
       <div *ngIf="feedbackForm.get('rating')?.errors?.['required']" class="error-msg">
-        التقييم مطلوب.
+        Rating is required.
       </div>
     </div>
 
     <div class="form-group">
-      <label class="label">الإيميل:</label>
+      <label class="label">Email:</label>
       <input type="email" formControlName="email" placeholder="example@mail.com" class="input" />
       <div *ngIf="feedbackForm.get('email')?.errors?.['email']" class="error-msg">
-        يجب إدخال إيميل صحيح.
+        Please enter a valid email address.
       </div>
     </div>
 
     <div class="form-group">
-      <label class="label">نوع الشكوى:</label>
+      <label class="label">Feedback Type:</label>
       <select formControlName="feedbackType" class="input">
         <option *ngFor="let type of feedbackTypes" [value]="type">{{ type }}</option>
       </select>
       <div *ngIf="feedbackForm.get('feedbackType')?.errors?.['required']" class="error-msg">
-        نوع الشكوى مطلوب.
+        Feedback type is required.
       </div>
     </div>
 
     <div class="form-group">
-      <label class="label">ملاحظتك أو اقتراحك:</label>
-      <textarea formControlName="feedbackText" rows="4" placeholder="اكتب تعليقك هنا..." class="input"></textarea>
+      <label class="label">Your Comment or Suggestion:</label>
+      <textarea formControlName="feedbackText" rows="4" placeholder="Write your comment here..." class="input"></textarea>
       <div *ngIf="feedbackForm.get('feedbackText')?.errors?.['minlength']" class="error-msg">
-        يجب أن تحتوي الشكوى على 5 كلمات على الأقل.
+        Feedback must contain at least 5 words.
       </div>
       <div *ngIf="feedbackForm.get('feedbackText')?.errors?.['maxlength']" class="error-msg">
-        يجب أن تحتوي الشكوى على 2000 كلمة كحد أقصى.
+        Feedback must not exceed 2000 words.
       </div>
     </div>
 
-    
     <button type="submit" class="submit-btn" [disabled]="feedbackForm.invalid || isSubmitting">
       <span *ngIf="isSubmitting" class="animate-spin mr-2">⏳</span>
-      <span *ngIf="!isSubmitting">إرسال</span>
+      <span *ngIf="!isSubmitting">Submit</span>
     </button>
   </form>
 
   <div *ngIf="successMessage" class="success-msg">
-    ✅ تم إرسال الشكوى بنجاح، شكرًا لمساهمتك!
+    ✅ Feedback submitted successfully. Thank you for your contribution!
   </div>
   <div *ngIf="errorMessage" class="error-msg text-center">
-    ❌ حدث خطأ أثناء إرسال الشكوى. حاول مجددًا.
+    ❌ An error occurred while submitting your feedback. Please try again.
   </div>
 </div>

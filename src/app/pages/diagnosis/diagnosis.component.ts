@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 })
 export class DiagnosisComponent implements OnInit {
   messages: { text: string, isUser: boolean }[] = [];
+  chatHistory: { id: number, title: string, messages: { text: string, isUser: boolean }[] }[] = [];
+  activeChatId: number | null = null;
+  
   isPopupOpen = false;
   userMessage = '';
   recognition: any;
@@ -21,11 +24,11 @@ export class DiagnosisComponent implements OnInit {
   isDarkMode = false;
   isLoading = false;
   isTyping = false;
+  nextChatId = 1;
 
   constructor(private router: Router, private http: HttpClient) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     this.recognition = new SpeechRecognition();
-
     this.setLanguage('en');
     this.setupRecognition();
   }
@@ -77,6 +80,9 @@ export class DiagnosisComponent implements OnInit {
     if (startMic) {
       this.startListening();
     }
+    if (this.activeChatId === null) {
+      this.newChat();
+    }
   }
 
   closePopup() {
@@ -94,6 +100,12 @@ export class DiagnosisComponent implements OnInit {
 
   private addUserMessage(message: string) {
     this.messages.push({ text: message, isUser: true });
+    this.saveCurrentChat();
+  }
+
+  private addBotMessage(message: string) {
+    this.messages.push({ text: message, isUser: false });
+    this.saveCurrentChat();
   }
 
   private addTypingIndicator() {
@@ -107,40 +119,40 @@ export class DiagnosisComponent implements OnInit {
     this.messages = this.messages.filter(msg => msg.text !== typingText);
     this.isTyping = false;
   }
+
   sendTextToBot(message: string) {
     this.isLoading = true;
     this.addTypingIndicator();
-  
+
     const localModelApi = this.http.post('http://127.0.0.1:9000/chat', { message }).toPromise();
     const geminiApi = this.http.post('http://127.0.0.1:5000/chat', { message }).toPromise();
-  
+
     Promise.all([localModelApi, geminiApi])
       .then(([localResponse, geminiResponse]: [any, any]) => {
         const localText = localResponse?.response || null;
         const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
-  
+
         this.removeTypingIndicator();
-  
+
         const unwantedKeywords = [
           "مرحباً",
           "  أهلاً وسهلاً! قولي بقى، عاوز تطمن على صحتك؟",
           "منورنا والله! قولي مالك كده شكلك مش رايق؟",
           "منورنا والله! قولي مالك كده وشك مش رايق؟",
           "Munawarna by God! Say that your money is like this and not?"
-
         ];
-  
+
         if (localText) {
           if (unwantedKeywords.some(keyword => localText.includes(keyword))) {
-            this.messages.push({ text: '👇🏼', isUser: false });
+            this.addBotMessage('👇🏼');
           } else {
-            this.messages.push({ text: localText, isUser: false });
+            this.addBotMessage(localText);
           }
         }
-  
+
         const formattedGeminiLines = this.formatGeminiResponse(geminiText);
         formattedGeminiLines.forEach(line => {
-          this.messages.push({ text: line, isUser: false });
+          this.addBotMessage(line);
         });
       })
       .catch((error) => {
@@ -149,13 +161,13 @@ export class DiagnosisComponent implements OnInit {
         const errorText = this.userLang === 'ar'
           ? 'حدث خطأ أثناء التواصل مع الخوادم.'
           : 'An error occurred while communicating with servers.';
-        this.messages.push({ text: errorText, isUser: false });
+        this.addBotMessage(errorText);
       })
       .finally(() => {
         this.isLoading = false;
       });
   }
-  
+
   formatGeminiResponse(text: string): string[] {
     const lines = text.split(/\n|\. /);
     return lines
@@ -163,11 +175,6 @@ export class DiagnosisComponent implements OnInit {
       .filter(line => line.length > 0)
       .map(line => `🔹 ${line}`);
   }
-  
-  
-  
-
-
 
   toggleListening() {
     this.isListening ? this.stopListening() : this.startListening();
@@ -206,4 +213,48 @@ export class DiagnosisComponent implements OnInit {
       document.body.classList.add('dark-mode');
     }
   }
+
+  newChat() {
+    const newChat = {
+      id: this.nextChatId++,
+      title: `${this.userLang === 'ar' ? 'محادثة' : 'Chat'} #${this.nextChatId - 1}`,
+      messages: []
+    };
+    this.chatHistory.unshift(newChat);
+    this.activeChatId = newChat.id;
+    this.messages = [];
+  }
+
+  selectChat(chatId: number) {
+    const selectedChat = this.chatHistory.find(chat => chat.id === chatId);
+    if (selectedChat) {
+      this.activeChatId = selectedChat.id;
+      this.messages = [...selectedChat.messages];
+    }
+  }
+
+  private saveCurrentChat() {
+    const chat = this.chatHistory.find(c => c.id === this.activeChatId);
+    if (chat) {
+      chat.messages = [...this.messages];
+    }
+  }
+  startNewChat() {
+    const newChat = {
+      id: this.nextChatId++,
+      title: this.userLang === 'ar' ? `محادثة #${this.nextChatId - 1}` : `Chat #${this.nextChatId - 1}`,
+      messages: []
+    };
+    this.chatHistory.unshift(newChat);
+    this.activeChatId = newChat.id;
+    this.messages = [];
+  }
+  loadChat(i: number) {
+    const selectedChat = this.chatHistory[i];
+    if (selectedChat) {
+      this.activeChatId = selectedChat.id;
+      this.messages = [...selectedChat.messages];
+    }
+  }
+    
 }

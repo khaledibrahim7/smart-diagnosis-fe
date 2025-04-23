@@ -17,174 +17,173 @@ export class MedicalTipsComponent implements OnInit {
 
   tips: Tip[] = [
     {
-      title: 'شرب الماء بانتظام',
-      description: 'حافظ على تناول كميات كافية من الماء طوال اليوم لترطيب الجسم وتنشيط الدورة الدموية.'
+      title: 'Drink Water Regularly',
+      description: 'Maintain adequate water intake throughout the day to hydrate your body and boost blood circulation.'
     },
     {
-      title: 'تناول الفواكه والخضروات',
-      description: 'احرص على تناول تشكيلة متنوعة من الفواكه والخضروات للحصول على الفيتامينات والمعادن الضرورية.'
+      title: 'Eat Fruits and Vegetables',
+      description: 'Ensure a variety of fruits and vegetables in your diet to get essential vitamins and minerals.'
     },
     {
-      title: 'ممارسة الرياضة بانتظام',
-      description: 'خصص وقتاً يومياً لممارسة النشاط البدني مثل المشي أو الجري أو تمارين القوة.'
+      title: 'Exercise Regularly',
+      description: 'Dedicate daily time for physical activities like walking, running, or strength training.'
     },
     {
-      title: 'الحصول على قسط كافٍ من النوم',
-      description: 'احرص على النوم لمدة 7-8 ساعات يومياً لتمكين الجسم من الاسترخاء والتجديد.'
+      title: 'Get Enough Sleep',
+      description: 'Aim for 7-8 hours of sleep daily to allow your body to relax and rejuvenate.'
     },
     {
-      title: 'تجنب التدخين',
-      description: 'الإقلاع عن التدخين يقلل من فرص الإصابة بالعديد من الأمراض المزمنة ويعزز الصحة العامة.'
+      title: 'Avoid Smoking',
+      description: 'Quitting smoking reduces the risk of many chronic diseases and improves overall health.'
     },
     {
-      title: 'الحد من استهلاك الكحول',
-      description: 'التقليل من تناول المشروبات الكحولية يساهم في تقليل المخاطر الصحية المرتبطة بها.'
+      title: 'Limit Alcohol Consumption',
+      description: 'Reducing alcohol intake helps lower health risks associated with it.'
     },
     {
-      title: 'الحفاظ على الوزن المثالي',
-      description: 'اتبع نظاماً غذائياً متوازناً ومارس النشاط البدني للحفاظ على وزن صحي.'
+      title: 'Maintain a Healthy Weight',
+      description: 'Follow a balanced diet and stay active to maintain a healthy body weight.'
     },
     {
-      title: 'تقليل تناول السكر والملح',
-      description: 'حاول تقليل المنتجات الغنية بالسكر والملح لتجنب المشاكل الصحية مثل ارتفاع ضغط الدم والسكري.'
+      title: 'Reduce Sugar and Salt Intake',
+      description: 'Minimize high sugar and salt products to prevent health issues like hypertension and diabetes.'
     },
     {
-      title: 'متابعة الفحوصات الدورية',
-      description: 'قم بعمل الفحوصات الطبية الدورية للكشف المبكر عن أي مشاكل صحية محتملة.'
+      title: 'Schedule Regular Checkups',
+      description: 'Undergo periodic medical exams for early detection of potential health problems.'
     },
     {
-      title: 'الحفاظ على النظافة الشخصية',
-      description: 'اتباع عادات النظافة الشخصية يساهم في الوقاية من العديد من الأمراض المعدية.'
+      title: 'Maintain Personal Hygiene',
+      description: 'Practicing personal hygiene habits helps prevent many infectious diseases.'
     },
     {
-      title: 'إدارة التوتر والضغط النفسي',
-      description: 'مارس تقنيات الاسترخاء مثل التنفس العميق أو التأمل لتخفيف الضغوط اليومية.'
+      title: 'Manage Stress',
+      description: 'Practice relaxation techniques like deep breathing or meditation to reduce daily stress.'
     },
     {
-      title: 'تناول وجبة إفطار صحية',
-      description: 'ابدأ يومك بفطور متوازن يحتوي على البروتينات والحبوب والألياف لتحسين نشاطك اليومي.'
+      title: 'Eat a Healthy Breakfast',
+      description: 'Start your day with a balanced breakfast rich in proteins, grains, and fiber for better energy.'
     },
     {
-      title: 'تحسين الهضم بتناول الألياف',
-      description: 'تناول الأطعمة الغنية بالألياف يحسن عملية الهضم ويقلل من مشاكل الجهاز الهضمي.'
+      title: 'Improve Digestion with Fiber',
+      description: 'Eating fiber-rich foods enhances digestion and reduces gastrointestinal issues.'
     },
     {
-      title: 'الابتعاد عن الوجبات السريعة',
-      description: 'تجنب الوجبات السريعة للحفاظ على صحة الجهاز الهضمي والوزن المثالي.'
+      title: 'Avoid Fast Food',
+      description: 'Stay away from fast food to maintain digestive health and a healthy weight.'
     },
     {
-      title: 'استخدام المكملات الغذائية عند الحاجة',
-      description: 'استشر طبيبك لتحديد الحاجة إلى المكملات الغذائية التي تدعم صحتك العامة.'
+      title: 'Use Supplements When Needed',
+      description: 'Consult your doctor to determine if you need dietary supplements to support your health.'
     },
     {
-      title: 'الابتعاد عن المواد الكيميائية الضارة',
-      description: 'قلل من التعرض للمواد الكيميائية في التنظيف والصناعات لتحمي جسمك من السموم.'
+      title: 'Avoid Harmful Chemicals',
+      description: 'Limit exposure to harmful chemicals in cleaning products and industries to protect your body.'
     },
     {
-      title: 'الحفاظ على صحة الفم والأسنان',
-      description: 'تنظيف الأسنان بانتظام وزيارة طبيب الأسنان يمنع مشكلات الفم واللثة.'
+      title: 'Maintain Oral Health',
+      description: 'Regular tooth brushing and dentist visits help prevent oral and gum issues.'
     },
     {
-      title: 'ممارسة التأمل والاسترخاء',
-      description: 'استخدم تقنيات التأمل والاسترخاء لتعزيز الصحة الذهنية والتقليل من التوتر.'
+      title: 'Practice Meditation and Relaxation',
+      description: 'Use meditation and relaxation techniques to enhance mental well-being and reduce stress.'
     },
     {
-      title: 'تنظيم وقت الراحة والنشاط',
-      description: 'وازن بين فترات العمل والراحة لتجنب الإرهاق وتحقيق إنتاجية أفضل.'
+      title: 'Balance Work and Rest Time',
+      description: 'Maintain a balance between work and rest to avoid fatigue and improve productivity.'
     },
     {
-      title: 'استشارة الطبيب عند ظهور أعراض غير طبيعية',
-      description: 'لا تتردد في مراجعة الطبيب فور ظهور أي أعراض غير معتادة للحصول على التشخيص المناسب.'
+      title: 'Consult a Doctor for Unusual Symptoms',
+      description: 'Seek medical advice immediately if you notice any unusual symptoms.'
     },
     {
-      title: 'تنظيم الوجبات',
-      description: 'قسم وجباتك إلى وجبات صغيرة ومتوازنة خلال اليوم لضبط مستويات الطاقة والهضم.'
+      title: 'Organize Meals',
+      description: 'Divide your meals into small, balanced portions throughout the day to regulate energy and digestion.'
     },
     {
-      title: 'حافظ على ممارسات النظافة في المطبخ',
-      description: 'تأكد من غسل اليدين والأدوات جيداً قبل وبعد تحضير الطعام لتجنب التسمم الغذائي.'
+      title: 'Maintain Kitchen Hygiene',
+      description: 'Ensure proper hand and utensil washing before and after food preparation to prevent food poisoning.'
     },
     {
-      title: 'تخصيص وقت للنشاطات الاجتماعية',
-      description: 'التواصل الاجتماعي يعزز الصحة النفسية ويقلل من مستويات التوتر والعزلة.'
+      title: 'Make Time for Social Activities',
+      description: 'Social interaction enhances mental health and reduces stress and isolation.'
     },
     {
-      title: 'ممارسة الأنشطة الذهنية',
-      description: 'قم بحل الألغاز، قراءة الكتب أو تعلم مهارات جديدة لتنشيط العقل وتقليل خطر التدهور العقلي.'
+      title: 'Engage in Mental Activities',
+      description: 'Solve puzzles, read books, or learn new skills to stimulate your mind and reduce cognitive decline.'
     },
     {
-      title: 'تحديد وقت للاسترخاء الرقمي',
-      description: 'قلل من استخدام الأجهزة الإلكترونية قبل النوم لتحسين جودة النوم والتقليل من إجهاد العينين.'
+      title: 'Set Time for Digital Detox',
+      description: 'Reduce electronic device usage before sleep to improve sleep quality and reduce eye strain.'
     },
     {
-      title: 'الاستمتاع بالشمس بحذر',
-      description: 'تعرض بشكل معتدل لأشعة الشمس للحصول على فيتامين د، ولكن احرص على حماية جلدك من الأشعة الضارة.'
+      title: 'Enjoy Sunlight Safely',
+      description: 'Get moderate sun exposure for Vitamin D while protecting your skin from harmful rays.'
     },
     {
-      title: 'المحافظة على العلاقات الاجتماعية الصحية',
-      description: 'تجنب العزلة وشارك في الأنشطة الاجتماعية لتحافظ على صحتك النفسية والجسدية.'
+      title: 'Maintain Healthy Social Relationships',
+      description: 'Avoid isolation and participate in social activities to support mental and physical health.'
     },
     {
-      title: 'اتباع نظام غذائي غني بالبروتين',
-      description: 'تناول البروتين من مصادر متنوعة مثل اللحوم الخالية من الدهون، البيض، والأسماك لتعزيز صحة العضلات.'
+      title: 'Follow a Protein-Rich Diet',
+      description: 'Eat protein from diverse sources like lean meats, eggs, and fish to support muscle health.'
     },
     {
-      title: 'تناول الطعام ببطء',
-      description: 'ابتعد عن تناول الطعام بسرعة وخصص وقتاً كافياً للاستمتاع بوجباتك لتجنب مشاكل الهضم.'
+      title: 'Eat Slowly',
+      description: 'Avoid rushing meals and take your time to enjoy food, helping with digestion.'
     },
     {
-      title: 'إدارة وقت الشاشة للأطفال',
-      description: 'قلل من الوقت الذي يقضيه الأطفال أمام الشاشات، وشجعهم على ممارسة الأنشطة البدنية.'
+      title: 'Manage Children\'s Screen Time',
+      description: 'Limit children\'s screen time and encourage physical activities instead.'
     },
     {
-      title: 'الابتعاد عن المواد الحافظة',
-      description: 'حاول تقليل تناول الأطعمة التي تحتوي على مواد حافظة ومواد كيميائية ضارة.'
+      title: 'Avoid Preservatives',
+      description: 'Try to reduce the intake of foods with preservatives and harmful chemicals.'
     },
     {
-      title: 'مراقبة مستويات الكوليسترول',
-      description: 'راقب مستويات الكوليسترول في الدم من خلال فحص دوري واتباع نظام غذائي صحي.'
+      title: 'Monitor Cholesterol Levels',
+      description: 'Keep track of your cholesterol levels through regular tests and a healthy diet.'
     },
     {
-      title: 'التحكم في ضغط الدم',
-      description: 'اتباع نظام غذائي منخفض الصوديوم وممارسة الرياضة بانتظام يساعد في الحفاظ على ضغط الدم ضمن المستويات الطبيعية.'
+      title: 'Control Blood Pressure',
+      description: 'A low-sodium diet and regular exercise help maintain normal blood pressure levels.'
     },
     {
-      title: 'تخصيص وقت للنوم الجيد',
-      description: 'خصص وقتاً مناسباً للنوم ولا تفرط في العمل أو استخدام الأجهزة الإلكترونية قبل النوم.'
+      title: 'Prioritize Good Sleep',
+      description: 'Set aside enough time for quality sleep without overworking or screen exposure before bedtime.'
     },
     {
-      title: 'التقليل من الإجهاد الذهني',
-      description: 'مارس تقنيات التأمل واليوغا للتخفيف من التوتر الذهني وتحقيق توازن أفضل في حياتك.'
+      title: 'Reduce Mental Stress',
+      description: 'Practice meditation and yoga to alleviate mental tension and achieve better balance.'
     },
     {
-      title: 'الاهتمام بصحة العينين',
-      description: 'استخدم نظارات شمسية لحماية عينيك من الأشعة فوق البنفسجية وراقب صحتها بانتظام.'
+      title: 'Take Care of Eye Health',
+      description: 'Wear sunglasses to protect your eyes from UV rays and have regular eye checkups.'
     },
     {
-      title: 'حافظ على هويتك الشخصية',
-      description: 'اعتنِ بالصحة النفسية وابتعد عن الضغوط النفسية التي قد تؤثر على شعورك بالراحة والانسجام.'
+      title: 'Protect Your Personal Identity',
+      description: 'Care for your mental well-being and avoid psychological pressures that affect your comfort.'
     },
     {
-      title: 'تعلم أساليب جديدة للطبخ الصحي',
-      description: 'جرب وصفات صحية جديدة تساعدك على تحسين نمط حياتك الغذائي.'
+      title: 'Learn Healthy Cooking Techniques',
+      description: 'Experiment with healthy recipes to improve your dietary habits.'
     },
     {
-      title: 'الاستماع إلى جسدك',
-      description: 'تعرف على إشارات جسمك ولا تتجاهل أي أعراض غير طبيعية قد تستدعي زيارة الطبيب.'
+      title: 'Listen to Your Body',
+      description: 'Recognize your body\'s signals and don’t ignore any abnormal symptoms that require medical attention.'
     },
     {
-      title: 'تخصيص وقت للأنشطة الترفيهية',
-      description: 'احرص على تخصيص وقت للأنشطة الترفيهية والرياضية التي تساهم في تعزيز صحتك الجسدية والنفسية.'
+      title: 'Make Time for Recreational Activities',
+      description: 'Set aside time for recreational and sports activities to boost your physical and mental health.'
     },
     {
-      title: 'المحافظة على عادات النظافة في العمل',
-      description: 'نظف مكان عملك بشكل دوري وابتعد عن العادات التي قد تؤدي إلى انتشار الجراثيم.'
+      title: 'Maintain Workplace Hygiene',
+      description: 'Keep your workspace clean and avoid habits that may spread germs.'
     },
     {
-      title: 'الابتعاد عن الإفراط في تناول الكافيين',
-      description: 'قلل من استهلاك المشروبات التي تحتوي على الكافيين مثل القهوة والشاي لتجنب الأرق وتحسين جودة النوم.'
+      title: 'Limit Caffeine Intake',
+      description: 'Reduce consumption of caffeinated beverages like coffee and tea to avoid insomnia and improve sleep quality.'
     }
-    
   ];
 
   constructor() { }

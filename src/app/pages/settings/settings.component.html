@@ -1,70 +1,67 @@
 <div class="settings-container">
-  <h2>إعدادات الحساب</h2>
+  <h2>Account Settings</h2>
 
   <form [formGroup]="settingsForm">
     <div class="section">
-      <h3>بيانات الحساب</h3>
+      <h3>Account Information</h3>
 
-      <label>الاسم الأول:</label>
+      <label>First Name:</label>
       <input type="text" formControlName="firstName" />
 
-      <label>اسم العائلة:</label>
+      <label>Last Name:</label>
       <input type="text" formControlName="lastName" />
 
-      <label>البريد الإلكتروني:</label>
+      <label>Email:</label>
       <input type="email" [value]="settingsForm.get('email')?.value" disabled />
 
-      <label>رقم الهاتف:</label>
+      <label>Phone Number:</label>
       <input type="text" formControlName="phoneNumber" />
 
-      <label>العمر:</label>
+      <label>Age:</label>
       <input type="number" formControlName="age" />
 
-      <label>الجنس:</label>
+      <label>Gender:</label>
       <select formControlName="gender">
-        <option value="male">ذكر</option>
-        <option value="female">أنثى</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
       </select>
 
-      <label>اللغة:</label>
+      <label>Language:</label>
       <select formControlName="language">
-        <option value="en">الإنجليزية</option>
-        <option value="ar">العربية</option>
+        <option value="en">English</option>
+        <option value="ar">Arabic</option>
       </select>
     
       <label class="checkbox">
         <input type="checkbox" formControlName="darkMode" />
-        <span>تفعيل الوضع الداكن</span>
+        <span>Enable Dark Mode</span>
       </label>
     </div>
 
     <div class="feedback-button-container">
       <button (click)="goToFeedback()" class="feedback-button">
-        تقييم الخدمة
+        Rate the Service
       </button>
     </div>
     
     <div class="section">
-      <h3>تغيير كلمة المرور</h3>
+      <h3>Change Password</h3>
 
-      <label>كلمة المرور الجديدة:</label>
+      <label>New Password:</label>
       <input type="password" formControlName="newPassword" />
 
-      <label>تأكيد كلمة المرور:</label>
+      <label>Confirm New Password:</label>
       <input type="password" formControlName="confirmNewPassword" />
     </div>
 
     <div class="section actions">
       <button type="button" class="save" (click)="saveSettings()" [disabled]="isLoading">
-        {{ isLoading ? 'جارِ الحفظ...' : 'حفظ التغييرات' }}
+        {{ isLoading ? 'Saving...' : 'Save Changes' }}
       </button>
 
       <button type="button" class="delete" (click)="deleteAccount()" [disabled]="isLoading">
-        {{ isLoading ? 'جارِ الحذف...' : 'حذف الحساب' }}
+        {{ isLoading ? 'Deleting...' : 'Delete Account' }}
       </button>
     </div>
   </form>
 </div>
-
-
-
