@@ -256,5 +256,16 @@ export class DiagnosisComponent implements OnInit {
       this.messages = [...selectedChat.messages];
     }
   }
+  deleteChat(chatId: number) {
+    // حذف الشات من سجل المحادثات
+    this.chatHistory = this.chatHistory.filter(chat => chat.id !== chatId);
+    
+    // إذا تم حذف الشات النشط، نقوم بتعيين activeChatId إلى null
+    if (this.activeChatId === chatId) {
+      this.activeChatId = null;
+      this.messages = [];
+    }
+  }
+  
     
 }

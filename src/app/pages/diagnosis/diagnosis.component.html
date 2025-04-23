@@ -3,7 +3,6 @@
     <button [class.active]="userLang === 'en'" (click)="setLanguage('en')">🇬🇧 English</button>
     <button [class.active]="userLang === 'ar'" (click)="setLanguage('ar')">🇸🇦 العربية</button>
   </div>
-
 </div>
 
 <div class="diagnosis-container">
@@ -18,21 +17,44 @@
   <button class="ask-me-btn" (click)="openPopup(false)">🤖</button>
 </div>
 
-<div class="chat-modal" *ngIf="isPopupOpen">
+<div class="chat-modal fullscreen" *ngIf="isPopupOpen">
   <div class="chat-modal-content">
     <div class="chat-header">
-      <h5>{{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting with Smart Diagnosis...'
-       }}</h5>
+      <h5>{{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting with Smart Diagnosis...' }}</h5>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
     <div class="chat-body">
-      <div *ngFor="let message of messages" [ngClass]="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
-        {{ message.text }}
+      <div class="chat-sidebar">
+        <h4>{{ userLang === 'ar' ? 'المحادثات' : 'Chats' }}</h4>
+        <button class="new-chat-btn" (click)="startNewChat()">
+          ➕ {{ userLang === 'ar' ? 'محادثة جديدة' : 'New Chat' }}
+        </button>
+
+        <div class="chat-history">
+          <div *ngFor="let chat of chatHistory; let i = index"
+               class="chat-history-item"
+               (click)="loadChat(i)">
+            {{ userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1)) }}
+          </div>
+        </div>
+        <div *ngFor="let chat of chatHistory">
+          <div (click)="loadChat(chat.id)" [class.active]="chat.id === activeChatId">
+            <span>{{ chat.title }}</span>
+            <button (click)="deleteChat(chat.id)">x</button>
+          </div>
+        </div>
+        
       </div>
 
-      <div *ngIf="isTyping" class="typing-indicator">
-        {{ userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...' }}
+      <div class="chat-main">
+        <div *ngFor="let message of messages" [ngClass]="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
+          {{ message.text }}
+        </div>
+
+        <div *ngIf="isTyping" class="typing-indicator">
+          {{ userLang === 'ar' ? 'جاري الكتابة...' : 'Typing...' }}
+        </div>
       </div>
     </div>
 
@@ -49,7 +71,7 @@
       <button class="send-btn" (click)="sendMessage()">
         {{ userLang === 'ar' ? 'إرسال' : 'Send' }}
       </button>
-    
+      
     </div>
   </div>
 </div>
