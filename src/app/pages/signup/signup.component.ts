@@ -83,7 +83,6 @@ export class SignupComponent {
   }
   
 
-  // Clear error messages after any submission attempt
   clearErrorMessages(): void {
     this.errorMessage = null;
   }
@@ -101,12 +100,11 @@ export class SignupComponent {
     }
   
     this.isSubmitting = true;
-    this.signupForm.disable(); // Disable form to prevent multiple submissions
+    this.signupForm.disable();
   
     const formData = this.signupForm.value;
   
-    // إرسال الرقم بصيغة محلية
-    formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.nationalNumber : '';
+    formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.internationalNumber : '';
   
     this.authService.signUp(formData).subscribe({
       next: (response) => {

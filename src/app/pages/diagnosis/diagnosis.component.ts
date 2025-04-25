@@ -15,7 +15,7 @@ export class DiagnosisComponent implements OnInit {
   messages: { text: string, isUser: boolean }[] = [];
   chatHistory: { id: number, title: string, messages: { text: string, isUser: boolean }[] }[] = [];
   activeChatId: number | null = null;
-  
+
   isPopupOpen = false;
   userMessage = '';
   recognition: any;
@@ -239,6 +239,7 @@ export class DiagnosisComponent implements OnInit {
       chat.messages = [...this.messages];
     }
   }
+
   startNewChat() {
     const newChat = {
       id: this.nextChatId++,
@@ -249,6 +250,7 @@ export class DiagnosisComponent implements OnInit {
     this.activeChatId = newChat.id;
     this.messages = [];
   }
+
   loadChat(i: number) {
     const selectedChat = this.chatHistory[i];
     if (selectedChat) {
@@ -256,16 +258,24 @@ export class DiagnosisComponent implements OnInit {
       this.messages = [...selectedChat.messages];
     }
   }
-  deleteChat(chatId: number) {
-    // حذف الشات من سجل المحادثات
-    this.chatHistory = this.chatHistory.filter(chat => chat.id !== chatId);
-    
-    // إذا تم حذف الشات النشط، نقوم بتعيين activeChatId إلى null
-    if (this.activeChatId === chatId) {
-      this.activeChatId = null;
-      this.messages = [];
-    }
-  }
-  
-    
+
+  openedMenuIndex: number | null = null;
+
+toggleOptionsMenu(index: number) {
+  this.openedMenuIndex = this.openedMenuIndex === index ? null : index;
+}
+
+deleteChat(chatId: number) {
+  this.chatHistory = this.chatHistory.filter(chat => chat.id !== chatId);
+  this.openedMenuIndex = null;
+}
+
+shareChat(chat: any) {
+  const chatText = `Chat Title: ${chat.title}`;
+  navigator.share
+    ? navigator.share({ title: chat.title, text: chatText })
+    : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
+  this.openedMenuIndex = null;
+}
+
 }

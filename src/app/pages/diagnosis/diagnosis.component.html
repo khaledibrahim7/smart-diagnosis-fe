@@ -8,8 +8,8 @@
 <div class="diagnosis-container">
   <h1>👨‍⚕️ Smart Diagnosis</h1>
   <p>{{ userLang === 'ar' ? 'احصل على تشخيص طبي سريع بناءً على أعراضك.' : 'Get a quick medical diagnosis based on your symptoms.' }}</p>
-  <button class="start-btn" (click)="openPopup(true)">
-    🎙️ {{ userLang === 'ar' ? 'ابدأ التشخيص' : 'Start Diagnosis' }}
+  <button class="start-btn" (click)="openPopup(false)">
+   {{ userLang === 'ar' ? 'ابدأ التشخيص' : 'Start Diagnosis' }}
   </button>
 </div>
 
@@ -28,23 +28,24 @@
       <div class="chat-sidebar">
         <h4>{{ userLang === 'ar' ? 'المحادثات' : 'Chats' }}</h4>
         <button class="new-chat-btn" (click)="startNewChat()">
-          ➕ {{ userLang === 'ar' ? 'محادثة جديدة' : 'New Chat' }}
+          ➕ 
         </button>
 
         <div class="chat-history">
-          <div *ngFor="let chat of chatHistory; let i = index"
-               class="chat-history-item"
-               (click)="loadChat(i)">
-            {{ userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1)) }}
-          </div>
-        </div>
-        <div *ngFor="let chat of chatHistory">
-          <div (click)="loadChat(chat.id)" [class.active]="chat.id === activeChatId">
-            <span>{{ chat.title }}</span>
-            <button (click)="deleteChat(chat.id)">x</button>
-          </div>
-        </div>
+          <div *ngFor="let chat of chatHistory; let i = index" class="chat-history-item">
+            <div class="chat-title" (click)="loadChat(chat.id)" [class.active]="chat.id === activeChatId">
+              {{ userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1)) }}
+            </div>
         
+            <div class="chat-options">
+              <button class="options-btn" (click)="toggleOptionsMenu(i)">⋮</button>
+              <div *ngIf="openedMenuIndex === i" class="options-menu">
+                <button (click)="shareChat(chat)"> {{ userLang === 'ar' ? 'مشاركة' : 'Share' }}</button>
+                <button (click)="deleteChat(chat.id)"> {{ userLang === 'ar' ? 'حذف' : 'Delete' }}</button>
+              </div>
+            </div>
+          </div>
+        </div>   
       </div>
 
       <div class="chat-main">

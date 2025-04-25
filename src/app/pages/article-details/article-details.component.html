@@ -1,0 +1,10 @@
+<section class="article-details" *ngIf="article">
+    <h1>{{ article.title }}</h1>
+    <p style="white-space: pre-line;">{{ article.content }}</p>
+  </section>
+  
+  <section *ngIf="!article">
+    <h2>Article not found</h2>
+    <p>The article you're looking for doesn't exist.</p>
+  </section>
+  

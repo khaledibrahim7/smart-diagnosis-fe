@@ -21,6 +21,7 @@ import { AuthGuard } from './auth.guard';
 import { LucideAngularModule } from 'lucide-angular';
 import { Eye, EyeOff } from 'lucide';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 
 const icons = {
   Eye,
@@ -35,6 +36,10 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'contact', component: ContactComponent },
+  {
+    path: 'articles/:slug',
+    component: ArticleDetailsComponent
+  },
   { path: 'feedback' , component: FeedbackComponent},
 
   { path: 'verify-reset-code', component: VerifyResetCodeComponent },
@@ -60,7 +65,9 @@ const routes: Routes = [
   {
     path: 'feedback',
     loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
-  }  
+  },
+ 
+  
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -74,7 +81,7 @@ export const appConfig: ApplicationConfig = {
       MatSnackBarModule,
       LucideAngularModule
     ),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },  
     AuthService,
     SettingsService,
     AuthGuard

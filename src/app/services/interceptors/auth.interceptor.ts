@@ -15,6 +15,8 @@ export class AuthInterceptor implements HttpInterceptor {
       });
       return next.handle(clonedRequest);
     }
+    console.log('JWT Token:', token);
+
 
     return next.handle(req);
   }
