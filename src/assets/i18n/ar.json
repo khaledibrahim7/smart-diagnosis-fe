@@ -1,0 +1,27 @@
+{
+    "SETTINGS": {
+      "ACCOUNT_SETTINGS": "إعدادات الحساب",
+      "ACCOUNT_INFORMATION": "معلومات الحساب",
+      "FIRST_NAME": "الاسم الأول",
+      "LAST_NAME": "اسم العائلة",
+      "EMAIL": "البريد الإلكتروني",
+      "PHONE_NUMBER": "رقم الهاتف",
+      "AGE": "العمر",
+      "GENDER": "الجنس",
+      "MALE": "ذكر",
+      "FEMALE": "أنثى",
+      "LANGUAGE": "اللغة",
+      "ENGLISH": "الإنجليزية",
+      "ARABIC": "العربية",
+      "ENABLE_DARK_MODE": "تفعيل الوضع الليلي",
+      "RATE_SERVICE": "تقييم الخدمة",
+      "CHANGE_PASSWORD": "تغيير كلمة المرور",
+      "NEW_PASSWORD": "كلمة المرور الجديدة",
+      "CONFIRM_NEW_PASSWORD": "تأكيد كلمة المرور الجديدة",
+      "SAVE_CHANGES": "حفظ التغييرات",
+      "SAVING": "جارٍ الحفظ...",
+      "DELETE_ACCOUNT": "حذف الحساب",
+      "DELETING": "جارٍ الحذف..."
+    }
+  }
+  

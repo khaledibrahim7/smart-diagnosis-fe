@@ -32,14 +32,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Only add event listener in browser environment
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('click', this.closeDropdownOnClickOutside.bind(this));
+      this.checkTokenExpiration();  
     }
   }
 
   ngOnDestroy() {
-    // Clean up event listener when component is destroyed
     if (isPlatformBrowser(this.platformId)) {
       document.removeEventListener('click', this.closeDropdownOnClickOutside.bind(this));
     }
@@ -60,6 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
   logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiration'); 
     }
     this.updateLoginState();
     this.dropdownOpen = false;
@@ -73,5 +73,12 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isLoggedIn = !!localStorage.getItem('token');
     }
     this.showLogout = this.isLoggedIn;
+  }
+
+  checkTokenExpiration() {
+    const expirationTime = localStorage.getItem('tokenExpiration');
+    if (expirationTime && Date.now() > parseInt(expirationTime, 10)) {
+      this.logout(); 
+    }
   }
 }

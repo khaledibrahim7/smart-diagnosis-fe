@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { SettingsService } from '../../services/settings.service';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,TranslateModule],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
@@ -16,12 +17,30 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   patientId: number | null = null;
   isLoading = false;
 
-  constructor(private settingsService: SettingsService, private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private settingsService: SettingsService, 
+    private fb: FormBuilder, 
+    private router: Router,
+    private translate: TranslateService  
+  ) {}
+
+  updateDirectionBasedOnLanguage(): void {
+    const lang = this.settingsForm.get('language')?.value || 'ar';
+
+    if (lang === 'ar') {
+      document.documentElement.setAttribute('lang', 'ar');
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('lang', 'en');
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+  }
 
   ngOnInit(): void {
     this.initForm();
     this.getPatientId();
     this.applyStoredDarkMode();
+    this.updateDirectionBasedOnLanguage();
   }
 
   ngAfterViewInit(): void {
@@ -30,6 +49,9 @@ export class SettingsComponent implements OnInit, AfterViewInit {
         document.body.classList.toggle('dark-mode', isDark);
         localStorage.setItem('darkMode', isDark.toString());
       }
+    });
+    this.settingsForm.get('language')?.valueChanges.subscribe((lang) => {
+      this.updateDirectionBasedOnLanguage();
     });
   }
 
@@ -111,12 +133,16 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     this.settingsService.updateSettings(this.patientId, payload).subscribe({
       next: () => {
         this.isLoading = false;
-        alert('✅ تم تحديث الإعدادات بنجاح!');
+        this.translate.get('SETTINGS.UPDATE_SUCCESS').subscribe((res: string) => {
+          alert(res);  
+        });
       },
       error: (err) => {
         this.isLoading = false;
         console.error('❌ Error updating settings:', err);
-        alert('❌ فشل التحديث. حاول مرة أخرى.');
+        this.translate.get('SETTINGS.UPDATE_FAILURE').subscribe((res: string) => {
+          alert(res);  
+        });
       }
     });
   }
@@ -128,20 +154,24 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     this.settingsService.deleteAccount(this.patientId).subscribe({
       next: () => {
         this.isLoading = false;
-        alert('✅ تم حذف الحساب بنجاح.');
+        this.translate.get('SETTINGS.DELETE_ACCOUNT_SUCCESS').subscribe((res: string) => {
+          alert(res);  
+        });
 
         localStorage.clear();
         this.settingsForm.reset();
-
         this.router.navigate(['/']);
       },
       error: (err) => {
         this.isLoading = false;
         console.error('❌ Error deleting account:', err);
-        alert('❌ فشل حذف الحساب. الرجاء المحاولة مرة أخرى.');
+        this.translate.get('SETTINGS.DELETE_ACCOUNT_FAILURE').subscribe((res: string) => {
+          alert(res);  
+        });
       }
     });
   }
+
   goToFeedback() {
     this.router.navigate(['/feedback']);
   }

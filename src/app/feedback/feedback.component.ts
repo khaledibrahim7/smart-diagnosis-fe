@@ -46,37 +46,53 @@ export class FeedbackComponent {
 
   submitFeedback() {
     if (this.feedbackForm.invalid) return;
-
+  
     this.isSubmitting = true;
-
+  
     const emailFromForm = this.feedbackForm.value.email;
     const emailFromToken = this.getEmailFromToken();
-
+  
     const formData = {
       type: this.feedbackForm.value.feedbackType,
       description: `⭐️ التقييم: ${this.feedbackForm.value.rating} نجوم\n\n${this.feedbackForm.value.feedbackText}`,
       patientEmail: emailFromForm?.trim() || emailFromToken || '', 
     };
-
+  
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
+  
     this.http.post('http://localhost:2020/api/feedback', formData, { headers, responseType: 'text' }).subscribe({
       next: (response: string) => {
-        this.successMessage = response; 
+        this.successMessage = response;
         this.errorMessage = '';
-        this.feedbackForm.reset();
-        this.snackBar.open('✅ تم الإرسال بنجاح', 'إغلاق', { duration: 3000 });
+        this.snackBar.open('✅ تم الإرسال بنجاح', 'إغلاق', { duration: 1000 });
+  
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 2000);
       },
       error: (err) => {
         console.error('Error submitting feedback:', err);
         this.errorMessage = 'حدث خطأ أثناء إرسال الشكوى. حاول مجددًا.';
         this.successMessage = '';
-        this.snackBar.open('❌ فشل الإرسال', 'إغلاق', { duration: 3000 });
+        this.snackBar.open('❌ فشل الإرسال', 'إغلاق', { duration: 1000 });
+  
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 2000);
       },
       complete: () => {
         this.isSubmitting = false;
+        this.feedbackForm.reset();
+        const firstInput = document.querySelector('select, input, textarea') as HTMLElement;
+        if (firstInput) {
+          setTimeout(() => {
+            firstInput.focus();
+          }, 100);
+        }
       }
     });
   }
+  
+  
 }

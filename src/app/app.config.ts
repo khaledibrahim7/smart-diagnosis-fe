@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, Routes, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -22,11 +22,17 @@ import { LucideAngularModule } from 'lucide-angular';
 import { Eye, EyeOff } from 'lucide';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 const icons = {
   Eye,
   EyeOff
 };
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,15 +46,13 @@ const routes: Routes = [
     path: 'articles/:slug',
     component: ArticleDetailsComponent
   },
-  { path: 'feedback' , component: FeedbackComponent},
-
+  { path: 'feedback', component: FeedbackComponent },
   { path: 'verify-reset-code', component: VerifyResetCodeComponent },
   {
     path: 'emergency-help',
-    loadComponent: () => 
+    loadComponent: () =>
       import('./pages/emergency-help/emergency-help.component').then(m => m.EmergencyHelpComponent)
   },
-
   {
     path: 'medical-tips',
     loadComponent: () =>
@@ -66,8 +70,6 @@ const routes: Routes = [
     path: 'feedback',
     loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
   },
- 
-  
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -79,11 +81,19 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
       ReactiveFormsModule,
       MatSnackBarModule,
-      LucideAngularModule
+      LucideAngularModule,
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      })
     ),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },  
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
     SettingsService,
-    AuthGuard
+    AuthGuard,
+    TranslateService
   ]
 };

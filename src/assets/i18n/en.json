@@ -1,0 +1,27 @@
+{
+    "SETTINGS": {
+      "ACCOUNT_SETTINGS": "Account Settings",
+      "ACCOUNT_INFORMATION": "Account Information",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "PHONE_NUMBER": "Phone Number",
+      "AGE": "Age",
+      "GENDER": "Gender",
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "LANGUAGE": "Language",
+      "ENGLISH": "English",
+      "ARABIC": "Arabic",
+      "ENABLE_DARK_MODE": "Enable Dark Mode",
+      "RATE_SERVICE": "Rate the Service",
+      "CHANGE_PASSWORD": "Change Password",
+      "NEW_PASSWORD": "New Password",
+      "CONFIRM_NEW_PASSWORD": "Confirm New Password",
+      "SAVE_CHANGES": "Save Changes",
+      "SAVING": "Saving...",
+      "DELETE_ACCOUNT": "Delete Account",
+      "DELETING": "Deleting..."
+    }
+  }
+  

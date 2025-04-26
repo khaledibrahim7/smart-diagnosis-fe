@@ -1,66 +1,66 @@
 <div class="settings-container">
-  <h2>Account Settings</h2>
+  <h2>{{ 'ACCOUNT_SETTINGS' | translate }}</h2>
 
   <form [formGroup]="settingsForm">
     <div class="section">
-      <h3>Account Information</h3>
+      <h3>{{ 'ACCOUNT_INFORMATION' | translate }}</h3>
 
-      <label>First Name:</label>
+      <label>{{ 'FIRST_NAME' | translate }}:</label>
       <input type="text" formControlName="firstName" />
 
-      <label>Last Name:</label>
+      <label>{{ 'LAST_NAME' | translate }}:</label>
       <input type="text" formControlName="lastName" />
 
-      <label>Email:</label>
+      <label>{{ 'EMAIL' | translate }}:</label>
       <input type="email" [value]="settingsForm.get('email')?.value" disabled />
 
-      <label>Phone Number:</label>
+      <label>{{ 'PHONE_NUMBER' | translate }}:</label>
       <input type="text" formControlName="phoneNumber" />
 
-      <label>Age:</label>
+      <label>{{ 'AGE' | translate }}:</label>
       <input type="number" formControlName="age" />
 
-      <label>Gender:</label>
+      <label>{{ 'GENDER' | translate }}:</label>
       <select formControlName="gender">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+        <option value="male">{{ 'MALE' | translate }}</option>
+        <option value="female">{{ 'FEMALE' | translate }}</option>
       </select>
 
-      <label>Language:</label>
+      <label>{{ 'LANGUAGE' | translate }}:</label>
       <select formControlName="language">
-        <option value="en">English</option>
-        <option value="ar">Arabic</option>
+        <option value="en">{{ 'ENGLISH' | translate }}</option>
+        <option value="ar">{{ 'ARABIC' | translate }}</option>
       </select>
-    
+
       <label class="checkbox">
         <input type="checkbox" formControlName="darkMode" />
-        <span>Enable Dark Mode</span>
+        <span>{{ 'ENABLE_DARK_MODE' | translate }}</span>
       </label>
     </div>
 
     <div class="feedback-button-container">
       <button (click)="goToFeedback()" class="feedback-button">
-        Rate the Service
+        {{ 'RATE_THE_SERVICE' | translate }}
       </button>
     </div>
-    
-    <div class="section">
-      <h3>Change Password</h3>
 
-      <label>New Password:</label>
+    <div class="section">
+      <h3>{{ 'CHANGE_PASSWORD' | translate }}</h3>
+
+      <label>{{ 'NEW_PASSWORD' | translate }}:</label>
       <input type="password" formControlName="newPassword" />
 
-      <label>Confirm New Password:</label>
+      <label>{{ 'CONFIRM_NEW_PASSWORD' | translate }}:</label>
       <input type="password" formControlName="confirmNewPassword" />
     </div>
 
     <div class="section actions">
       <button type="button" class="save" (click)="saveSettings()" [disabled]="isLoading">
-        {{ isLoading ? 'Saving...' : 'Save Changes' }}
+        {{ isLoading ? ('SAVING' | translate) : ('SAVE_CHANGES' | translate) }}
       </button>
 
       <button type="button" class="delete" (click)="deleteAccount()" [disabled]="isLoading">
-        {{ isLoading ? 'Deleting...' : 'Delete Account' }}
+        {{ isLoading ? ('DELETING' | translate) : ('DELETE_ACCOUNT' | translate) }}
       </button>
     </div>
   </form>
