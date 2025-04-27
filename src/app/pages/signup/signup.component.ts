@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-signup',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgxIntlTelInputModule, ReactiveFormsModule, CommonModule,RouterModule],
+  imports: [NgxIntlTelInputModule, ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
@@ -76,12 +76,11 @@ export class SignupComponent {
   get phoneNumberControl() {
     return this.signupForm.get('phoneNumber');
   }
-  
+
   isPhoneNumberValid(): boolean {
     const phoneControl = this.phoneNumberControl;
     return phoneControl?.valid ?? false;
   }
-  
 
   clearErrorMessages(): void {
     this.errorMessage = null;
@@ -98,14 +97,14 @@ export class SignupComponent {
       });
       return;
     }
-  
+
     this.isSubmitting = true;
     this.signupForm.disable();
-  
+
     const formData = this.signupForm.value;
-  
+
     formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.internationalNumber : '';
-  
+
     this.authService.signUp(formData).subscribe({
       next: (response) => {
         console.log('✅ تم التسجيل بنجاح!', response);
@@ -113,14 +112,16 @@ export class SignupComponent {
           localStorage.setItem('token', response.token);
           localStorage.setItem('patientId', response.id.toString());
         }
-  
+
         this.snackBar.open('تم التسجيل بنجاح!', 'إغلاق', {
           duration: 3000,
           panelClass: ['success-snackbar'],
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
-  
+
+        this.speakGreeting();
+
         this.router.navigate(['/diagnosis']);
       },
       error: (err) => {
@@ -134,12 +135,24 @@ export class SignupComponent {
       },
       complete: () => {
         this.isSubmitting = false;
-        this.signupForm.enable(); 
+        this.signupForm.enable();
       },
     });
   }
+
+  speakGreeting(): void {
+    const message = "Welcome to our platform! أهلاً بك في منصتنا!";
+
+    const utteranceEnglish = new SpeechSynthesisUtterance("Welcome to our platform!");
+    utteranceEnglish.lang = 'en-US';
+    speechSynthesis.speak(utteranceEnglish);
+
+    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك في منصتنا!");
+    utteranceArabic.lang = 'ar-EG';
+    speechSynthesis.speak(utteranceArabic);
+  }
+
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
-  
 }

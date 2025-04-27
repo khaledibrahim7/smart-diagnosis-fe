@@ -48,6 +48,8 @@ export class LoginComponent {
           this.successMessage = 'تم تسجيل الدخول بنجاح!';
           this.errorMessage = null;
 
+          this.speakGreeting();
+
           this.router.navigate(['/diagnosis']);
         } else {
           console.warn("⚠️ Response missing token or ID:", response);
@@ -61,6 +63,18 @@ export class LoginComponent {
         this.successMessage = null;
       }
     });
+  }
+
+  speakGreeting(): void {
+    const message = "Welcome back to our platform! أهلاً بك تاني في منصتنا!";
+
+    const utteranceEnglish = new SpeechSynthesisUtterance("Welcome back to our platform!");
+    utteranceEnglish.lang = 'en-US';
+    speechSynthesis.speak(utteranceEnglish);
+
+    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك تاني في منصتنا!");
+    utteranceArabic.lang = 'ar-EG';
+    speechSynthesis.speak(utteranceArabic);
   }
 
   navigateToSignUp() {

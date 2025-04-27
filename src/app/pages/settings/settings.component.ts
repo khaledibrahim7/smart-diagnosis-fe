@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { SettingsService } from '../../services/settings.service';
 import { Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
@@ -20,8 +19,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   constructor(
     private settingsService: SettingsService, 
     private fb: FormBuilder, 
-    private router: Router,
-    private translate: TranslateService  
+    private router: Router
   ) {}
 
   updateDirectionBasedOnLanguage(): void {
@@ -133,31 +131,24 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     this.settingsService.updateSettings(this.patientId, payload).subscribe({
       next: () => {
         this.isLoading = false;
-        this.translate.get('SETTINGS.UPDATE_SUCCESS').subscribe((res: string) => {
-          alert(res);  
-        });
+        alert('Settings updated successfully');
       },
       error: (err) => {
         this.isLoading = false;
         console.error('❌ Error updating settings:', err);
-        this.translate.get('SETTINGS.UPDATE_FAILURE').subscribe((res: string) => {
-          alert(res);  
-        });
+        alert('Failed to update settings');
       }
     });
   }
 
   deleteAccount(): void {
-    if (!this.patientId || !confirm('⚠️ هل أنت متأكد أنك تريد حذف حسابك؟')) return;
+    if (!this.patientId || !confirm('⚠️ Are you sure you want to delete your account?')) return;
 
     this.isLoading = true;
     this.settingsService.deleteAccount(this.patientId).subscribe({
       next: () => {
         this.isLoading = false;
-        this.translate.get('SETTINGS.DELETE_ACCOUNT_SUCCESS').subscribe((res: string) => {
-          alert(res);  
-        });
-
+        alert('Account deleted successfully');
         localStorage.clear();
         this.settingsForm.reset();
         this.router.navigate(['/']);
@@ -165,9 +156,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
       error: (err) => {
         this.isLoading = false;
         console.error('❌ Error deleting account:', err);
-        this.translate.get('SETTINGS.DELETE_ACCOUNT_FAILURE').subscribe((res: string) => {
-          alert(res);  
-        });
+        alert('Failed to delete account');
       }
     });
   }
