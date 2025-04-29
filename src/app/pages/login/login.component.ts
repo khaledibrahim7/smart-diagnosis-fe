@@ -68,13 +68,15 @@ export class LoginComponent {
   speakGreeting(): void {
     const message = "Welcome back to our platform! أهلاً بك تاني في منصتنا!";
 
+    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك تاني في منصتنا!");
+    utteranceArabic.lang = 'ar-EG';
+    speechSynthesis.speak(utteranceArabic);
+
     const utteranceEnglish = new SpeechSynthesisUtterance("Welcome back to our platform!");
     utteranceEnglish.lang = 'en-US';
     speechSynthesis.speak(utteranceEnglish);
 
-    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك تاني في منصتنا!");
-    utteranceArabic.lang = 'ar-EG';
-    speechSynthesis.speak(utteranceArabic);
+    
   }
 
   navigateToSignUp() {

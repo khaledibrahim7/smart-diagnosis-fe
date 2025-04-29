@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule]
 })
 export class DiagnosisComponent implements OnInit {
+  openedMenuIndex: number | null = null;
   messages: { text: string, isUser: boolean }[] = [];
   chatHistory: { id: number, title: string, messages: { text: string, isUser: boolean }[] }[] = [];
   activeChatId: number | null = null;
@@ -38,6 +39,7 @@ export class DiagnosisComponent implements OnInit {
       this.updateLoginState();
     }
     this.loadTheme();
+    this.getPatientSessions(); 
   }
 
   private setupRecognition() {
@@ -81,13 +83,22 @@ export class DiagnosisComponent implements OnInit {
       this.startListening();
     }
     if (this.activeChatId === null) {
-      this.newChat();
+      this.startNewSession();  // Start a new session
     }
   }
 
   closePopup() {
     this.isPopupOpen = false;
     this.stopListening();
+  }
+
+  private saveCurrentChat() {
+    if (this.activeChatId !== null) {
+      const chat = this.chatHistory.find(c => c.id === this.activeChatId);
+      if (chat) {
+        chat.messages = [...this.messages];
+      }
+    }
   }
 
   sendMessage() {
@@ -124,8 +135,8 @@ export class DiagnosisComponent implements OnInit {
     this.isLoading = true;
     this.addTypingIndicator();
 
-    const localModelApi = this.http.post('http://127.0.0.1:9000/chat', { message }).toPromise();
-    const geminiApi = this.http.post('http://127.0.0.1:5000/chat', { message }).toPromise();
+    const localModelApi = this.http.post('http://localhost:9000/chat', { message }).toPromise();
+    const geminiApi = this.http.post('http://localhost:5000/chat', { message }).toPromise();
 
     Promise.all([localModelApi, geminiApi])
       .then(([localResponse, geminiResponse]: [any, any]) => {
@@ -136,6 +147,7 @@ export class DiagnosisComponent implements OnInit {
 
         const unwantedKeywords = [
           "مرحباً",
+          "أهلاً بيك! أنا هنا علشان أساعدك تطمن على صحتك، قولي حاسس بإيه؟",
           "  أهلاً وسهلاً! قولي بقى، عاوز تطمن على صحتك؟",
           "منورنا والله! قولي مالك كده شكلك مش رايق؟",
           "منورنا والله! قولي مالك كده وشك مش رايق؟",
@@ -214,68 +226,102 @@ export class DiagnosisComponent implements OnInit {
     }
   }
 
-  newChat() {
+  toggleOptionsMenu(chatId: number) {
+    if (this.openedMenuIndex === chatId) {
+      this.openedMenuIndex = null;
+    } else {
+      this.openedMenuIndex = chatId;
+    }
+  }
+
+  loadChat(chatId: number) {
+    const chat = this.chatHistory.find(c => c.id === chatId);
+    if (chat) {
+      this.activeChatId = chatId;
+      this.messages = [...chat.messages]; 
+      console.log("✅ Chat loaded:", chat);
+    }
+  }
+
+  
+
+  private newChat() {
     const newChat = {
       id: this.nextChatId++,
       title: `${this.userLang === 'ar' ? 'محادثة' : 'Chat'} #${this.nextChatId - 1}`,
       messages: []
     };
-    this.chatHistory.unshift(newChat);
+    this.chatHistory.push(newChat);
     this.activeChatId = newChat.id;
     this.messages = [];
-  }
-
-  selectChat(chatId: number) {
-    const selectedChat = this.chatHistory.find(chat => chat.id === chatId);
-    if (selectedChat) {
-      this.activeChatId = selectedChat.id;
-      this.messages = [...selectedChat.messages];
-    }
-  }
-
-  private saveCurrentChat() {
-    const chat = this.chatHistory.find(c => c.id === this.activeChatId);
-    if (chat) {
-      chat.messages = [...this.messages];
-    }
   }
 
   startNewChat() {
-    const newChat = {
-      id: this.nextChatId++,
-      title: this.userLang === 'ar' ? `محادثة #${this.nextChatId - 1}` : `Chat #${this.nextChatId - 1}`,
-      messages: []
-    };
-    this.chatHistory.unshift(newChat);
-    this.activeChatId = newChat.id;
-    this.messages = [];
+    this.newChat(); 
   }
 
-  loadChat(i: number) {
-    const selectedChat = this.chatHistory[i];
-    if (selectedChat) {
-      this.activeChatId = selectedChat.id;
-      this.messages = [...selectedChat.messages];
-    }
+  startNewSession() {
+    this.http.post('http://localhost:2020/api/chat/start', {}, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    }).subscribe(response => {
+      console.log("✅ New chat session started");
+      this.newChat();
+    }, error => {
+      console.error("❌ Error starting chat session:", error);
+    });
   }
 
-  openedMenuIndex: number | null = null;
+  getPatientSessions() {
+    this.http.get('http://localhost:2020/api/chat/sessions', {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    }).subscribe((response: any) => {
+      console.log("✅ Patient sessions loaded", response);
+      this.chatHistory = response;
+    }, error => {
+      console.error("❌ Error fetching sessions:", error);
+    });
+  }
 
-toggleOptionsMenu(index: number) {
-  this.openedMenuIndex = this.openedMenuIndex === index ? null : index;
-}
+  saveBotResponse(sessionId: number, responseMessage: string) {
+    this.http.post(`http://localhost:2020/api/chat/save-bot-response/${sessionId}`, responseMessage, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    }).subscribe(response => {
+      console.log("✅ Bot response saved");
+    }, error => {
+      console.error("❌ Error saving bot response:", error);
+    });
+  }
 
-deleteChat(chatId: number) {
-  this.chatHistory = this.chatHistory.filter(chat => chat.id !== chatId);
-  this.openedMenuIndex = null;
-}
+  deleteChat(chatId: number) {
+    // الأول نحذف من الباك إند
+    this.http.delete(`http://localhost:2020/api/chat/${chatId}`, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    }).subscribe({
+      next: (response: any) => {
+        console.log("✅ Chat session ended successfully, response:", response);
+  
+        // لو الحذف نجح، نحذف من الفرونت إند
+        const chatIndex = this.chatHistory.findIndex(chat => chat.id === chatId);
+        if (chatIndex !== -1) {
+          this.chatHistory.splice(chatIndex, 1);
+          if (this.activeChatId === chatId) {
+            this.activeChatId = null;
+          }
+          console.log("✅ Chat deleted from frontend");
+        }
+      },
+      error: (error) => {
+        console.error("❌ Error ending chat session:", error);
+      }
+    });
+  }
+  
 
-shareChat(chat: any) {
-  const chatText = `Chat Title: ${chat.title}`;
-  navigator.share
-    ? navigator.share({ title: chat.title, text: chatText })
-    : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
-  this.openedMenuIndex = null;
-}
-
+  shareChat(chat: any) {
+    const chatText = `Chat Title: ${chat.title}`;
+    navigator.share
+      ? navigator.share({ title: chat.title, text: chatText })
+      : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
+    this.openedMenuIndex = null;
+  }
 }

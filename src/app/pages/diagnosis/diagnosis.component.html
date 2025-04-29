@@ -9,7 +9,7 @@
   <h1>👨‍⚕️ Smart Diagnosis</h1>
   <p>{{ userLang === 'ar' ? 'احصل على تشخيص طبي سريع بناءً على أعراضك.' : 'Get a quick medical diagnosis based on your symptoms.' }}</p>
   <button class="start-btn" (click)="openPopup(false)">
-   {{ userLang === 'ar' ? 'ابدأ التشخيص' : 'Start Diagnosis' }}
+    {{ userLang === 'ar' ? 'ابدأ التشخيص' : 'Start Diagnosis' }}
   </button>
 </div>
 
@@ -27,9 +27,7 @@
     <div class="chat-body">
       <div class="chat-sidebar">
         <h4>{{ userLang === 'ar' ? 'المحادثات' : 'Chats' }}</h4>
-        <button class="new-chat-btn" (click)="startNewChat()">
-          ➕ 
-        </button>
+        <button class="new-chat-btn" (click)="startNewChat()">➕ </button>
 
         <div class="chat-history">
           <div *ngFor="let chat of chatHistory; let i = index" class="chat-history-item">
@@ -50,7 +48,9 @@
 
       <div class="chat-main">
         <div *ngFor="let message of messages" [ngClass]="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
-          {{ message.text }}
+          <div class="message-content">
+            <span>{{ message.text }}</span>
+          </div>
         </div>
 
         <div *ngIf="isTyping" class="typing-indicator">
@@ -72,7 +72,6 @@
       <button class="send-btn" (click)="sendMessage()">
         {{ userLang === 'ar' ? 'إرسال' : 'Send' }}
       </button>
-      
     </div>
   </div>
 </div>
