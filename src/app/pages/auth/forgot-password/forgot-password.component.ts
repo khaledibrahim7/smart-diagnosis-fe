@@ -32,7 +32,6 @@ export class ForgotPasswordComponent {
       next: (res) => {
         this.message = res.message;
         setTimeout(() => {
-          // ✅ توجيه المستخدم إلى صفحة verify-reset-code
           this.router.navigate(['/verify-reset-code'], { queryParams: { email } });
         }, 2000);
       },

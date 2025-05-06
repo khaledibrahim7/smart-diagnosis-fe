@@ -97,14 +97,25 @@ export class SignupComponent {
       });
       return;
     }
-
+  
+    const blockedUntil = localStorage.getItem('signupBlockedUntil');
+    if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
+      const remaining = Math.ceil((parseInt(blockedUntil) - new Date().getTime()) / 60000);
+      this.snackBar.open(`لقد تجاوزت عدد المحاولات. حاول مرة أخرى بعد ${remaining} دقيقة.`, 'إغلاق', {
+        duration: 4000,
+        panelClass: ['error-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+  
     this.isSubmitting = true;
     this.signupForm.disable();
-
+  
     const formData = this.signupForm.value;
-
     formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.internationalNumber : '';
-
+  
     this.authService.signUp(formData).subscribe({
       next: (response) => {
         console.log('✅ تم التسجيل بنجاح!', response);
@@ -112,26 +123,50 @@ export class SignupComponent {
           localStorage.setItem('token', response.token);
           localStorage.setItem('patientId', response.id.toString());
         }
-
+  
         this.snackBar.open('تم التسجيل بنجاح!', 'إغلاق', {
           duration: 3000,
           panelClass: ['success-snackbar'],
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
-
+  
+        localStorage.removeItem('signupAttempts'); 
+        localStorage.removeItem('signupBlockedUntil');
+  
         this.speakGreeting();
-
         this.router.navigate(['/diagnosis']);
       },
       error: (err) => {
         console.error('❌ فشل في التسجيل', err.error?.message || err);
-        this.snackBar.open('فشل التسجيل، حاول مرة أخرى.', 'إغلاق', {
-          duration: 3000,
-          panelClass: ['error-snackbar'],
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
+  
+        let attempts = parseInt(localStorage.getItem('signupAttempts') || '0', 10);
+        attempts++;
+        localStorage.setItem('signupAttempts', attempts.toString());
+  
+        if (attempts >= 3) {
+          const blockTime = new Date().getTime() + 30 * 60 * 1000; 
+          localStorage.setItem('signupBlockedUntil', blockTime.toString());
+          localStorage.removeItem('signupAttempts');
+  
+          this.snackBar.open('تم حظرك مؤقتًا بعد 3 محاولات فاشلة. حاول بعد 30 دقيقة.', 'إغلاق', {
+            duration: 4000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+        } else {
+          this.snackBar.open('فشل التسجيل، حاول مرة أخرى.', 'إغلاق', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
       },
       complete: () => {
         this.isSubmitting = false;
@@ -139,9 +174,10 @@ export class SignupComponent {
       },
     });
   }
+  
 
   speakGreeting(): void {
-    const message = "Welcome to our platform! أهلاً بك في منصتنا!";
+    const message = " أهلاً بك في منصتنا!  Welcome to our platform!";
 
     const utteranceEnglish = new SpeechSynthesisUtterance("Welcome to our platform!");
     utteranceEnglish.lang = 'en-US';

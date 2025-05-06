@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } 
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
   errorMessage: string | null = null;  
   successMessage: string | null = null; 
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router,  private snackBar: MatSnackBar) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -30,41 +31,88 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.invalid) {
-      console.error("❌ Please fill in all required fields correctly.");
+      this.snackBar.open('❌ يرجى ملء جميع الحقول بشكل صحيح.', 'إغلاق', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
       return;
     }
-
+  
+    const blockedUntil = localStorage.getItem('loginBlockedUntil');
+    if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
+      const remaining = Math.ceil((parseInt(blockedUntil) - new Date().getTime()) / 60000);
+      this.snackBar.open(`🚫 لقد تجاوزت عدد المحاولات. حاول مرة أخرى بعد ${remaining} دقيقة.`, 'إغلاق', {
+        duration: 4000,
+        panelClass: ['error-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+  
     const { email, password } = this.loginForm.value;
-
+  
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        console.log("✅ Login successful!", response);
-
         if (response.token && response.id) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('patientId', response.id);
-          console.log("🔵 Token and Patient ID stored:", response.token, response.id);
-
-          this.successMessage = 'تم تسجيل الدخول بنجاح!';
-          this.errorMessage = null;
-
+  
+          localStorage.removeItem('loginAttempts');
+          localStorage.removeItem('loginBlockedUntil');
+  
+          this.snackBar.open('✅ تم تسجيل الدخول بنجاح!', 'إغلاق', {
+            duration: 3000,
+            panelClass: ['success-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
           this.speakGreeting();
-
           this.router.navigate(['/diagnosis']);
         } else {
-          console.warn("⚠️ Response missing token or ID:", response);
-          this.errorMessage = 'حدث خطأ أثناء تسجيل الدخول، يرجى المحاولة مرة أخرى.';
-          this.successMessage = null;
+          this.snackBar.open('⚠️ حدث خطأ أثناء تسجيل الدخول، يرجى المحاولة مرة أخرى.', 'إغلاق', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
         }
       },
       error: (error) => {
-        console.error("❌ Login failed!", error);
-        this.errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.';
-        this.successMessage = null;
+        let attempts = parseInt(localStorage.getItem('loginAttempts') || '0', 10);
+        attempts++;
+        localStorage.setItem('loginAttempts', attempts.toString());
+  
+        if (attempts >= 3) {
+          const blockTime = new Date().getTime() + 30 * 60 * 1000; // حظر 30 دقيقة
+          localStorage.setItem('loginBlockedUntil', blockTime.toString());
+          localStorage.removeItem('loginAttempts');
+  
+          this.snackBar.open('🚫 تم حظرك مؤقتًا بعد 3 محاولات فاشلة. حاول بعد 30 دقيقة.', 'إغلاق', {
+            duration: 4000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+        } else {
+          this.snackBar.open('❌ البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.', 'إغلاق', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+        }
+  
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
       }
     });
   }
-
+  
   speakGreeting(): void {
     const message = "Welcome back to our platform! أهلاً بك تاني في منصتنا!";
 

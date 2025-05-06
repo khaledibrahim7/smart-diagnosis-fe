@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, Routes, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { provideHttpClient, HTTP_INTERCEPTORS, HttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -35,6 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 const routes: Routes = [
+  { path: 'chat/:id', component: DiagnosisComponent },
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
@@ -75,8 +76,21 @@ const routes: Routes = [
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
-    provideAnimations(),
+    provideHttpClient(withInterceptors([
+      (req, next) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const cloned = req.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          return next(cloned);
+        }
+        return next(req);
+      }
+    ])),
+        provideAnimations(),
     importProvidersFrom(
       FormsModule,
       ReactiveFormsModule,
@@ -90,7 +104,6 @@ export const appConfig: ApplicationConfig = {
         }
       })
     ),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthService,
     SettingsService,
     AuthGuard,

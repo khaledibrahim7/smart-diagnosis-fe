@@ -15,7 +15,7 @@ export class ResetPasswordComponent {
   message: string = '';
   token: string = '';
   email: string = '';
-  isCodeVerified: boolean = true; // نعرض الفورم مباشرة
+  isCodeVerified: boolean = true; 
 
   constructor(
     private fb: FormBuilder, 
@@ -23,20 +23,17 @@ export class ResetPasswordComponent {
     private route: ActivatedRoute, 
     private router: Router
   ) {
-    // استلام المعاملات من الرابط
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
       this.email = params['email'];
     });
 
-    // تهيئة فورم إعادة تعيين كلمة المرور
     this.resetPasswordForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     });
   }
 
-  // تنفيذ إعادة تعيين كلمة المرور
   onResetPassword() {
     const { newPassword, confirmPassword } = this.resetPasswordForm.value;
 

@@ -143,7 +143,7 @@ body {
     justify-content: center;
     
     &::before {
-      content: "✔"; // علامة الاختيار
+      content: "✔"; 
       margin-right: 8px;
       color: $primary-blue;
       font-weight: bold;

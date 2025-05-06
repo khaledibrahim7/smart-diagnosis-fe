@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DiagnosisService } from '../../services/DiagnosisService';
 
 @Component({
   selector: 'app-diagnosis',
@@ -12,11 +13,10 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule]
 })
 export class DiagnosisComponent implements OnInit {
-  openedMenuIndex: number | null = null;
-  messages: { text: string, isUser: boolean }[] = [];
-  chatHistory: { id: number, title: string, messages: { text: string, isUser: boolean }[] }[] = [];
   activeChatId: number | null = null;
-
+  messages: { text: string, isUser: boolean }[] = [];
+  openedMenuIndex: number | null = null;
+  chatHistory: { chatId: number, title: string, messages: { text: string, isUser: boolean }[] }[] = [];
   isPopupOpen = false;
   userMessage = '';
   recognition: any;
@@ -25,9 +25,9 @@ export class DiagnosisComponent implements OnInit {
   isDarkMode = false;
   isLoading = false;
   isTyping = false;
-  nextChatId = 1;
 
-  constructor(private router: Router, private http: HttpClient) {
+
+  constructor(private diagnosisService: DiagnosisService, private router: Router, private http: HttpClient) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     this.recognition = new SpeechRecognition();
     this.setLanguage('en');
@@ -37,9 +37,9 @@ export class DiagnosisComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser()) {
       this.updateLoginState();
+      this.loadChatHistory(Number(localStorage.getItem('patientId')));
     }
     this.loadTheme();
-    this.getPatientSessions(); 
   }
 
   private setupRecognition() {
@@ -67,9 +67,7 @@ export class DiagnosisComponent implements OnInit {
 
   private updateLoginState() {
     const token = localStorage.getItem('token');
-    if (!token) {
-      this.router.navigate(['/login']);
-    }
+    if (!token) this.router.navigate(['/login']);
   }
 
   setLanguage(lang: string) {
@@ -77,14 +75,8 @@ export class DiagnosisComponent implements OnInit {
     this.recognition.lang = lang === 'ar' ? 'ar-SA' : 'en-US';
   }
 
-  openPopup(startMic: boolean = false) {
+  openPopup() {
     this.isPopupOpen = true;
-    if (startMic) {
-      this.startListening();
-    }
-    if (this.activeChatId === null) {
-      this.startNewSession();  // Start a new session
-    }
   }
 
   closePopup() {
@@ -94,18 +86,10 @@ export class DiagnosisComponent implements OnInit {
 
   private saveCurrentChat() {
     if (this.activeChatId !== null) {
-      const chat = this.chatHistory.find(c => c.id === this.activeChatId);
+      const chat = this.chatHistory.find(c => c.chatId === this.activeChatId);
       if (chat) {
         chat.messages = [...this.messages];
       }
-    }
-  }
-
-  sendMessage() {
-    if (this.userMessage.trim()) {
-      this.addUserMessage(this.userMessage);
-      this.sendTextToBot(this.userMessage);
-      this.userMessage = '';
     }
   }
 
@@ -156,15 +140,19 @@ export class DiagnosisComponent implements OnInit {
 
         if (localText) {
           if (unwantedKeywords.some(keyword => localText.includes(keyword))) {
-            this.addBotMessage('👇🏼');
+            this.addBotMessage('');
           } else {
-            this.addBotMessage(localText);
-          }
-        }
+            
+                this.addBotMessage(localText);
+                this.saveBotMessageToBackend(localText); 
+              }
+            }
+                    
 
         const formattedGeminiLines = this.formatGeminiResponse(geminiText);
         formattedGeminiLines.forEach(line => {
           this.addBotMessage(line);
+            this.saveBotMessageToBackend(line);  
         });
       })
       .catch((error) => {
@@ -185,8 +173,17 @@ export class DiagnosisComponent implements OnInit {
     return lines
       .map(line => line.trim())
       .filter(line => line.length > 0)
-      .map(line => `🔹 ${line}`);
+      .map(line => ` ${line}`);
   }
+  private saveBotMessageToBackend(text: string) {
+    if (this.activeChatId !== null) {
+      this.diagnosisService.addMessage(this.activeChatId, false, text).subscribe({
+        next: () => {},
+        error: (err) => console.error('❌ خطأ في حفظ رد البوت', err)
+      });
+    }
+  }
+  
 
   toggleListening() {
     this.isListening ? this.stopListening() : this.startListening();
@@ -226,93 +223,96 @@ export class DiagnosisComponent implements OnInit {
     }
   }
 
-  toggleOptionsMenu(chatId: number) {
-    if (this.openedMenuIndex === chatId) {
-      this.openedMenuIndex = null;
-    } else {
-      this.openedMenuIndex = chatId;
-    }
-  }
-
   loadChat(chatId: number) {
-    const chat = this.chatHistory.find(c => c.id === chatId);
-    if (chat) {
-      this.activeChatId = chatId;
-      this.messages = [...chat.messages]; 
-      console.log("✅ Chat loaded:", chat);
-    }
+    this.diagnosisService.getChatMessages(chatId).subscribe({
+      next: (res) => {
+        this.activeChatId = chatId;
+        this.messages = res.data.map(msg => ({
+          text: msg.content,
+          isUser: msg.fromPatient
+        }));
+      },
+      error: (err) => console.error('Error loading chat', err)
+    });
   }
 
+  loadChatHistory(patientId: number) {
+    this.diagnosisService.getAllChats(patientId).subscribe({
+      next: (res) => {
+        this.chatHistory = res.data.map(chat => ({
+          chatId: chat.id,
+          title: chat.title,
+          messages: []
+        }));
+      },
+      error: (err) => console.error('Error loading chat history', err)
+    });
+  }
+
+  sendMessage(content?: string) {
+    const text = content || this.userMessage.trim();
+    if (!text) return;
+  
+    this.messages.push({ text, isUser: true });
+    this.userMessage = '';
+    this.isTyping = true;
+  
+    if (!this.activeChatId) {
+      this.startNewChat(text);
+      return;
+    }
+  
+    if (this.activeChatId !== null) {
+      this.diagnosisService.addMessage(this.activeChatId, true, text).subscribe({
+        next: () => {
+          this.isTyping = false;
+          this.sendTextToBot(text);  // رد البوت فقط من هنا
+        },
+        error: (err) => {
+          console.error('Error sending message', err);
+          this.isTyping = false;
+        }
+      });
+    } else {
+      console.error('❌ لا يمكن إرسال الرسالة، معرّف المحادثة غير موجود');
+    }
+  }
+  
+  
   
 
-  private newChat() {
-    const newChat = {
-      id: this.nextChatId++,
-      title: `${this.userLang === 'ar' ? 'محادثة' : 'Chat'} #${this.nextChatId - 1}`,
-      messages: []
-    };
-    this.chatHistory.push(newChat);
-    this.activeChatId = newChat.id;
-    this.messages = [];
-  }
-
-  startNewChat() {
-    this.newChat(); 
-  }
-
-  startNewSession() {
-    this.http.post('http://localhost:2020/api/chat/start', {}, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-    }).subscribe(response => {
-      console.log("✅ New chat session started");
-      this.newChat();
-    }, error => {
-      console.error("❌ Error starting chat session:", error);
-    });
-  }
-
-  getPatientSessions() {
-    this.http.get('http://localhost:2020/api/chat/sessions', {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-    }).subscribe((response: any) => {
-      console.log("✅ Patient sessions loaded", response);
-      this.chatHistory = response;
-    }, error => {
-      console.error("❌ Error fetching sessions:", error);
-    });
-  }
-
-  saveBotResponse(sessionId: number, responseMessage: string) {
-    this.http.post(`http://localhost:2020/api/chat/save-bot-response/${sessionId}`, responseMessage, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-    }).subscribe(response => {
-      console.log("✅ Bot response saved");
-    }, error => {
-      console.error("❌ Error saving bot response:", error);
+  startNewChat(initialMessage: string) {
+    const patientId = Number(localStorage.getItem('patientId'));
+    this.diagnosisService.createNewChat(patientId, 'New Chat').subscribe({
+      next: (res) => {
+        this.activeChatId = res.data.id;
+        this.chatHistory.push({
+          chatId: res.data.id,
+          title: res.data.title,
+          messages: []
+        });
+        this.sendMessage(initialMessage);
+      },
+      error: (err) => console.error('Error creating chat', err)
     });
   }
 
   deleteChat(chatId: number) {
-    // الأول نحذف من الباك إند
-    this.http.delete(`http://localhost:2020/api/chat/${chatId}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-    }).subscribe({
-      next: (response: any) => {
-        console.log("✅ Chat session ended successfully, response:", response);
+    const patientId = localStorage.getItem('patientId'); 
+    if (!patientId) {
+      console.error("❌ لم يتم العثور على معرّف المريض");
+      return;
+    }
   
-        // لو الحذف نجح، نحذف من الفرونت إند
-        const chatIndex = this.chatHistory.findIndex(chat => chat.id === chatId);
-        if (chatIndex !== -1) {
-          this.chatHistory.splice(chatIndex, 1);
-          if (this.activeChatId === chatId) {
-            this.activeChatId = null;
-          }
-          console.log("✅ Chat deleted from frontend");
+    this.diagnosisService.deleteChat(chatId, Number(patientId)).subscribe({
+      next: () => {
+        this.chatHistory = this.chatHistory.filter(chat => chat.chatId !== chatId);
+        if (this.activeChatId === chatId) {
+          this.activeChatId = null;
+          this.messages = [];
         }
       },
-      error: (error) => {
-        console.error("❌ Error ending chat session:", error);
-      }
+      error: (err) => console.error('❌ خطأ أثناء حذف المحادثة', err)
     });
   }
   
@@ -324,4 +324,8 @@ export class DiagnosisComponent implements OnInit {
       : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
     this.openedMenuIndex = null;
   }
+  toggleOptionsMenu(index: number) {
+    this.openedMenuIndex = this.openedMenuIndex === index ? null : index;
+  }
+  
 }
