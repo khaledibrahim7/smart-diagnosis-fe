@@ -266,7 +266,7 @@ export class DiagnosisComponent implements OnInit {
       this.diagnosisService.addMessage(this.activeChatId, true, text).subscribe({
         next: () => {
           this.isTyping = false;
-          this.sendTextToBot(text);  // رد البوت فقط من هنا
+          this.sendTextToBot(text); 
         },
         error: (err) => {
           console.error('Error sending message', err);

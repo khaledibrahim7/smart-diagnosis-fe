@@ -22,13 +22,11 @@
 <div class="chat-modal fullscreen" *ngIf="isPopupOpen">
   <div class="chat-modal-content">
     <div class="chat-header">
-      <h5>
-        {{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting with Smart Diagnosis...' }}
-      </h5>
+      <h5>{{ userLang === 'ar' ? 'مرحبًا، ابدأ المحادثة مع طبيبك الذكي...' : 'Welcome, start chatting with Smart Diagnosis...' }}</h5>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
-    <div class="chat-body">
+    <div class="chat-body-flex">
       <div class="chat-sidebar">
         <div class="sidebar-header">
           <button class="new-chat-btn" (click)="startNewChat('')">
@@ -39,21 +37,14 @@
 
         <div class="chat-history">
           <div *ngFor="let chat of chatHistory; let i = index" class="chat-history-item">
-            <div 
-              class="chat-title" 
-              [class.active]="chat.chatId === activeChatId" 
-              (click)="loadChat(chat.chatId)">
+            <div class="chat-title" [class.active]="chat.chatId === activeChatId" (click)="loadChat(chat.chatId)">
               {{ chat.title || (userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1))) }}
             </div>
             <div class="chat-options">
               <button class="options-btn" (click)="toggleOptionsMenu(i)">⋮</button>
               <div *ngIf="openedMenuIndex === i" class="options-menu">
-                <button (click)="shareChat(chat)">
-                  {{ userLang === 'ar' ? 'مشاركة' : 'Share' }}
-                </button>              
-                <button (click)="deleteChat(chat.chatId)">
-                  {{ userLang === 'ar' ? 'حذف' : 'Delete' }}
-                </button>
+                <button (click)="shareChat(chat)">{{ userLang === 'ar' ? 'مشاركة' : 'Share' }}</button>
+                <button (click)="deleteChat(chat.chatId)">{{ userLang === 'ar' ? 'حذف' : 'Delete' }}</button>
               </div>
             </div>
           </div>
@@ -61,44 +52,26 @@
       </div>
 
       <div class="chat-main">
-        <div class="chat-messages">
+        <div class="chat-messages" #messageContainer>
           <div *ngIf="!activeChatId" class="welcome-message">
             {{ userLang === 'ar' ? 'اضغط على "محادثة جديدة" أو اختر محادثة للبدء.' : 'Click "New Chat" or select a chat to start.' }}
           </div>
 
           <div *ngIf="activeChatId">
-            <div *ngFor="let message of messages" [ngClass]="{ 'user-message': message.isUser, 'bot-message': !message.isUser }">
-              <div class="message-content">
-                <span>{{ message.text }}</span>
+            <div *ngFor="let message of messages" class="message" [ngClass]="{ 'user': message.isUser, 'bot': !message.isUser }">
+              <div class="message-bubble">
+                {{ message.text }}
               </div>
-            </div>
-
-            <div *ngIf="isTyping" class="typing-indicator">
-              {{ userLang === 'ar' ? 'يكتب...' : 'Typing...' }}
             </div>
           </div>
         </div>
 
         <div class="chat-footer" *ngIf="activeChatId">
-          <input
-            type="text"
-            [(ngModel)]="userMessage"
-            (keydown.enter)="sendMessage()"
-            [placeholder]="userLang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...'"
-          />
-          <button class="mic-btn" (click)="toggleListening()">
-            {{ isListening ? '🛑' : '🎤' }}
-          </button>
-          <button class="send-btn" (click)="sendMessage()">
-            {{ userLang === 'ar' ? 'إرسال' : 'Send' }}
-          </button>
+          <input type="text" [(ngModel)]="userMessage" (keydown.enter)="sendMessage()" [placeholder]="userLang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...'" />
+          <button class="mic-btn" (click)="toggleListening()">{{ isListening ? '🛑' : '🎤' }}</button>
+          <button class="send-btn" (click)="sendMessage()">{{ userLang === 'ar' ? 'إرسال' : 'Send' }}</button>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="loading-overlay" *ngIf="isLoading">
-  <div class="spinner"></div>
-  <p>{{ userLang === 'ar' ? 'جارٍ التحميل...' : 'Loading...' }}</p>
 </div>
