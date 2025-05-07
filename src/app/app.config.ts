@@ -25,6 +25,7 @@ import { ArticleDetailsComponent } from './pages/article-details/article-details
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+
 const icons = {
   Eye,
   EyeOff
@@ -35,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 const routes: Routes = [
+   
   { path: 'chat/:id', component: DiagnosisComponent },
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
