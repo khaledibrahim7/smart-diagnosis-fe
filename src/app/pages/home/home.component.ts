@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,4 +8,11 @@ import { RouterModule } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {}
+export class HomeComponent {
+
+  constructor(private router: Router) { }
+
+  goToDiseasesPage() {
+    this.router.navigate(['/diseases']); 
+  }
+}

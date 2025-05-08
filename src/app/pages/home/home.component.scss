@@ -107,14 +107,14 @@
 
 .cta p {
   font-size: 1.2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .btn-secondary {
   background: white;
   color: #0077cc;
   padding: 0.8rem 1.5rem;
-  border-radius: 5px;
+  border-radius: 22px;
   font-size: 1rem;
   text-decoration: none;
   transition: 0.3s;
@@ -359,4 +359,18 @@
       }
     }
   }
+}
+.navigate-button {
+  background-color: #fbfdfff0;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 50px 50px;
+  font-size: 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.navigate-button:hover {
+  background-color: #f1f6fecc;
 }

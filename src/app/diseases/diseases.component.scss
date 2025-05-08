@@ -1,0 +1,53 @@
+.disease-container {
+    margin: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .disease {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    color: #3a3a3a;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    color: #666;
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  button.read-more-btn {
+    background-color: #0497e0;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.read-more-btn:hover {
+    background-color: #030001;
+  }
+  
+  .response {
+    margin-top: 15px;
+    font-size: 25px;
+    color: #000000;
+    line-height: 1.6;
+  }
+  

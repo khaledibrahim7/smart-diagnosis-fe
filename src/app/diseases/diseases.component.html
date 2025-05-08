@@ -1,0 +1,15 @@
+<div class="disease-container">
+    <div class="disease" *ngFor="let disease of diseases">
+      <h3>{{ disease.tag | titlecase }}</h3>
+      <ul>
+        <li *ngFor="let pattern of disease.patterns">{{ pattern }}</li>
+      </ul>
+      <button (click)="toggleResponse(disease)" class="read-more-btn">
+        {{ disease.showResponse ? 'Read Less' : 'Read More' }}
+      </button>
+      <p *ngIf="disease.showResponse" class="response">
+        {{ disease.response }}
+      </p>
+    </div>
+  </div>
+  

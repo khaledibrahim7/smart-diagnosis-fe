@@ -23,7 +23,7 @@ $bot-msg-bg: #f0f0f0;
 .top-bar {
   position: fixed;
   bottom: 80px;
-  left: 20px;
+  left: 5px;
   background-color: rgba(4, 119, 250, 0.5);  
   padding: 10px 20px;
   border-radius: 8px;
@@ -61,8 +61,8 @@ $bot-msg-bg: #f0f0f0;
 
 .diagnosis-container {
   text-align: center;
-  margin-top: 30px;
-  padding: 30px;
+  margin-top: 15px;
+  padding: 10px;
   background: linear-gradient(to right, $primary-color, $secondary-color);
   color: $text-color;
   border-radius: 30px;
@@ -70,13 +70,15 @@ $bot-msg-bg: #f0f0f0;
   animation: fadeIn 1s ease-in-out;
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: bold;
+    margin-bottom: 100px;
+
   }
 
   p {
     font-size: 1.2rem;
-    margin-bottom: 90px;
+    margin-bottom: 70px;
   }
 
   .start-btn {
@@ -87,7 +89,7 @@ $bot-msg-bg: #f0f0f0;
     border-radius: 100px;
     font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
     @include button-hover;
 
     .chat-icon {
@@ -106,8 +108,8 @@ $bot-msg-bg: #f0f0f0;
   right: 2px;
 
   .ask-me-btn {
-    background: rgb(5, 189, 245);
-    color: rgb(0, 2, 3);
+    background: rgb(255, 255, 255);
+    color: rgba(12, 140, 246, 0.937);
     padding: 15px;
     border: none;
     border-radius: 50%;

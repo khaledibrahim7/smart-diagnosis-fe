@@ -24,6 +24,8 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TitleCasePipe } from '@angular/common';
+import { DiseasesComponent } from './diseases/diseases.component';
 
 
 const icons = {
@@ -73,6 +75,9 @@ const routes: Routes = [
     path: 'feedback',
     loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
   },
+  { path: 'diseases', component: DiseasesComponent },
+  
+  
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -109,6 +114,7 @@ export const appConfig: ApplicationConfig = {
     AuthService,
     SettingsService,
     AuthGuard,
+    TitleCasePipe,
     TranslateService
   ]
 };
