@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DiagnosisService } from '../../services/DiagnosisService';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-diagnosis',
@@ -27,7 +28,8 @@ export class DiagnosisComponent implements OnInit {
   isTyping = false;
 
 
-  constructor(private diagnosisService: DiagnosisService, private router: Router, private http: HttpClient) {
+  constructor(private diagnosisService: DiagnosisService, private router: Router, private http: HttpClient,  private snackBar: MatSnackBar
+  ) {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     this.recognition = new SpeechRecognition();
     this.setLanguage('en');
@@ -278,11 +280,16 @@ export class DiagnosisComponent implements OnInit {
     }
   }
   
-  
-  
-
   startNewChat(initialMessage: string) {
+    const currentChat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
+  
+    if (currentChat && currentChat.messages.length === 0) {
+      alert('لا يمكن إنشاء شات جديد قبل إرسال رسالة واحدة على الأقل في الشات الحالي.');
+      return;
+    }
+  
     const patientId = Number(localStorage.getItem('patientId'));
+  
     this.diagnosisService.createNewChat(patientId, 'New Chat').subscribe({
       next: (res) => {
         this.activeChatId = res.data.id;
@@ -291,11 +298,14 @@ export class DiagnosisComponent implements OnInit {
           title: res.data.title,
           messages: []
         });
+        this.loadChat(res.data.id);
         this.sendMessage(initialMessage);
       },
       error: (err) => console.error('Error creating chat', err)
     });
   }
+  
+  
 
   deleteChat(chatId: number) {
     const patientId = localStorage.getItem('patientId'); 

@@ -6,6 +6,10 @@
           <a routerLink="/diagnosis" class="btn-primary">Start Diagnosis</a>
         </div>
       </section>
+
+      <button (click)="goToDiseasesPage()" class="navigate-button">
+        Diagnosis Library
+      </button>
       
       <section class="medical-articles">
         <h1>📰 Medical Articles</h1>
@@ -53,10 +57,11 @@
             <p>Learn about kidney diseases, their symptoms, and how to maintain healthy kidneys for life.</p>
             <a routerLink="/articles/kidney-health">Read More</a>
           </div>
-          
-          <button (click)="goToDiseasesPage()" class="navigate-button">
-            Diagnosis Library
-          </button>
+          <div class="article-card">
+            <h3>Understanding Mental Health</h3>
+            <p>Explore the importance of mental health, common disorders, and how to seek help.</p>
+            <a routerLink="/articles/mental-health">Read More</a>
+        </div>
         </div>
       </section>
       
