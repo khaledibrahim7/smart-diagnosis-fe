@@ -13,6 +13,6 @@ export class HomeComponent {
   constructor(private router: Router) { }
 
   goToDiseasesPage() {
-    this.router.navigate(['/diseases']); 
-  }
+  this.router.navigate(['/diseases']); 
+}
 }

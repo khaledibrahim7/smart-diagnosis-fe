@@ -1,3 +1,4 @@
+
 <div class="top-bar">
   <div class="language-switcher">
     <button [class.active]="userLang === 'en'" (click)="setLanguage('en')">🇬🇧 English</button>
@@ -10,6 +11,7 @@
   <p>
     {{ userLang === 'ar' ? 'احصل على تشخيص طبي سريع بناءً على أعراضك.' : 'Get a quick medical diagnosis based on your symptoms.' }}
   </p>
+
   <button class="start-btn" (click)="openPopup()">
     {{ userLang === 'ar' ? 'ابدأ التشخيص' : 'Start Diagnosis' }}
   </button>

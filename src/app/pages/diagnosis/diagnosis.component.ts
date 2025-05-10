@@ -304,9 +304,6 @@ export class DiagnosisComponent implements OnInit {
       error: (err) => console.error('Error creating chat', err)
     });
   }
-  
-  
-
   deleteChat(chatId: number) {
     const patientId = localStorage.getItem('patientId'); 
     if (!patientId) {
@@ -334,8 +331,16 @@ export class DiagnosisComponent implements OnInit {
       : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
     this.openedMenuIndex = null;
   }
-  toggleOptionsMenu(index: number) {
-    this.openedMenuIndex = this.openedMenuIndex === index ? null : index;
+toggleOptionsMenu(index: number) {
+  if (this.openedMenuIndex === index) {
+    this.openedMenuIndex = null;
+  } else {
+    this.openedMenuIndex = index;
   }
-  
+}
+
+onMenuItemClick() {
+  this.openedMenuIndex = null;
+}  
+
 }
