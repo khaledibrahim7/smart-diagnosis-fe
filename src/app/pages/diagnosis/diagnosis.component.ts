@@ -251,59 +251,69 @@ export class DiagnosisComponent implements OnInit {
     });
   }
 
-  sendMessage(content?: string) {
-    const text = content || this.userMessage.trim();
-    if (!text) return;
-  
-    this.messages.push({ text, isUser: true });
-    this.userMessage = '';
-    this.isTyping = true;
-  
-    if (!this.activeChatId) {
-      this.startNewChat(text);
-      return;
-    }
-  
-    if (this.activeChatId !== null) {
-      this.diagnosisService.addMessage(this.activeChatId, true, text).subscribe({
-        next: () => {
-          this.isTyping = false;
-          this.sendTextToBot(text); 
-        },
-        error: (err) => {
-          console.error('Error sending message', err);
-          this.isTyping = false;
+sendMessage(content?: string) {
+  const text = content || this.userMessage.trim();
+  if (!text) return;
+
+  this.messages.push({ text, isUser: true });
+  this.userMessage = '';
+  this.isTyping = true;
+
+  if (!this.activeChatId) {
+    this.startNewChat(text);
+    return;
+  }
+
+  if (this.activeChatId !== null) {
+    this.diagnosisService.addMessage(this.activeChatId, true, text).subscribe({
+      next: (messageResponse) => {
+        const chat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
+        if (chat && messageResponse.data) {
+          chat.title = messageResponse.data.content;  
         }
-      });
-    } else {
-      console.error('❌ لا يمكن إرسال الرسالة، معرّف المحادثة غير موجود');
-    }
-  }
-  
-  startNewChat(initialMessage: string) {
-    const currentChat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
-  
-    if (currentChat && currentChat.messages.length === 0) {
-      alert('لا يمكن إنشاء شات جديد قبل إرسال رسالة واحدة على الأقل في الشات الحالي.');
-      return;
-    }
-  
-    const patientId = Number(localStorage.getItem('patientId'));
-  
-    this.diagnosisService.createNewChat(patientId, 'New Chat').subscribe({
-      next: (res) => {
-        this.activeChatId = res.data.id;
-        this.chatHistory.push({
-          chatId: res.data.id,
-          title: res.data.title,
-          messages: []
-        });
-        this.loadChat(res.data.id);
-        this.sendMessage(initialMessage);
+
+        this.isTyping = false;
+        this.sendTextToBot(text); 
       },
-      error: (err) => console.error('Error creating chat', err)
+      error: (err) => {
+        console.error('Error sending message', err);
+        this.isTyping = false;
+      }
     });
+  } else {
+    console.error('❌ لا يمكن إرسال الرسالة، معرّف المحادثة غير موجود');
   }
+}
+
+  
+ startNewChat(initialMessage: string) {
+  const currentChat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
+
+  if (currentChat && currentChat.messages.length === 0) {
+    alert('لا يمكن إنشاء شات جديد قبل إرسال رسالة واحدة على الأقل في الشات الحالي.');
+    return;
+  }
+
+  const patientId = Number(localStorage.getItem('patientId'));
+
+  this.diagnosisService.createNewChat(patientId, '').subscribe({
+    next: (res) => {
+      this.activeChatId = res.data.id;
+
+      this.chatHistory.push({
+        chatId: res.data.id,
+        title: res.data.title, 
+        messages: []
+      });
+
+      this.loadChat(res.data.id);
+
+      this.sendMessage(initialMessage);
+    },
+    error: (err) => console.error('Error creating chat', err)
+  });
+}
+
   deleteChat(chatId: number) {
     const patientId = localStorage.getItem('patientId'); 
     if (!patientId) {

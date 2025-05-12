@@ -34,12 +34,14 @@ export class DiagnosisService {
     return this.http.get<ResponseWrapper<ChatSessionDTO[]>>(this.apiUrl, { params });
   }
 
-  createNewChat(patientId: number, title: string): Observable<ResponseWrapper<ChatSessionDTO>> {
-    const params = new HttpParams()
-      .set('patientId', patientId.toString())
-      .set('title', title);
-    return this.http.post<ResponseWrapper<ChatSessionDTO>>(this.apiUrl, params);
-  }
+ createNewChat(patientId: number, title: string): Observable<ResponseWrapper<ChatSessionDTO>> {
+  const params = new HttpParams()
+    .set('patientId', patientId.toString())
+    .set('title', title); 
+
+  return this.http.post<ResponseWrapper<ChatSessionDTO>>(this.apiUrl, params);
+}
+
 
   getChatMessages(chatId: number): Observable<ResponseWrapper<MessageDTO[]>> {
     return this.http.get<ResponseWrapper<MessageDTO[]>>(`${this.apiUrl}/${chatId}`);

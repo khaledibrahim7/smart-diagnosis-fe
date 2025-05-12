@@ -1,8 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,CommonModule],
   selector: 'app-nearby-pharmacies',
   templateUrl: './nearby-pharmacies.component.html',
   styleUrls: ['./nearby-pharmacies.component.scss']
