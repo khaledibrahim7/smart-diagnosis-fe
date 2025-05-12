@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-emergency-help',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class EmergencyHelpComponent {
   emergencyForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.emergencyForm = this.fb.group({
       country: ['', Validators.required],
     });
@@ -151,5 +152,9 @@ export class EmergencyHelpComponent {
     if (number !== 'Not available') {
       window.location.href = `tel:${number}`;
     }
+  }
+
+   navigateToPharmacies() {
+    this.router.navigate(['/pharmacies']); 
   }
 }

@@ -48,7 +48,7 @@ $bot-msg-bg: #f0f0f0;
       
       &.active {
         background-color: #0ab5ff;
-        color: #101dd6e6;
+        color: #000000;
         transform: scale(1); 
       }
 
@@ -91,6 +91,7 @@ $bot-msg-bg: #f0f0f0;
     cursor: pointer;
     box-shadow: 0 5px 30px rgba(255, 254, 254, 0.171);
     @include button-hover;
+
 
     .chat-icon {
       width: 100px;

@@ -76,8 +76,12 @@ const routes: Routes = [
     loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
   },
   { path: 'diseases', component: DiseasesComponent },
-  
-  
+ 
+{
+  path: 'pharmacies',
+  loadComponent: () => import('./pages/nearby-pharmacies.component').then(m => m.NearbyPharmaciesComponent)
+},
+
 ];
 
 export const appConfig: ApplicationConfig = {

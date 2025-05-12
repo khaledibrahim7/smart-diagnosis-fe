@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="controls">
+    <button (click)="showMap()">أقرب صيدليات ودكاترة</button>
+  </div>
+
+  <div id="map" class="map"></div>
+
+  <div class="results">
+    <h3> الصيدليات:</h3>
+    <form [formGroup]="pharmacyForm">
+      <input formControlName="pharmacySearch" placeholder="ابحث عن صيدلية..." />
+    </form>
+
+    <ul>
+      <li *ngFor="let pharmacy of filteredPharmacies()" (click)="focusOnPlace(pharmacy)">
+        {{ pharmacy.name }}
+      </li>
+    </ul>
+
+    <h3> الدكاترة:</h3>
+    <form [formGroup]="doctorForm">
+      <input formControlName="doctorSearch" placeholder="ابحث عن تخصص (مثلاً: أنف، باطنة)..." />
+    </form>
+
+    <ul>
+      <li *ngFor="let doctor of filteredDoctors()" (click)="focusOnPlace(doctor)">
+        {{ doctor.name }}
+      </li>
+    </ul>
+  </div>
+</div>
+
