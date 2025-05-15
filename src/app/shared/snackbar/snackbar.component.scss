@@ -1,0 +1,26 @@
+.snackbar {
+  position: fixed;
+ top: 50px; /* 10px من أعلى الصفحة */
+  left: 50%; /* وضعه في المنتصف */
+  transform: translateX(-50%);
+  background-color: #021f30;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-in-out;
+
+  .snackbar-text {
+    margin: 0;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}

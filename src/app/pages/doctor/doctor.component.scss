@@ -1,0 +1,51 @@
+.doctor-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  max-width: 48rem; 
+  margin: 2.5rem auto;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(3, 215, 247, 0.251);
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  h2 {
+    font-size: 2.25rem; 
+    font-weight: 800;
+    color: #ebf3ee; 
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.125rem; 
+    color: #0a68ff; 
+    margin-bottom: 1rem;
+
+    &:last-of-type {
+      font-style: italic;
+      color: #0abce3; 
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .coming-soon-note {
+    font-size: 0.875rem; 
+    color: #6b7280; 
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #00080d; 
+    color: #f3f4f6;
+
+    p {
+      color: #e5e7eb; 
+    }
+
+    .coming-soon-note {
+      color: #9ca3af; 
+    }
+  }
+}
