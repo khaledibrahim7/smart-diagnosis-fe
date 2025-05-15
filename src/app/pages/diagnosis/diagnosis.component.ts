@@ -44,6 +44,10 @@ export class DiagnosisComponent implements OnInit {
     this.loadTheme();
   }
 
+  goToAskDoctor() {
+  this.router.navigate(['/doctor']);
+}
+
   private setupRecognition() {
     this.recognition.continuous = false;
     this.recognition.interimResults = false;

@@ -4,11 +4,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from './app/services/theme.service';
+import { SnackbarComponent } from './shared/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, MatSnackBarModule],
+  imports: [CommonModule, RouterModule, RouterOutlet, MatSnackBarModule,SnackbarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

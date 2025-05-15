@@ -13,7 +13,6 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { VerifyResetCodeComponent } from './pages/auth/verify-reset-code/verify-reset-code.component';
-import { AuthInterceptor } from './services/interceptors/auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { SettingsService } from './services/settings.service';
 import { AuthGuard } from './auth.guard';
@@ -26,6 +25,7 @@ import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TitleCasePipe } from '@angular/common';
 import { DiseasesComponent } from './diseases/diseases.component';
+import { DoctorComponent } from './pages/doctor/doctor.component';
 
 
 const icons = {
@@ -38,7 +38,11 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 const routes: Routes = [
-   
+  {
+  path: 'snackbar',
+  loadComponent: () => import('./shared/snackbar/snackbar.component').then(m => m.SnackbarComponent)
+},
+  { path: 'doctor', component: DoctorComponent },
   { path: 'chat/:id', component: DiagnosisComponent },
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -107,6 +111,7 @@ export const appConfig: ApplicationConfig = {
       ReactiveFormsModule,
       MatSnackBarModule,
       LucideAngularModule,
+      MatSnackBarModule,
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
