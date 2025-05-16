@@ -10,7 +10,7 @@
   background: #ffffff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(5, 62, 220, 0.984);
+  box-shadow: 0 4px 10px rgba(3, 104, 138, 0.984);
   text-align: center;
   max-width: 400px;
   width: 100%;
@@ -34,6 +34,7 @@
 .phone-group input,
 .custom-phone-input input,
 .password-input input {
+    display: flex;
   flex: 1;
   padding: 8px;
   border: 1px solid #ccc;
