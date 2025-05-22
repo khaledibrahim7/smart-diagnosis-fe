@@ -7,12 +7,12 @@
     <ul>
       <li><a routerLink="/">Home</a></li>
       <li><a routerLink="/about">About</a></li>
+            <li *ngIf="isLoggedIn"><a routerLink="/bmi">Bmi</a></li>
       <li><a routerLink="/diagnosis">Diagnosis</a></li>
-      <li><a routerLink="/diseases" class="btn">Diagnosis Library</a></li>
-      <li><a routerLink="/medical-tips" class="btn">Medical Tips</a></li>
-      <li><a routerLink="/emergency-help">Emergency Help</a></li>
+      <li *ngIf="isLoggedIn"><a routerLink="/diseases" class="btn">Diagnosis Library</a></li>
+      <li ><a routerLink="/medical-tips" class="btn">Medical Tips</a></li>
+      <li *ngIf="isLoggedIn"><a routerLink="/emergency-help">Emergency Help</a></li>
       <li *ngIf="isLoggedIn"><a routerLink="/settings">Settings</a></li>
-
       <li class="dropdown">
         <a href="#" (click)="toggleDropdown($event)">Contact ▾</a>
         <ul class="dropdown-menu" [class.show]="dropdownOpen">
@@ -40,3 +40,4 @@
 
 
 </footer>
+

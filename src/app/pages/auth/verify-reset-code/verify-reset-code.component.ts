@@ -25,23 +25,25 @@ export class VerifyResetCodeComponent {
     });
   }
 
-  onSubmit() {
-    if (this.verifyForm.invalid) return;
+ onSubmit() {
+  if (this.verifyForm.invalid) return;
 
-    const { email, token } = this.verifyForm.value;
+  const { email, token } = this.verifyForm.value;
 
-    this.http.post<any>('http://localhost:2020/api/auth/verify-reset-code', { email, token })
-  .subscribe({
-    next: res => {
-      this.message = res.message;
-      setTimeout(() => {
-        this.router.navigate(['/reset-password'], { queryParams: { email, token } });
-      }, 2000);
-    },
-    error: err => {
-      this.message = err.error?.message || err.message || 'Something went wrong';
-    }
-  });
+  this.http.post<any>('http://localhost:2020/api/auth/verify-reset-code', { email, token })
+    .subscribe({
+      next: res => {
+        this.message = res.message;
+        if (res.success) {
+          setTimeout(() => {
+            this.router.navigate(['/reset-password'], { queryParams: { email, token } });
+          }, 2000);
+        }
+      },
+      error: err => {
+        this.message = err.error?.message || err.message || 'Something went wrong';
+      }
+    });
+}
 
-  }
 }

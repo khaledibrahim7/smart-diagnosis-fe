@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DiagnosisService } from '../../services/DiagnosisService';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BmiCalculatorComponent } from "../../bmi-calculator.component";
 
 @Component({
   selector: 'app-diagnosis',
@@ -288,13 +289,26 @@ sendMessage(content?: string) {
     console.error('❌ لا يمكن إرسال الرسالة، معرّف المحادثة غير موجود');
   }
 }
-
-  
- startNewChat(initialMessage: string) {
+startNewChat(initialMessage: string) {
   const currentChat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
 
   if (currentChat && currentChat.messages.length === 0) {
-    alert('لا يمكن إنشاء شات جديد قبل إرسال رسالة واحدة على الأقل في الشات الحالي.');
+    this.snackBar.open('لا يمكن إنشاء شات جديد قبل إرسال رسالة واحدة على الأقل في الشات الحالي.', 'إغلاق', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-warning']
+    });
+    return;
+  }
+
+  if (this.chatHistory.length >= 20) {
+    this.snackBar.open('وصلت للحد الأقصى لعدد الشاتات (20). احذف شات قديم علشان تقدر تبدأ شات جديد.', 'إغلاق', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error']
+    });
     return;
   }
 
@@ -306,7 +320,7 @@ sendMessage(content?: string) {
 
       this.chatHistory.push({
         chatId: res.data.id,
-        title: res.data.title, 
+        title: res.data.title,
         messages: []
       });
 
@@ -314,10 +328,15 @@ sendMessage(content?: string) {
 
       this.sendMessage(initialMessage);
     },
-    error: (err) => console.error('Error creating chat', err)
+    error: (err) => {
+      console.error('Error creating chat', err);
+      this.snackBar.open('حدث خطأ أثناء إنشاء الشات.', 'إغلاق', {
+        duration: 4000,
+        panelClass: ['snackbar-error']
+      });
+    }
   });
 }
-
   deleteChat(chatId: number) {
     const patientId = localStorage.getItem('patientId'); 
     if (!patientId) {

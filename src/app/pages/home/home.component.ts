@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { BmiCalculatorComponent } from "../../bmi-calculator.component";
 
 @Component({
   selector: 'app-home',
@@ -14,5 +15,9 @@ export class HomeComponent {
 
   goToDiseasesPage() {
   this.router.navigate(['/diseases']); 
+}
+
+goToMotherhoodJourney() {
+this.router.navigate(['/mother-child-care']);
 }
 }

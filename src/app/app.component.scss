@@ -130,3 +130,37 @@ position: relative;
   display: block;
 }
 }
+
+.language-switcher {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
+.lang-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.lang-btn:hover {
+  background-color: #0056b3;
+}
+
+/* إخفاء Google Translate الشبه البشع 😅 */
+.goog-logo-link,
+.goog-te-gadget span,
+#goog-gt-tt,
+.goog-te-banner-frame,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}

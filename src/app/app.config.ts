@@ -26,6 +26,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TitleCasePipe } from '@angular/common';
 import { DiseasesComponent } from './diseases/diseases.component';
 import { DoctorComponent } from './pages/doctor/doctor.component';
+import { BmiCalculatorComponent } from './bmi-calculator.component';
 
 
 const icons = {
@@ -39,9 +40,14 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const routes: Routes = [
   {
-  path: 'snackbar',
-  loadComponent: () => import('./shared/snackbar/snackbar.component').then(m => m.SnackbarComponent)
+  path: 'mother-child-care',
+  loadComponent: () =>
+    import('./pages/mother-child-care/mother-child-care.component').then(
+      (c) => c.MotherChildCareComponent
+    ),
 },
+  {path: 'snackbar',loadComponent: () => import('./shared/snackbar/snackbar.component').then(m => m.SnackbarComponent)},
+  { path: 'bmi', component: BmiCalculatorComponent },
   { path: 'doctor', component: DoctorComponent },
   { path: 'chat/:id', component: DiagnosisComponent },
   { path: '', component: HomeComponent },

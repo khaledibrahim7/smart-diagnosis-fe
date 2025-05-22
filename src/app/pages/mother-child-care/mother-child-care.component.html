@@ -1,0 +1,33 @@
+<div class="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white p-6">
+  <h1 class="text-4xl font-bold text-center mb-10">رعاية الأم والطفل - دليلك من الحمل حتى أول سنة</h1>
+
+  <div class="mt-10 space-y-4 mb-10">
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <select [formControl]="stageControl" class="px-4 py-2 rounded border dark:bg-gray-700 dark:text-white">
+        <option value="all">كل المراحل</option>
+        <option value="pregnancy">الحمل</option>
+        <option value="postpartum">ما بعد الولادة</option>
+        <option value="babycare">رعاية الطفل</option>
+      </select>
+
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="أنا عايزة أعرف عن..."
+        class="flex-1 px-4 py-2 rounded border dark:bg-gray-700 dark:text-white"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div
+      *ngFor="let section of filteredSections()"
+      class="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow p-6"
+    >
+      <h2 class="text-xl font-semibold mb-4 text-orange-600">{{ section.title }}</h2>
+      <ul class="list-disc list-inside space-y-2">
+        <li *ngFor="let item of section.items">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

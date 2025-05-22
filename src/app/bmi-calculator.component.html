@@ -1,0 +1,157 @@
+<div class="bmi-container">
+  <h2>حاسبة مؤشر كتلة الجسم (BMI)</h2>
+
+  <p class="description">
+    مؤشر كتلة الجسم يساعدك على تقييم حالتك الصحية من خلال الوزن والطول. ادخل بياناتك أدناه:
+  </p>
+
+  <form [formGroup]="bmiForm" (ngSubmit)="calculateBMI()">
+    <div class="form-group">
+      <label>الوزن ({{ weightUnit }})</label>
+      <input type="number" formControlName="weight" />
+      <button type="button" class="unit-toggle-btn" (click)="toggleWeightUnit()">تبديل وحدة الوزن</button>
+    </div>
+
+    <div class="form-group">
+      <label>الطول ({{ heightUnit }})</label>
+      <input type="number" formControlName="height" />
+      <button type="button" class="unit-toggle-btn" (click)="toggleHeightUnit()">تبديل وحدة الطول</button>
+    </div>
+
+    <button type="submit" [disabled]="bmiForm.invalid">احسب</button>
+  </form>
+
+  <div *ngIf="result !== null" class="result" [ngClass]="statusClass">
+    <p>النتيجة: <strong>{{ result }}</strong></p>
+    <p>التقييم: <strong>{{ status }}</strong></p>
+
+    <div class="bmi-bar-wrapper">
+      <div class="bmi-bar">
+        <div class="indicator" [style.left.%]="bmiPercentage"></div>
+      </div>
+      <div class="bmi-labels">
+        <span>نقص وزن</span>
+        <span>مثالي</span>
+        <span>زيادة</span>
+        <span>سمنة</span>
+      </div>
+    </div>
+
+    <p class="tip-text">{{ tipText }}</p>
+
+    <button (click)="resetForm()">إعادة الحساب</button>
+  </div>
+
+
+  <section class="calorie-calculator">
+    <h2>حاسبة السعرات الحرارية</h2>
+
+    <form [formGroup]="calorieForm" (ngSubmit)="calculateCalories()">
+      <div class="form-group">
+        <label>العمر (سنوات)</label>
+        <input type="number" formControlName="age" />
+      </div>
+
+      <div class="form-group">
+        <label>الجنس</label>
+        <select formControlName="gender">
+          <option value="male">ذكر</option>
+          <option value="female">أنثى</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>الوزن (كجم)</label>
+        <input type="number" formControlName="weight" />
+      </div>
+
+      <div class="form-group">
+        <label>الطول (سم)</label>
+        <input type="number" formControlName="height" />
+      </div>
+
+      <div class="form-group">
+        <label>مستوى النشاط</label>
+        <select formControlName="activityLevel">
+          <option value="sedentary">قليل النشاط</option>
+          <option value="light">نشاط خفيف</option>
+          <option value="moderate">نشاط متوسط</option>
+          <option value="active">نشاط عالي</option>
+          <option value="veryActive">نشاط جداً عالي</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="calorieForm.invalid">احسب السعرات</button>
+    </form>
+
+    <div *ngIf="calorieResult !== null" class="calorie-result">
+      <p>السعرات المطلوبة يومياً: <strong>{{ calorieResult }}</strong> سعر حراري</p>
+      <p>{{ calorieTip }}</p>
+
+      <h3>مقترحات وجبات يومية:</h3>
+      <ul>
+        <li>فطور: بيض، خبز كامل، خضروات.</li>
+        <li>غداء: دجاج مشوي، أرز بني، سلطة.</li>
+        <li>عشاء: سمك، خضروات مطهوة.</li>
+        <li>وجبات خفيفة: فواكه، مكسرات.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section class="bmi-history">
+    <h2>تغير مؤشر BMI مع الوقت</h2>
+
+    <form [formGroup]="bmiHistoryForm" (ngSubmit)="addBmiRecord()">
+      <div class="form-group">
+        <label>التاريخ</label>
+        <input type="date" formControlName="date" />
+      </div>
+
+      <div class="form-group">
+        <label>مؤشر BMI</label>
+        <input type="number" step="0.1" formControlName="bmi" />
+      </div>
+
+      <button type="submit" [disabled]="bmiHistoryForm.invalid">أضف قياس</button>
+    </form>
+
+    <canvas #bmiChart></canvas>
+  </section>
+
+ 
+  <section class="personal-notes">
+    <h2>ملاحظات شخصية وأهداف</h2>
+
+    <textarea [(ngModel)]="personalNotes" placeholder="اكتب ملاحظاتك أو أهدافك هنا..." rows="4"></textarea>
+  </section>
+
+ 
+  <section class="exercise-guide">
+    <h2>التمارين الرياضية المناسبة</h2>
+
+    <p>تمارين مناسبة لكل فئة BMI ومستوى لياقة. ابدأ تدريجياً وتابع الفيديوهات.</p>
+
+    <ul class="exercise-list">
+      <li>
+        <h3>تمرين المشي السريع</h3>
+        <video controls width="320">
+          <source src="assets/videos/walking.mp4" type="video/mp4" />
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+        <p>ابدأ بالمشي 15 دقيقة يومياً وزد تدريجياً.</p>
+      </li>
+      <li>
+        <h3>تمارين الإطالة</h3>
+        <video controls width="320">
+          <source src="assets/videos/stretching.mp4" type="video/mp4" />
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+        <p>تمارين الإطالة تحسن المرونة وتقليل الإصابات.</p>
+      </li>
+    </ul>
+
+    <h3>جدول تمارين أسبوعي</h3>
+    <a href="assets/files/exercise-schedule.pdf" target="_blank" download>تحميل جدول التمارين</a>
+  </section>
+</div>

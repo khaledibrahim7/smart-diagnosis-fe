@@ -361,3 +361,33 @@
   }
 }
 
+.main-button {
+  display: block;
+  width: 100%;
+   margin-top: 1rem;   
+  margin-bottom: 1rem;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #feffff, #f1f4f7);
+  color: #000000;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+
+ 
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  .dark & {
+    background: linear-gradient(90deg, #000000, #000000);
+    color: #0281ff;
+    box-shadow: 0 4px 14px rgba(10, 7, 0, 0.4);
+
+    
+  }
+}
