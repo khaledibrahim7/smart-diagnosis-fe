@@ -87,12 +87,12 @@ export class LoginComponent {
         localStorage.setItem('loginAttempts', attempts.toString());
   
         if (attempts >= 3) {
-          const blockTime = new Date().getTime() + 30 * 60 * 1000; // حظر 30 دقيقة
+          const blockTime = new Date().getTime() + 30 * 60 * 1000; 
           localStorage.setItem('loginBlockedUntil', blockTime.toString());
           localStorage.removeItem('loginAttempts');
   
           this.snackBar.open('🚫 تم حظرك مؤقتًا بعد 3 محاولات فاشلة. حاول بعد 30 دقيقة.', 'إغلاق', {
-            duration: 4000,
+            duration: 2000,
             panelClass: ['error-snackbar'],
             horizontalPosition: 'center',
             verticalPosition: 'top',

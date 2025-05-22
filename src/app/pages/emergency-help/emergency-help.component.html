@@ -1,5 +1,10 @@
+
 <div class="emergency-container">
   <h1>🚨 Emergency Help</h1>
+
+  <div class="container">
+  <button (click)="navigateToPharmacies()">NearbyPharmacies</button>
+</div>
 
   <form [formGroup]="emergencyForm" (ngSubmit)="makeCall()">
     <div class="form-group">
@@ -33,9 +38,7 @@
     </ul>
   </div>
 
-<div class="container">
-  <button (click)="navigateToPharmacies()">NearbyPharmacies</button>
-</div>
+
 
 
   <div class="first-aid-tips">

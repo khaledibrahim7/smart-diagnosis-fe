@@ -15,7 +15,6 @@ export class AuthGuard implements CanActivate {
     const isLoggedIn = !!localStorage.getItem('token');
     
     if (!isLoggedIn) {
-      // إذا المستخدم مش مسجل دخول، بترجع لصفحة login
       this.router.navigate(['/login']);
       return false;
     }

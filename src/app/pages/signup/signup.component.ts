@@ -102,7 +102,7 @@ export class SignupComponent {
     if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
       const remaining = Math.ceil((parseInt(blockedUntil) - new Date().getTime()) / 60000);
       this.snackBar.open(`لقد تجاوزت عدد المحاولات. حاول مرة أخرى بعد ${remaining} دقيقة.`, 'إغلاق', {
-        duration: 4000,
+        duration: 2000,
         panelClass: ['error-snackbar'],
         horizontalPosition: 'center',
         verticalPosition: 'top',
