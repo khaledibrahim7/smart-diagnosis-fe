@@ -4,6 +4,9 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { FormsModule } from '@angular/forms';
 import Chart from 'chart.js/auto';
 
+
+
+
 @Component({
   selector: 'app-bmi-calculator',
   standalone: true,
@@ -35,6 +38,9 @@ export class BmiCalculatorComponent implements AfterViewInit {
   @ViewChild('bmiChart') bmiChartRef!: ElementRef<HTMLCanvasElement>;
   bmiChart: any;
 
+
+
+
   constructor(private fb: FormBuilder) {
     this.bmiForm = this.fb.group({
       weight: [null, [Validators.required, Validators.min(1)]],
@@ -55,11 +61,16 @@ export class BmiCalculatorComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.createChart();
+ ngAfterViewInit() {
+  const storedRecords = sessionStorage.getItem('bmiRecords');
+  if (storedRecords) {
+    this.bmiRecords = JSON.parse(storedRecords);
   }
 
-  // تبديل وحدات الطول
+  this.createChart();
+}
+
+
   toggleHeightUnit() {
     const currentHeight = this.bmiForm.value.height;
     if (currentHeight === null || currentHeight === undefined) return;
@@ -76,7 +87,6 @@ export class BmiCalculatorComponent implements AfterViewInit {
     this.bmiForm.get('height')?.updateValueAndValidity();
   }
 
-  // تبديل وحدات الوزن
   toggleWeightUnit() {
     const currentWeight = this.bmiForm.value.weight;
     if (currentWeight === null || currentWeight === undefined) return;
@@ -98,7 +108,6 @@ export class BmiCalculatorComponent implements AfterViewInit {
     let height = this.bmiForm.value.height;
     if (weight == null || height == null) return;
 
-    // حول الوحدات لو لازم
     if (this.weightUnit === 'lb') {
       weight = weight / 2.20462;
     }
@@ -160,7 +169,6 @@ export class BmiCalculatorComponent implements AfterViewInit {
     return ((clamped - minBMI) / (maxBMI - minBMI)) * 100;
   }
 
-  // حساب السعرات الحرارية
   calculateCalories() {
     if (this.calorieForm.invalid) return;
 
@@ -196,18 +204,21 @@ export class BmiCalculatorComponent implements AfterViewInit {
     }
   }
 
-  // سجل الـ BMI
   addBmiRecord() {
     if (this.bmiHistoryForm.invalid) return;
 
     this.bmiRecords.push({
       date: this.bmiHistoryForm.value.date,
       bmi: this.bmiHistoryForm.value.bmi
+
     });
+      sessionStorage.setItem('bmiRecords', JSON.stringify(this.bmiRecords));
+
 
     this.bmiHistoryForm.reset();
     this.updateChart();
   }
+
 
   createChart() {
     if (!this.bmiChartRef) return;

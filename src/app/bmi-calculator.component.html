@@ -1,161 +1,151 @@
 <div class="bmi-container">
-  <h2>حاسبة مؤشر كتلة الجسم (BMI)</h2>
+  <h2>BMI Calculator</h2>
 
   <p class="description">
-    مؤشر كتلة الجسم يساعدك على تقييم حالتك الصحية من خلال الوزن والطول. ادخل بياناتك أدناه:
+    Body Mass Index (BMI) helps you assess your health status based on your weight and height. Enter your data below:
   </p>
 
   <form [formGroup]="bmiForm" (ngSubmit)="calculateBMI()">
     <div class="form-group">
-      <label>الوزن ({{ weightUnit }})</label>
+      <label>Weight ({{ weightUnit }})</label>
       <input type="number" formControlName="weight" />
-      <button type="button" class="unit-toggle-btn" (click)="toggleWeightUnit()">تبديل وحدة الوزن</button>
+      <button type="button" class="unit-toggle-btn" (click)="toggleWeightUnit()">Toggle Weight Unit</button>
     </div>
 
     <div class="form-group">
-      <label>الطول ({{ heightUnit }})</label>
+      <label>Height ({{ heightUnit }})</label>
       <input type="number" formControlName="height" />
-      <button type="button" class="unit-toggle-btn" (click)="toggleHeightUnit()">تبديل وحدة الطول</button>
+      <button type="button" class="unit-toggle-btn" (click)="toggleHeightUnit()">Toggle Height Unit</button>
     </div>
 
-    <button type="submit" [disabled]="bmiForm.invalid">احسب</button>
+    <button type="submit" [disabled]="bmiForm.invalid">Calculate</button>
   </form>
 
   <div *ngIf="result !== null" class="result" [ngClass]="statusClass">
-    <p>النتيجة: <strong>{{ result }}</strong></p>
-    <p>التقييم: <strong>{{ status }}</strong></p>
+    <p>Result: <strong>{{ result }}</strong></p>
+    <p>Status: <strong>{{ status }}</strong></p>
 
     <div class="bmi-bar-wrapper">
       <div class="bmi-bar">
         <div class="indicator" [style.left.%]="bmiPercentage"></div>
       </div>
       <div class="bmi-labels">
-        <span>نقص وزن</span>
-        <span>مثالي</span>
-        <span>زيادة</span>
-        <span>سمنة</span>
+        <span>Underweight</span>
+        <span>Normal</span>
+        <span>Overweight</span>
+        <span>Obese</span>
       </div>
     </div>
 
     <p class="tip-text">{{ tipText }}</p>
 
-    <button (click)="resetForm()">إعادة الحساب</button>
+    <button (click)="resetForm()">Recalculate</button>
   </div>
 
-
   <section class="calorie-calculator">
-    <h2>حاسبة السعرات الحرارية</h2>
+    <h2>Calorie Calculator</h2>
 
     <form [formGroup]="calorieForm" (ngSubmit)="calculateCalories()">
       <div class="form-group">
-        <label>العمر (سنوات)</label>
+        <label>Age (years)</label>
         <input type="number" formControlName="age" />
       </div>
 
       <div class="form-group">
-        <label>الجنس</label>
+        <label>Gender</label>
         <select formControlName="gender">
-          <option value="male">ذكر</option>
-          <option value="female">أنثى</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>الوزن (كجم)</label>
+        <label>Weight (kg)</label>
         <input type="number" formControlName="weight" />
       </div>
 
       <div class="form-group">
-        <label>الطول (سم)</label>
+        <label>Height (cm)</label>
         <input type="number" formControlName="height" />
       </div>
 
       <div class="form-group">
-        <label>مستوى النشاط</label>
+        <label>Activity Level</label>
         <select formControlName="activityLevel">
-          <option value="sedentary">قليل النشاط</option>
-          <option value="light">نشاط خفيف</option>
-          <option value="moderate">نشاط متوسط</option>
-          <option value="active">نشاط عالي</option>
-          <option value="veryActive">نشاط جداً عالي</option>
+          <option value="sedentary">Sedentary</option>
+          <option value="light">Lightly Active</option>
+          <option value="moderate">Moderately Active</option>
+          <option value="active">Active</option>
+          <option value="veryActive">Very Active</option>
         </select>
       </div>
 
-      <button type="submit" [disabled]="calorieForm.invalid">احسب السعرات</button>
+      <button type="submit" [disabled]="calorieForm.invalid">Calculate Calories</button>
     </form>
 
     <div *ngIf="calorieResult !== null" class="calorie-result">
-      <p>السعرات المطلوبة يومياً: <strong>{{ calorieResult }}</strong> سعر حراري</p>
+      <p>Daily Caloric Requirement: <strong>{{ calorieResult }}</strong> kcal</p>
       <p>{{ calorieTip }}</p>
 
-      <h3>مقترحات وجبات يومية:</h3>
+      <h3>Suggested Daily Meals:</h3>
       <ul>
-        <li>فطور: بيض، خبز كامل، خضروات.</li>
-        <li>غداء: دجاج مشوي، أرز بني، سلطة.</li>
-        <li>عشاء: سمك، خضروات مطهوة.</li>
-        <li>وجبات خفيفة: فواكه، مكسرات.</li>
+        <li>Breakfast: Eggs, whole grain bread, vegetables.</li>
+        <li>Lunch: Grilled chicken, brown rice, salad.</li>
+        <li>Dinner: Fish, cooked vegetables.</li>
+        <li>Snacks: Fruits, nuts.</li>
       </ul>
     </div>
   </section>
 
-
   <section class="bmi-history">
-    <h2>تغير مؤشر BMI مع الوقت</h2>
+    <h2>BMI Trend Over Time</h2>
 
     <form [formGroup]="bmiHistoryForm" (ngSubmit)="addBmiRecord()">
       <div class="form-group">
-        <label>التاريخ</label>
+        <label>Date</label>
         <input type="date" formControlName="date" />
       </div>
 
       <div class="form-group">
-        <label>مؤشر BMI</label>
+        <label>BMI</label>
         <input type="number" step="0.1" formControlName="bmi" />
       </div>
 
-      <button type="submit" [disabled]="bmiHistoryForm.invalid">أضف قياس</button>
+      <button type="submit" [disabled]="bmiHistoryForm.invalid">Add Entry</button>
     </form>
 
     <canvas #bmiChart></canvas>
   </section>
 
- 
-  <section class="personal-notes">
-    <h2>ملاحظات شخصية وأهداف</h2>
-
-    <textarea [(ngModel)]="personalNotes" placeholder="اكتب ملاحظاتك أو أهدافك هنا..." rows="4"></textarea>
-  </section>
-
- 
   <section class="exercise-guide">
-    <h2>التمارين الرياضية المناسبة</h2>
+    <h2>Recommended Exercises</h2>
 
-    <p>تمارين مناسبة لكل فئة BMI ومستوى لياقة. ابدأ تدريجياً وتابع الفيديوهات.</p>
+    <p>Exercises tailored to each BMI category and fitness level. Start gradually and focus on routines that improve fitness and burn fat.</p>
 
-   <li>
-  <h3>تمرين المشي السريع</h3>
-  <iframe width="320" height="180"
-    src="https://www.youtube.com/embed/Br1cFpHWIRM"
-    title="تمرين المشي السريع"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-  <p>ابدأ بالمشي 15 دقيقة يومياً وزد تدريجياً.</p>
-</li>
+    <ul>
+      <li>
+        <h3>Brisk Walking</h3>
+        <iframe width="320" height="180"
+          src="https://www.youtube.com/embed/Br1cFpHWIRM"
+          title="Brisk Walking Exercise"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <p>Start with 20 minutes of brisk walking daily, then gradually increase time or pace to improve heart health and burn calories.</p>
+      </li>
 
-<li>
-  <h3>تمارين الإطالة</h3>
-  <iframe width="320" height="180"
-    src="https://www.youtube.com/embed/6iFVbK76buA"
-    title="تمارين الإطالة"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-  <p>مارس الإطالة بعد التمارين لتحسين المرونة وتقليل الشد العضلي.</p>
-</li>
-    <h3>جدول تمارين أسبوعي</h3>
-<a href="assets/files/phone-number.pdf" download>تحميل جدول التمارين</a>
+      <li>
+        <h3>Belly Fat Burning Exercises</h3>
+        <iframe width="320" height="180"
+          src="https://www.youtube.com/embed/6iFVbK76buA"
+          title="Belly Fat Burning Workouts"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <p>Practice these targeted exercises to burn abdominal fat, combined with a healthy diet for best results.</p>
+      </li>
+    </ul>
   </section>
 </div>

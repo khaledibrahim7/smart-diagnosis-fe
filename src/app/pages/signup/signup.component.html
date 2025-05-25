@@ -29,29 +29,29 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <label for="phoneNumber"> Phone Number</label>
-      
-        <ngx-intl-tel-input
-          [cssClass]="'form-control'"
-          [preferredCountries]="preferredCountries"
-          [enableAutoCountrySelect]="true"
-          [separateDialCode]="separateDialCode"
-          [numberFormat]="phoneFormat"
-          [phoneValidation]="true"
-          formControlName="phoneNumber">
-        </ngx-intl-tel-input>
-      
-        <div class="error" *ngIf="phoneNumberControl?.touched && phoneNumberControl?.errors">
-          <ng-container *ngIf="phoneNumberControl?.hasError('required')">
-            Phone number is required.
-          </ng-container>
-          <ng-container *ngIf="!phoneNumberControl?.hasError('required') && !isPhoneNumberValid() && phoneNumberControl?.value">
-            Invalid phone number format.
-          </ng-container>
-        </div>
-      </div>
-      
+   <div class="input-group">
+  <label for="phoneNumber">Phone Number</label>
+
+  <ngx-intl-tel-input
+    [cssClass]="'form-control'"
+    [preferredCountries]="preferredCountries"
+    [enableAutoCountrySelect]="true"
+    [separateDialCode]="separateDialCode"
+    [numberFormat]="phoneFormat"
+    [phoneValidation]="true"
+    formControlName="phoneNumber">
+  </ngx-intl-tel-input>
+
+  <div class="error" *ngIf="phoneNumberControl?.touched && phoneNumberControl?.errors">
+    <ng-container *ngIf="phoneNumberControl?.hasError('required')">
+      Phone number is required.
+    </ng-container>
+    <ng-container *ngIf="!phoneNumberControl?.hasError('required') && !isPhoneNumberValid() && phoneNumberControl?.value">
+      Invalid phone number format.
+    </ng-container>
+  </div>
+</div>
+
 
       <div class="input-group">
         <label for="age">Age</label>

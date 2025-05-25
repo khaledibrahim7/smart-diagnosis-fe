@@ -32,6 +32,8 @@
     "google-libphonenumber": "^3.2.40",
     "intl-tel-input": "^19.5.7",
     "jquery": "^3.7.1",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "libphonenumber-js": "^1.12.6",
     "lucide": "^0.487.0",
     "lucide-angular": "^0.487.0",
