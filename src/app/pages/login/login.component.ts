@@ -32,7 +32,7 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.invalid) {
       this.snackBar.open('❌ يرجى ملء جميع الحقول بشكل صحيح.', 'إغلاق', {
-        duration: 3000,
+        duration: 2000,
         panelClass: ['error-snackbar'],
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -44,7 +44,7 @@ export class LoginComponent {
     if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
       const remaining = Math.ceil((parseInt(blockedUntil) - new Date().getTime()) / 60000);
       this.snackBar.open(`🚫 لقد تجاوزت عدد المحاولات. حاول مرة أخرى بعد ${remaining} دقيقة.`, 'إغلاق', {
-        duration: 4000,
+        duration: 3000,
         panelClass: ['error-snackbar'],
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -64,7 +64,7 @@ export class LoginComponent {
           localStorage.removeItem('loginBlockedUntil');
   
           this.snackBar.open('✅ تم تسجيل الدخول بنجاح!', 'إغلاق', {
-            duration: 3000,
+            duration: 2000,
             panelClass: ['success-snackbar'],
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -74,7 +74,7 @@ export class LoginComponent {
           this.router.navigate(['/diagnosis']);
         } else {
           this.snackBar.open('⚠️ حدث خطأ أثناء تسجيل الدخول، يرجى المحاولة مرة أخرى.', 'إغلاق', {
-            duration: 3000,
+            duration: 2000,
             panelClass: ['error-snackbar'],
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -99,7 +99,7 @@ export class LoginComponent {
           });
         } else {
           this.snackBar.open('❌ البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.', 'إغلاق', {
-            duration: 3000,
+            duration: 1000,
             panelClass: ['error-snackbar'],
             horizontalPosition: 'center',
             verticalPosition: 'top',

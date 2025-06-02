@@ -28,6 +28,14 @@ export class DiagnosisComponent implements OnInit {
   isLoading = false;
   isTyping = false;
 
+showSidebar: boolean = true;
+
+toggleSidebar() {
+  this.showSidebar = !this.showSidebar;
+}
+
+
+
 
   constructor(private diagnosisService: DiagnosisService, private router: Router, private http: HttpClient,  private snackBar: MatSnackBar
   ) {
@@ -122,58 +130,60 @@ export class DiagnosisComponent implements OnInit {
     this.isTyping = false;
   }
 
-  sendTextToBot(message: string) {
-    this.isLoading = true;
-    this.addTypingIndicator();
+ sendTextToBot(message: string) {
+  this.isLoading = true;
+  this.addTypingIndicator();
 
-    const localModelApi = this.http.post('http://localhost:9000/chat', { message }).toPromise();
-    const geminiApi = this.http.post('http://localhost:5000/chat', { message }).toPromise();
+  const localModelApi = this.http.post('http://localhost:9000/chat', { message }).toPromise();
+  const geminiApi = this.http.post('http://localhost:5000/chat', { message }).toPromise();
 
-    Promise.all([localModelApi, geminiApi])
-      .then(([localResponse, geminiResponse]: [any, any]) => {
-        const localText = localResponse?.response || null;
-        const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
+  Promise.all([localModelApi, geminiApi])
+    .then(([localResponse, geminiResponse]: [any, any]) => {
+      this.removeTypingIndicator();
 
-        this.removeTypingIndicator();
+      const localText = localResponse?.response || '';
+      const geminiText = geminiResponse?.response || '🤖 سمارت: لا يوجد رد.';
+      const geminiAudioUrl = geminiResponse?.audioUrl || null;
 
-        const unwantedKeywords = [
-          "مرحباً",
-          "أهلاً بيك! أنا هنا علشان أساعدك تطمن على صحتك، قولي حاسس بإيه؟",
-          "  أهلاً وسهلاً! قولي بقى، عاوز تطمن على صحتك؟",
-          "منورنا والله! قولي مالك كده شكلك مش رايق؟",
-          "منورنا والله! قولي مالك كده وشك مش رايق؟",
-          "Munawarna by God! Say that your money is like this and not?"
-        ];
+      const unwantedKeywords = [
+        "مرحباً",
+        "أهلاً بيك! أنا هنا علشان أساعدك تطمن على صحتك، قولي حاسس بإيه؟",
+        "  أهلاً وسهلاً! قولي بقى، عاوز تطمن على صحتك؟",
+        "منورنا والله! قولي مالك كده شكلك مش رايق؟",
+        "منورنا والله! قولي مالك كده وشك مش رايق؟",
+        "Munawarna by God! Say that your money is like this and not?"
+      ];
 
-        if (localText) {
-          if (unwantedKeywords.some(keyword => localText.includes(keyword))) {
-            this.addBotMessage('');
-          } else {
-            
-                this.addBotMessage(localText);
-                this.saveBotMessageToBackend(localText); 
-              }
-            }
-                    
+      if (localText && !unwantedKeywords.some(keyword => localText.includes(keyword))) {
+        this.addBotMessage(localText);
+        this.saveBotMessageToBackend(localText);
+      }
 
-        const formattedGeminiLines = this.formatGeminiResponse(geminiText);
-        formattedGeminiLines.forEach(line => {
-          this.addBotMessage(line);
-            this.saveBotMessageToBackend(line);  
-        });
-      })
-      .catch((error) => {
-        console.error('❌ Error communicating with APIs:', error);
-        this.removeTypingIndicator();
-        const errorText = this.userLang === 'ar'
-          ? 'حدث خطأ أثناء التواصل مع الخوادم.'
-          : 'An error occurred while communicating with servers.';
-        this.addBotMessage(errorText);
-      })
-      .finally(() => {
-        this.isLoading = false;
+      const formattedGeminiLines = this.formatGeminiResponse(geminiText);
+      formattedGeminiLines.forEach(line => {
+        this.addBotMessage(line);
+        this.saveBotMessageToBackend(line);
       });
-  }
+
+      if (geminiAudioUrl) {
+        const audio = new Audio(geminiAudioUrl);
+        audio.play().catch(err => console.error('🔇 فشل تشغيل الصوت:', err));
+      }
+
+    })
+    .catch((error) => {
+      console.error('❌ Error communicating with APIs:', error);
+      this.removeTypingIndicator();
+      const errorText = this.userLang === 'ar'
+        ? 'حدث خطأ أثناء التواصل مع الخوادم.'
+        : 'An error occurred while communicating with servers.';
+      this.addBotMessage(errorText);
+    })
+    .finally(() => {
+      this.isLoading = false;
+    });
+}
+
 
   formatGeminiResponse(text: string): string[] {
     const lines = text.split(/\n|\. /);
@@ -274,11 +284,13 @@ sendMessage(content?: string) {
       next: (messageResponse) => {
         const chat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
         if (chat && messageResponse.data) {
-          chat.title = messageResponse.data.content;  
+          if (!chat.title || chat.title.trim() === '') {
+            chat.title = messageResponse.data.content;
+          }
         }
 
         this.isTyping = false;
-        this.sendTextToBot(text); 
+        this.sendTextToBot(text);
       },
       error: (err) => {
         console.error('Error sending message', err);
@@ -289,6 +301,7 @@ sendMessage(content?: string) {
     console.error('❌ لا يمكن إرسال الرسالة، معرّف المحادثة غير موجود');
   }
 }
+
 startNewChat(initialMessage: string) {
   const currentChat = this.chatHistory.find(chat => chat.chatId === this.activeChatId);
 

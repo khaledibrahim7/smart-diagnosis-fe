@@ -11,7 +11,6 @@ $error-color: #e74c3c;
 $border-radius: 8px;
 $transition-time: 0.3s;
 
-// Mixins
 @mixin flex-center($direction: row, $justify: center, $align: center) {
   display: flex;
   flex-direction: $direction;
@@ -23,7 +22,6 @@ $transition-time: 0.3s;
   font-size: clamp(#{$min-size}px, 1.5vw, #{$max-size}px);
 }
 
-// Global styles
 .bmi-container {
   max-width: 900px;
   margin: 2rem auto;
@@ -35,7 +33,6 @@ $transition-time: 0.3s;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: background-color $transition-time ease, color $transition-time ease;
 
-  // Dark mode
   &.dark-mode {
     background-color: $dark-bg;
     color: $dark-text;

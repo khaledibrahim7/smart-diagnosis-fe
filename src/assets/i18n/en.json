@@ -1,27 +1,148 @@
 {
-    "SETTINGS": {
-      "ACCOUNT_SETTINGS": "Account Settings",
-      "ACCOUNT_INFORMATION": "Account Information",
-      "FIRST_NAME": "First Name",
-      "LAST_NAME": "Last Name",
-      "EMAIL": "Email",
-      "PHONE_NUMBER": "Phone Number",
-      "AGE": "Age",
-      "GENDER": "Gender",
-      "MALE": "Male",
-      "FEMALE": "Female",
-      "LANGUAGE": "Language",
-      "ENGLISH": "English",
-      "ARABIC": "Arabic",
-      "ENABLE_DARK_MODE": "Enable Dark Mode",
-      "RATE_SERVICE": "Rate the Service",
-      "CHANGE_PASSWORD": "Change Password",
-      "NEW_PASSWORD": "New Password",
-      "CONFIRM_NEW_PASSWORD": "Confirm New Password",
-      "SAVE_CHANGES": "Save Changes",
-      "SAVING": "Saving...",
-      "DELETE_ACCOUNT": "Delete Account",
-      "DELETING": "Deleting..."
-    }
+  "pregnancy_tips": {
+    "title": "🔶 Pregnancy Tips",
+    "items": [
+      "Make sure to eat a healthy, balanced diet rich in vitamins and minerals",
+      "Regularly follow up your pregnancy with your doctor every month or as advised",
+      "Avoid medicines and treatments without consulting your doctor",
+      "Take recommended vitamins such as folic acid and iron",
+      "Engage in light exercises like walking or prenatal yoga",
+      "Stay away from stress and create a calm and comfortable environment",
+      "Monitor any serious symptoms like bleeding, persistent pain, or weak fetal movements",
+      "Do regular checks for sugar and blood pressure as per doctor's instructions"
+    ]
+  },
+  "birth_preparation": {
+    "title": "🔶 Birth Preparation",
+    "items": [
+      "Prepare your hospital bag from the eighth month (clothes, diapers, papers, your necessities)",
+      "Learn about labor signs: regular contractions, water breaking, lower back pain",
+      "Discuss with your doctor about your birth plan (natural or cesarean)",
+      "Prepare someone to accompany you during labor (husband or mother)",
+      "Learn breathing exercises helpful during labor"
+    ]
+  },
+  "postpartum_psychological_tips": {
+    "title": "🔶 Psychological Tips for the Mother After Birth",
+    "items": [
+      "Watch for symptoms of postpartum depression (persistent sadness, crying, extreme fatigue)",
+      "Ask for support from your spouse and family, and don't hesitate to seek psychological help",
+      "Try to rest when the baby sleeps to regain your energy",
+      "Eat well, drink plenty of fluids, and take care of yourself as you take care of the baby",
+      "Talk with other mothers; sharing experiences helps a lot"
+    ]
+  },
+  "postpartum_depression_treatment": {
+    "title": "🔶 Postpartum Depression Treatment and Psychological Support",
+    "items": [
+      "Consult a psychiatrist or mental health specialist if you feel persistent sadness or depression symptoms",
+      "Share your feelings with your spouse, close friends, or family members",
+      "Ensure good sleep and enough rest even if the baby is disruptive at first",
+      "Practice breathing exercises, relaxation, or light yoga",
+      "Avoid isolation and try to get regular fresh air",
+      "Eat a healthy diet and avoid caffeine and stimulants",
+      "If symptoms persist for a long time, the doctor may prescribe medications safe during breastfeeding",
+      "Join support groups for mothers to share experiences and get psychological help"
+    ]
+  },
+  "postpartum_nutrition": {
+    "title": "🔶 Healthy Nutrition for the Breastfeeding Mother",
+    "items": [
+      "Drink plenty of water throughout the day to maintain milk production",
+      "Eat balanced meals containing protein, calcium, and vitamins",
+      "Avoid caffeine, alcohol, and stimulants",
+      "Increase intake of fresh vegetables and fruits",
+      "Ensure good rest and sleep to improve milk quality",
+      "Consult your doctor or nutritionist if you have digestive problems or allergies"
+    ]
+  },
+  "breastfeeding_problems": {
+    "title": "🔶 Breastfeeding Problems and How to Deal With Them",
+    "items": [
+      "Nipple pain: use natural creams and keep the breast clean",
+      "Low milk supply: try breast pumps or increase breastfeeding frequency",
+      "Blocked milk ducts: focus on gentle breast massage",
+      "Breast infections: consult a doctor immediately if redness or heat appears",
+      "Follow a healthy diet to support milk production"
+    ]
+  },
+  "babycare": {
+    "title": "🔶 Newborn Care",
+    "items": [
+      "Exclusive breastfeeding for the first 6 months is very important for the baby's growth",
+      "Change diapers regularly to avoid rashes",
+      "Clean the baby's umbilical cord gently, and keep the body clean daily",
+      "Monitor the baby's temperature and watch for any changes in behavior",
+      "Do not let the baby sleep on their stomach to avoid the risk of suffocation",
+      "Create a safe sleeping environment: firm mattress, no many toys around"
+    ]
+  },
+  "baby_vaccinations": {
+    "title": "🔶 Child Vaccinations by Age",
+    "items": [
+      "At birth: Hepatitis B vaccine (within the first 24 hours)",
+      "At 2 months: 5 essential vaccines (DTP, Hib, Polio, Hep B, Pneumococcal)",
+      "At 4 months: repeat the previous vaccines",
+      "At 6 months: additional doses plus seasonal flu vaccine",
+      "At 9 months: first measles vaccine",
+      "At 12 months: MMR, chickenpox, hepatitis A vaccines",
+      "Keep vaccination card and update it regularly with your doctor"
+    ]
+  },
+  "baby_growth_monthly": {
+    "title": "🔶 Baby Growth Month by Month",
+    "items": [
+      "1 month: starts to lift head slightly, recognizes mother's voice",
+      "2 months: smiles, follows moving objects with eyes",
+      "3-4 months: starts to grasp toys, makes happy sounds",
+      "5-6 months: sits with support, rolls from tummy to back and vice versa",
+      "7-9 months: starts crawling, says simple words like mama and papa",
+      "10-12 months: stands with help, takes steps, imitates movements"
+    ]
+  },
+  "baby_feeding_after_6_months": {
+    "title": "🔶 Feeding Baby After 6 Months",
+    "items": [
+      "Start introducing solid foods after 6 months while continuing breastfeeding",
+      "Begin with mashed vegetables like zucchini, potatoes, carrots",
+      "Introduce a new food every 3 days to monitor for allergies",
+      "Avoid honey, salt, and sugar during the first year",
+      "Continue breastfeeding or formula feeding with solid food",
+      "Offer food with a texture suitable for the baby's age and mouth development",
+      "Watch stool and skin for any signs of allergy or intolerance"
+    ]
+  },
+  "home_safety_for_baby": {
+    "title": "🔶 Home Safety to Protect Your Baby",
+    "items": [
+      "Install barriers on stairs and windows",
+      "Keep medicines and cleaning products out of baby's reach",
+      "Secure heavy furniture to the wall to prevent tipping",
+      "Cover electrical outlets with safety plugs",
+      "Do not leave baby alone on bed or table",
+      "Use high chairs with safety belts during meals",
+      "Always supervise the baby during playtime or crawling"
+    ]
+  },
+  "common_childhood_illnesses": {
+    "title": "🔶 Dealing with Common Childhood Illnesses",
+    "items": [
+      "Cold: rest the baby, give warm fluids, consult a doctor if cough persists",
+      "Infant colic: soothe the baby, change positions, gently massage the belly",
+      "Rash: avoid tight clothing, use natural moisturizers, consult doctor if needed",
+      "Fever: monitor temperature, use appropriate fever reducers, see doctor if very high",
+      "Diarrhea: keep fluids up, avoid heavy foods, consult doctor if it continues"
+    ]
+  },
+  "father_role_postpartum": {
+    "title": "🔶 Father's Role in Supporting Mother and Caring for Baby",
+    "items": [
+      "Help the mother care for the baby like changing diapers and giving formula feeding if needed",
+      "Provide psychological and moral support, listen to her",
+      "Assist with house chores to ease her burden",
+      "Attend doctor visits with the mother for checkups",
+      "Be patient and flexible with the mother's mood swings",
+      "Learn baby care basics and participate in all growth stages"
+    ]
   }
-  
+}

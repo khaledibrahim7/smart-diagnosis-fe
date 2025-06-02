@@ -28,8 +28,15 @@
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
-    <div class="chat-body-flex">
-      <div class="chat-sidebar">
+    <div class="chat-body-flex" [class.sidebar-hidden]="!showSidebar">
+                <button 
+            class="toggle-sidebar-icon" 
+            [class.sidebar-collapsed]="!showSidebar" 
+            (click)="toggleSidebar()"
+          >
+            {{ showSidebar ? '«' : '»' }}
+          </button>
+      <div class="chat-sidebar" [class.collapsed]="!showSidebar">
         <div class="sidebar-header">
           <button class="new-chat-btn" (click)="startNewChat('')">
             {{ userLang === 'ar' ? 'محادثة جديدة' : 'New Chat' }}

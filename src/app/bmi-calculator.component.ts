@@ -62,7 +62,7 @@ export class BmiCalculatorComponent implements AfterViewInit {
   }
 
  ngAfterViewInit() {
-  const storedRecords = sessionStorage.getItem('bmiRecords');
+const storedRecords = localStorage.getItem('bmiRecords');
   if (storedRecords) {
     this.bmiRecords = JSON.parse(storedRecords);
   }
@@ -204,20 +204,20 @@ export class BmiCalculatorComponent implements AfterViewInit {
     }
   }
 
-  addBmiRecord() {
-    if (this.bmiHistoryForm.invalid) return;
+ addBmiRecord() { 
+  if (this.bmiHistoryForm.invalid) return;
 
-    this.bmiRecords.push({
-      date: this.bmiHistoryForm.value.date,
-      bmi: this.bmiHistoryForm.value.bmi
+  this.bmiRecords.push({ 
+    date: this.bmiHistoryForm.value.date, 
+    bmi: this.bmiHistoryForm.value.bmi 
+  }); 
 
-    });
-      sessionStorage.setItem('bmiRecords', JSON.stringify(this.bmiRecords));
+  localStorage.setItem('bmiRecords', JSON.stringify(this.bmiRecords));  
 
+  this.bmiHistoryForm.reset(); 
+  this.updateChart(); 
+}
 
-    this.bmiHistoryForm.reset();
-    this.updateChart();
-  }
 
 
   createChart() {
