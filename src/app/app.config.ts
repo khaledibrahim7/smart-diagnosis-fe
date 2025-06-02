@@ -85,6 +85,12 @@ const routes: Routes = [
     path: 'feedback',
     loadComponent: () => import('./feedback/feedback.component').then(m => m.FeedbackComponent)
   },
+  {
+  path: 'terms',
+  loadComponent: () =>
+    import('./pages/terms-and-conditions.component').then(m => m.TermsAndConditionsComponent),
+},
+
   { path: 'diseases', component: DiseasesComponent },
  
 {

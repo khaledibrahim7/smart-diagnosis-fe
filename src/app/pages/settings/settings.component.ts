@@ -66,6 +66,8 @@ export class SettingsComponent implements OnInit, AfterViewInit {
       newPassword: ['', Validators.minLength(6)], 
       confirmNewPassword: [''], 
     }, { validators: this.passwordMatchValidator }); 
+      this.settingsForm.controls['gender'].disable();
+
   } 
  
   passwordMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => { 
@@ -180,4 +182,9 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   goToFeedback() { 
     this.router.navigate(['/feedback']); 
   } 
+   goToTerms() {
+    this.router.navigate(['/terms']);
+ 
+  }
+
 }

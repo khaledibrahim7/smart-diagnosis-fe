@@ -113,19 +113,19 @@ export class LoginComponent {
     });
   }
   
-  speakGreeting(): void {
-    const message = "Welcome back to our platform! أهلاً بك تاني في منصتنا!";
+ speakGreeting(): void {
+  const utteranceEnglish = new SpeechSynthesisUtterance("Welcome back to our platform!");
+  utteranceEnglish.lang = 'en-US';
 
-    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك تاني في منصتنا!");
-    utteranceArabic.lang = 'ar-EG';
-    speechSynthesis.speak(utteranceArabic);
-
-    const utteranceEnglish = new SpeechSynthesisUtterance("Welcome back to our platform!");
-    utteranceEnglish.lang = 'en-US';
-    speechSynthesis.speak(utteranceEnglish);
-
-    
+  const voices = speechSynthesis.getVoices();
+  const englishVoice = voices.find(voice => voice.lang.startsWith('en'));
+  if (englishVoice) {
+    utteranceEnglish.voice = englishVoice;
   }
+
+  speechSynthesis.speak(utteranceEnglish);
+}
+
 
   navigateToSignUp() {
     this.router.navigate(['/signup']);

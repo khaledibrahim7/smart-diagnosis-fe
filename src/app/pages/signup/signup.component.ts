@@ -182,10 +182,6 @@ export class SignupComponent {
     const utteranceEnglish = new SpeechSynthesisUtterance("Welcome to our platform!");
     utteranceEnglish.lang = 'en-US';
     speechSynthesis.speak(utteranceEnglish);
-
-    const utteranceArabic = new SpeechSynthesisUtterance("أهلاً بك في منصتنا!");
-    utteranceArabic.lang = 'ar-EG';
-    speechSynthesis.speak(utteranceArabic);
   }
 
   navigateToLogin() {
