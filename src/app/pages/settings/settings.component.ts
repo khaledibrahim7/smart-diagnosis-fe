@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms'; 
 import { SettingsService } from '../../services/settings.service'; 
 import { Router } from '@angular/router'; 
- 
+
 @Component({ 
   selector: 'app-settings', 
   standalone: true, 
@@ -22,17 +22,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
     private router: Router 
   ) {} 
  
-  updateDirectionBasedOnLanguage(): void { 
-    const lang = this.settingsForm.get('language')?.value || 'en'; 
  
-    if (lang === 'ar') { 
-      document.documentElement.setAttribute('lang', 'ar'); 
-      document.documentElement.setAttribute('dir', 'rtl'); 
-    } else { 
-      document.documentElement.setAttribute('lang', 'en'); 
-      document.documentElement.setAttribute('dir', 'ltr'); 
-    } 
-  } 
  
   ngOnInit(): void { 
     this.initForm(); 
@@ -45,11 +35,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
         document.body.classList.toggle('dark-mode', isDark); 
         this.savePartialSettings({ darkMode: isDark }); 
       } 
-    }); 
- 
-    this.settingsForm.get('language')?.valueChanges.subscribe((lang) => { 
-      this.updateDirectionBasedOnLanguage(); 
-      this.savePartialSettings({ language: lang }); 
     }); 
   } 
  
@@ -107,7 +92,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
  
         document.body.classList.toggle('dark-mode', data.darkMode); 
  
-        this.updateDirectionBasedOnLanguage(); 
       }, 
       error: (err) => console.error('❌ Error fetching settings:', err) 
     }); 

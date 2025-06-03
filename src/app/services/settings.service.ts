@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
   private baseUrl = 'http://localhost:2020/api/settings';
+    private apiUrl = 'https://libretranslate.de/translate';
+
 
   constructor(private http: HttpClient) {}
 
@@ -34,4 +36,23 @@ export class SettingsService {
       headers: this.getAuthHeaders()
     });
   }
+  
+ translate(text: string, target: string, source = 'auto') {
+    const url = 'https://libretranslate.de/translate';
+
+    return this.http.post<any>(url, {
+      q: text,
+      source: source,
+      target: target,
+      format: 'text'
+    }).pipe(
+      map(res => res.translatedText),
+      catchError(error => {
+        console.error('❌ Error during translation:', error);
+        return of(text); // fallback: رجع نفس النص لو فشل
+      })
+    );
+  }
+
+
 }
