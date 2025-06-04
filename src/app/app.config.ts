@@ -97,7 +97,6 @@ const routes: Routes = [
   path: 'pharmacies',
   loadComponent: () => import('./pages/nearby-pharmacies.component').then(m => m.NearbyPharmaciesComponent)
 },
-
 ];
 
 export const appConfig: ApplicationConfig = {
