@@ -51,7 +51,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
       newPassword: ['', Validators.minLength(6)], 
       confirmNewPassword: [''], 
     }, { validators: this.passwordMatchValidator }); 
-      this.settingsForm.controls['gender'].disable();
 
   } 
  
@@ -111,37 +110,38 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   } 
  
   saveSettings(): void { 
-    if (!this.patientId || this.settingsForm.invalid) return; 
- 
-    const formData = { ...this.settingsForm.getRawValue() }; 
- 
-    const payload = { 
-      settings: { 
-        firstName: formData.firstName, 
-        lastName: formData.lastName, 
-        phoneNumber: formData.phoneNumber, 
-        age: formData.age, 
-        gender: formData.gender, 
-        language: formData.language, 
-        darkMode: formData.darkMode 
-      }, 
-      newPassword: formData.newPassword || null, 
-      confirmPassword: formData.confirmNewPassword || null 
-    }; 
- 
-    this.isLoading = true; 
-    this.settingsService.updateSettings(this.patientId, payload).subscribe({ 
-      next: () => { 
-        this.isLoading = false; 
-        alert('Settings updated successfully'); 
-      }, 
-      error: (err) => { 
-        this.isLoading = false; 
-        console.error('❌ Error updating settings:', err); 
-        alert('Failed to update settings'); 
-      } 
-    }); 
-  } 
+  if (!this.patientId || this.settingsForm.invalid) return; 
+
+  const formData = { ...this.settingsForm.getRawValue() }; 
+
+  const payload = { 
+    firstName: formData.firstName, 
+    lastName: formData.lastName, 
+    phoneNumber: formData.phoneNumber, 
+    age: formData.age, 
+    gender: this.settingsForm.get('gender')?.value, // لأنه disabled ومش هيظهر في getRawValue
+    settings: { 
+      language: formData.language, 
+      darkMode: formData.darkMode 
+    }, 
+    newPassword: formData.newPassword || null, 
+    confirmPassword: formData.confirmNewPassword || null 
+  }; 
+
+  this.isLoading = true; 
+  this.settingsService.updateSettings(this.patientId, payload).subscribe({ 
+    next: () => { 
+      this.isLoading = false; 
+      alert('✅ Settings updated successfully'); 
+    }, 
+    error: (err) => { 
+      this.isLoading = false; 
+      console.error('❌ Error updating settings:', err); 
+      alert('❌ Failed to update settings'); 
+    } 
+  }); 
+}
+
  
   deleteAccount(): void { 
     if (!this.patientId || !confirm('⚠️ Are you sure you want to delete your account?')) return; 
