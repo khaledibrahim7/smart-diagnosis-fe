@@ -1,0 +1,94 @@
+<div class="container">
+  <h1>الصحة النفسية</h1>
+
+  <!-- 1. قائمة أمراض نفسية شائعة -->
+  <section>
+    <h2>الأمراض النفسية الشائعة</h2>
+    <div *ngFor="let illness of mentalIllnesses" class="illness-card">
+      <h3>{{ illness.name }}</h3>
+      <p><strong>الأعراض:</strong> {{ illness.symptoms.join(', ') }}</p>
+      <p><strong>نصائح:</strong> {{ illness.tips.join(', ') }}</p>
+    </div>
+  </section>
+
+  <!-- 2. نصائح يومية -->
+  <section>
+    <h2>نصائح يومية للصحة النفسية</h2>
+    <ul>
+      <li *ngFor="let tip of dailyTips">{{ tip }}</li>
+    </ul>
+  </section>
+
+  <!-- 3. معلومات الاتصال بخدمات الدعم النفسي -->
+  <section>
+    <h2>خدمات الدعم النفسي</h2>
+    <ul>
+      <li *ngFor="let contact of supportContacts">
+        <strong>{{ contact.name }}</strong><br />
+        <span *ngIf="contact.phone">الهاتف: {{ contact.phone }}</span><br />
+        <a *ngIf="contact.website" [href]="contact.website" target="_blank" rel="noopener noreferrer">الموقع الإلكتروني</a>
+      </li>
+    </ul>
+  </section>
+
+
+  <section>
+    <h2>فيديوهات توعية</h2>
+    <div *ngFor="let video of videos">
+  <h3>{{ video.title }}</h3>
+  <iframe width="560" height="315" [src]="transform(video.url)" frameborder="0" allowfullscreen></iframe>
+</div>
+
+  </section>
+
+  <section>
+  <h2>اختبار تقييم سريع</h2>
+  <form [formGroup]="testForm" (ngSubmit)="submitTest()">
+    <label>
+      <input type="checkbox" formControlName="anxiety" /> هل تشعر بالقلق باستمرار؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="insomnia" /> هل تواجه صعوبة في النوم؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="lossInterest" /> هل تفقد الاهتمام بالأشياء التي كنت تحبها؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="fatigue" /> هل تشعر بالتعب أو بانخفاض الطاقة بشكل متكرر؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="appetiteChange" /> هل تغيرت شهيتك للأكل مؤخرًا؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="concentration" /> هل تواجه صعوبة في التركيز أو اتخاذ قرارات؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="hopelessness" /> هل تشعر بفقدان الأمل أو الإحباط بشكل دائم؟
+    </label><br />
+    <label>
+      <input type="checkbox" formControlName="irritability" /> هل تصبح سريع الانفعال أكثر من المعتاد؟
+    </label><br />
+    <button type="submit">احصل على النتيجة</button>
+  </form>
+  <p *ngIf="testResult"><strong>النتيجة:</strong> {{ testResult }}</p>
+</section>
+
+  <section>
+  <h2>اسأل الموديل AI</h2>
+  <form [formGroup]="aiForm" (ngSubmit)="askAI()">
+    <input
+      type="text"
+      formControlName="question"
+      placeholder="اكتب سؤالك هنا..."
+      [disabled]="loading"
+      autocomplete="off"
+    />
+    <button type="submit" [disabled]="loading || !aiForm.get('question')?.value.trim()">
+      {{ loading ? 'جاري الإرسال...' : 'اسأل' }}
+    </button>
+  </form>
+
+  <p *ngIf="aiAnswer"><strong>الرد:</strong> {{ aiAnswer }}</p>
+</section>
+
+</div>

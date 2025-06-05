@@ -97,6 +97,12 @@ const routes: Routes = [
   path: 'pharmacies',
   loadComponent: () => import('./pages/nearby-pharmacies.component').then(m => m.NearbyPharmaciesComponent)
 },
+  {
+    path: 'mental-health',
+    loadComponent: () =>
+      import('./pages/mental-health/mental-health.component').then(m => m.MentalHealthComponent),
+  },
+
 ];
 
 export const appConfig: ApplicationConfig = {

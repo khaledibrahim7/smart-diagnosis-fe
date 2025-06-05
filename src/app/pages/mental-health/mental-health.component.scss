@@ -1,0 +1,255 @@
+// variables
+$light-bg: #f9f9f9;
+$light-text: #222;
+$dark-bg: #121212;
+$dark-text: #eee;
+$primary-color: #4a90e2;
+$secondary-color: #50c878;
+$border-radius: 8px;
+$transition-time: 0.3s;
+
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: $light-text;
+  background-color: $light-bg;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color $transition-time ease, color $transition-time ease;
+
+  // Dark mode
+  &.dark {
+    background-color: $dark-bg;
+    color: $dark-text;
+
+    a {
+      color: $secondary-color;
+    }
+    button {
+      background-color: $secondary-color;
+      color: $dark-text;
+    }
+  }
+
+  h1, h2, h3, h4 {
+    margin-bottom: 0.6rem;
+    color: inherit;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+  }
+
+  /* أمراض نفسية */
+  .illness-card {
+    background: lighten($primary-color, 45%);
+    border-radius: $border-radius;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px rgba(74, 144, 226, 0.3);
+    transition: background-color $transition-time ease;
+
+    &:hover {
+      background: lighten($primary-color, 40%);
+    }
+
+    p {
+      margin: 0.4rem 0;
+    }
+  }
+
+  /* نصائح يومية */
+  ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  /* خدمات الدعم */
+  ul li {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+
+    strong {
+      color: $primary-color;
+    }
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      transition: color $transition-time ease;
+
+      &:hover {
+        color: darken($primary-color, 15%);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  /* فيديوهات */
+  .video-wrapper {
+    margin-bottom: 1.5rem;
+
+    iframe {
+      width: 100%;
+      max-width: 560px;
+      height: 315px;
+      border-radius: $border-radius;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: box-shadow $transition-time ease;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+    }
+  }
+
+  /* اختبار سريع */
+  form {
+    margin-top: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        margin-right: 0.5rem;
+        transform: scale(1.2);
+        vertical-align: middle;
+      }
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: $primary-color;
+      border: none;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.1rem;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: background-color $transition-time ease;
+
+      &:hover {
+        background-color: darken($primary-color, 15%);
+      }
+    }
+  }
+
+  p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+
+  /* شات AI */
+  section:last-child {
+    margin-top: 2rem;
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+
+      input[type="text"] {
+        flex: 1 1 auto;
+        padding: 0.6rem 1rem;
+        font-size: 1.1rem;
+        border: 2px solid lighten($primary-color, 30%);
+        border-radius: $border-radius;
+        transition: border-color $transition-time ease;
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
+      }
+
+      button {
+        flex: 0 0 auto;
+        background-color: $primary-color;
+        border: none;
+        color: white;
+        padding: 0.6rem 1.5rem;
+        font-size: 1.1rem;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: background-color $transition-time ease;
+
+        &:hover {
+          background-color: darken($primary-color, 15%);
+        }
+      }
+    }
+
+    p {
+      margin-top: 1rem;
+      background: lighten($primary-color, 45%);
+      padding: 0.8rem 1rem;
+      border-radius: $border-radius;
+      box-shadow: 0 1px 3px rgba(74, 144, 226, 0.4);
+      color: $primary-color;
+
+      .dark & {
+        background: lighten($secondary-color, 25%);
+        color: $dark-text;
+      }
+    }
+  }
+}
+
+// ريسبونسف - تجاوب مع الشاشات الصغيرة
+@media (max-width: 600px) {
+  .container {
+    padding: 0 0.8rem;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+    }
+
+    .video-wrapper iframe {
+      height: 200px;
+    }
+
+    form {
+      button {
+        width: 100%;
+        padding: 0.8rem;
+      }
+
+      input[type="text"] {
+        font-size: 1rem;
+      }
+    }
+  }
+}
