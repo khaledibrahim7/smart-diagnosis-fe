@@ -1,7 +1,6 @@
 <div class="container">
   <h1>الصحة النفسية</h1>
 
-  <!-- 1. قائمة أمراض نفسية شائعة -->
   <section>
     <h2>الأمراض النفسية الشائعة</h2>
     <div *ngFor="let illness of mentalIllnesses" class="illness-card">
@@ -11,7 +10,6 @@
     </div>
   </section>
 
-  <!-- 2. نصائح يومية -->
   <section>
     <h2>نصائح يومية للصحة النفسية</h2>
     <ul>
@@ -19,7 +17,6 @@
     </ul>
   </section>
 
-  <!-- 3. معلومات الاتصال بخدمات الدعم النفسي -->
   <section>
     <h2>خدمات الدعم النفسي</h2>
     <ul>
@@ -74,7 +71,7 @@
 </section>
 
   <section>
-  <h2>اسأل الموديل AI</h2>
+  <h2>اسأل طبيبك </h2>
   <form [formGroup]="aiForm" (ngSubmit)="askAI()">
     <input
       type="text"
