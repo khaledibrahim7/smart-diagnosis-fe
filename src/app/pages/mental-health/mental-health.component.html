@@ -1,91 +1,89 @@
 <div class="container">
-  <h1>الصحة النفسية</h1>
+  <h1>Mental Health</h1>
 
   <section>
-    <h2>الأمراض النفسية الشائعة</h2>
+    <h2>Common Mental Illnesses</h2>
     <div *ngFor="let illness of mentalIllnesses" class="illness-card">
       <h3>{{ illness.name }}</h3>
-      <p><strong>الأعراض:</strong> {{ illness.symptoms.join(', ') }}</p>
-      <p><strong>نصائح:</strong> {{ illness.tips.join(', ') }}</p>
+      <p><strong>Symptoms:</strong> {{ illness.symptoms.join(', ') }}</p>
+      <p><strong>Tips:</strong> {{ illness.tips.join(', ') }}</p>
     </div>
   </section>
 
   <section>
-    <h2>نصائح يومية للصحة النفسية</h2>
+    <h2>Daily Mental Health Tips</h2>
     <ul>
       <li *ngFor="let tip of dailyTips">{{ tip }}</li>
     </ul>
   </section>
 
   <section>
-    <h2>خدمات الدعم النفسي</h2>
+    <h2>Mental Health Support Services</h2>
     <ul>
       <li *ngFor="let contact of supportContacts">
         <strong>{{ contact.name }}</strong><br />
-        <span *ngIf="contact.phone">الهاتف: {{ contact.phone }}</span><br />
-        <a *ngIf="contact.website" [href]="contact.website" target="_blank" rel="noopener noreferrer">الموقع الإلكتروني</a>
+        <span *ngIf="contact.phone">Phone: {{ contact.phone }}</span><br />
+        <a *ngIf="contact.website" [href]="contact.website" target="_blank" rel="noopener noreferrer">Website</a>
       </li>
     </ul>
   </section>
 
-
   <section>
-    <h2>فيديوهات توعية</h2>
+    <h2>Awareness Videos</h2>
     <div *ngFor="let video of videos">
-  <h3>{{ video.title }}</h3>
-  <iframe width="560" height="315" [src]="transform(video.url)" frameborder="0" allowfullscreen></iframe>
-</div>
-
+      <h3>{{ video.title }}</h3>
+      <iframe width="560" height="315" [src]="transform(video.url)" frameborder="0" allowfullscreen></iframe>
+    </div>
   </section>
 
   <section>
-  <h2>اختبار تقييم سريع</h2>
-  <form [formGroup]="testForm" (ngSubmit)="submitTest()">
-    <label>
-      <input type="checkbox" formControlName="anxiety" /> هل تشعر بالقلق باستمرار؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="insomnia" /> هل تواجه صعوبة في النوم؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="lossInterest" /> هل تفقد الاهتمام بالأشياء التي كنت تحبها؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="fatigue" /> هل تشعر بالتعب أو بانخفاض الطاقة بشكل متكرر؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="appetiteChange" /> هل تغيرت شهيتك للأكل مؤخرًا؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="concentration" /> هل تواجه صعوبة في التركيز أو اتخاذ قرارات؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="hopelessness" /> هل تشعر بفقدان الأمل أو الإحباط بشكل دائم؟
-    </label><br />
-    <label>
-      <input type="checkbox" formControlName="irritability" /> هل تصبح سريع الانفعال أكثر من المعتاد؟
-    </label><br />
-    <button type="submit">احصل على النتيجة</button>
-  </form>
-  <p *ngIf="testResult"><strong>النتيجة:</strong> {{ testResult }}</p>
-</section>
+    <h2>Quick Self-Assessment</h2>
+    <form [formGroup]="testForm" (ngSubmit)="submitTest()">
+      <label>
+        <input type="checkbox" formControlName="anxiety" /> Do you feel anxious most of the time?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="insomnia" /> Do you have trouble sleeping?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="lossInterest" /> Have you lost interest in activities you used to enjoy?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="fatigue" /> Do you often feel tired or low on energy?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="appetiteChange" /> Have you experienced changes in your appetite recently?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="concentration" /> Do you have difficulty concentrating or making decisions?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="hopelessness" /> Do you feel hopeless or permanently down?
+      </label><br />
+      <label>
+        <input type="checkbox" formControlName="irritability" /> Are you more irritable than usual?
+      </label><br />
+      <button type="submit">Get Result</button>
+    </form>
+    <p *ngIf="testResult"><strong>Result:</strong> {{ testResult }}</p>
+  </section>
 
   <section>
-  <h2>اسأل طبيبك </h2>
-  <form [formGroup]="aiForm" (ngSubmit)="askAI()">
-    <input
-      type="text"
-      formControlName="question"
-      placeholder="اكتب سؤالك هنا..."
-      [disabled]="loading"
-      autocomplete="off"
-    />
-    <button type="submit" [disabled]="loading || !aiForm.get('question')?.value.trim()">
-      {{ loading ? 'جاري الإرسال...' : 'اسأل' }}
-    </button>
-  </form>
+    <h2>Ask Your Doctor</h2>
+    <form [formGroup]="aiForm" (ngSubmit)="askAI()">
+      <input
+        type="text"
+        formControlName="question"
+        placeholder="Type your question here..."
+        [disabled]="loading"
+        autocomplete="off"
+      />
+      <button type="submit" [disabled]="loading || !aiForm.get('question')?.value.trim()">
+        {{ loading ? 'Sending...' : 'Ask' }}
+      </button>
+    </form>
 
-  <p *ngIf="aiAnswer"><strong>الرد:</strong> {{ aiAnswer }}</p>
-</section>
-
+    <p *ngIf="aiAnswer"><strong>Answer:</strong> {{ aiAnswer }}</p>
+  </section>
 </div>
+

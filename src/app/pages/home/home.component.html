@@ -7,18 +7,17 @@
         </div>
       </section>
  
-      <div class="w-full">
-        <button class="main-button" [routerLink]="['/mother-child-care']">
-          Begin Your Motherhood Journey Here – Guidance & Support
-        </button>
-      </div>
+      <div class="card-wrapper">
+        <div class="card" [routerLink]="['/mother-child-care']">
+          <h3>Begin Your Motherhood Journey Here</h3>
+          <p>Guidance & Support</p>
+        </div>
 
-      <div class="go-mental-wrapper">
-        <button routerLink="/mental-health" class="go-mental-btn">
-          Mental Health – Start Your Journey to Mental Well-being
-        </button>
+      <div class="card" [routerLink]="['/mental-health']">
+        <h3>Mental Health</h3>
+        <p>Start Your Journey to Mental Well-being</p>
+        </div>
       </div>
-
 
       <section class="medical-articles">
         <h1>📰 Medical Articles</h1>

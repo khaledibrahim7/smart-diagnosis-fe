@@ -370,14 +370,6 @@ startNewChat(initialMessage: string) {
     });
   }
   
-
-  shareChat(chat: any) {
-    const chatText = `Chat Title: ${chat.title}`;
-    navigator.share
-      ? navigator.share({ title: chat.title, text: chatText })
-      : alert(this.userLang === 'ar' ? 'المشاركة غير مدعومة في هذا المتصفح.' : 'Sharing not supported.');
-    this.openedMenuIndex = null;
-  }
 toggleOptionsMenu(index: number) {
   if (this.openedMenuIndex === index) {
     this.openedMenuIndex = null;

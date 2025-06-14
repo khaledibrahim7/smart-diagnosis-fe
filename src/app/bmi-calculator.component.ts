@@ -141,19 +141,19 @@ const storedRecords = localStorage.getItem('bmiRecords');
     this.bmiForm.get('weight')?.updateValueAndValidity();
   }
 
-  getStatus(bmi: number): string {
-    if (bmi < 18.5) return 'نقص في الوزن';
-    if (bmi < 25) return 'وزنك مثالي';
-    if (bmi < 30) return 'زيادة في الوزن';
-    return 'سمنة';
-  }
+ getStatus(bmi: number): string {
+  if (bmi < 18.5) return 'Underweight';
+  if (bmi < 25) return 'Normal weight';
+  if (bmi < 30) return 'Overweight';
+  return 'Obese';
+}
 
-  getTip(bmi: number): string {
-    if (bmi < 18.5) return 'حاول تناول أطعمة غنية بالبروتين والسعرات الحرارية، مع ممارسة تمارين بسيطة.';
-    if (bmi < 25) return 'استمر على نظامك الصحي الحالي، واحرص على الرياضة اليومية.';
-    if (bmi < 30) return 'قلل من السكريات والدهون، وحاول ممارسة الرياضة 3 مرات أسبوعيًا.';
-    return 'يفضل مراجعة أخصائي تغذية ووضع خطة لخسارة الوزن بطريقة صحية.';
-  }
+getTip(bmi: number): string {
+  if (bmi < 18.5) return 'Try to eat more calorie-dense and protein-rich foods, and do light exercise.';
+  if (bmi < 25) return 'Maintain your healthy lifestyle and stay active daily.';
+  if (bmi < 30) return 'Reduce sugar and fat intake, and try to exercise at least 3 times a week.';
+  return 'It is recommended to consult a nutritionist and create a healthy weight loss plan.';
+}
 
   getStatusClass(bmi: number): string {
     if (bmi < 18.5) return 'underweight';
@@ -195,13 +195,14 @@ const storedRecords = localStorage.getItem('bmiRecords');
 
     this.calorieResult = Math.round(bmr * (activityFactors[activity] || 1.2));
 
-    if (this.calorieResult < 1500) {
-      this.calorieTip = 'تناول وجبات صغيرة ومتعددة وزد من البروتين.';
+      if (this.calorieResult < 1500) {
+      this.calorieTip = 'Eat small, frequent meals and increase your protein intake.';
     } else if (this.calorieResult < 2500) {
-      this.calorieTip = 'حافظ على توازن السعرات مع نشاطك اليومي.';
+      this.calorieTip = 'Maintain a balance between your calorie intake and daily activity.';
     } else {
-      this.calorieTip = 'انتبه من الإفراط في تناول الطعام وزد من نشاطك.';
+      this.calorieTip = 'Be careful not to overeat and try to increase your physical activity.';
     }
+
   }
 
  addBmiRecord() { 
@@ -230,7 +231,7 @@ const storedRecords = localStorage.getItem('bmiRecords');
       data: {
         labels: this.bmiRecords.map(r => r.date),
         datasets: [{
-          label: 'مؤشر كتلة الجسم',
+          label: 'Body Mass Index',
           data: this.bmiRecords.map(r => r.bmi),
           borderColor: 'rgb(75, 192, 192)',
           fill: false,

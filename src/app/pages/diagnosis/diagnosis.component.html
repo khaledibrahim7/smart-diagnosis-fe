@@ -44,21 +44,24 @@
           <h4>{{ userLang === 'ar' ? 'المحادثات السابقة' : 'Previous Chats' }}</h4>
         </div>
 
-        <div class="chat-history">
-          <div *ngFor="let chat of chatHistory; let i = index" class="chat-history-item">
-            <div class="chat-title" [class.active]="chat.chatId === activeChatId" (click)="loadChat(chat.chatId)">
-              {{ chat.title || (userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1))) }}
-            </div>
-            <div class="chat-options">
-              <button class="options-btn" (click)="toggleOptionsMenu(i)">⋮</button>
+              <div class="chat-history">
+                <div *ngFor="let chat of chatHistory; let i = index" class="chat-history-item">
+                  <div class="chat-title" [class.active]="chat.chatId === activeChatId" (click)="loadChat(chat.chatId)">
+                    {{ chat.title || (userLang === 'ar' ? ('محادثة ' + (i + 1)) : ('Chat ' + (i + 1))) }}
+                  </div>
+              <div class="chat-options">
+                <button class="options-btn" (click)="toggleOptionsMenu(i)">⋮</button>
+
               <div *ngIf="openedMenuIndex === i" class="options-menu">
-                <button (click)="shareChat(chat)">{{ userLang === 'ar' ? 'مشاركة' : 'Share' }}</button>
-                <button (click)="deleteChat(chat.chatId)">{{ userLang === 'ar' ? 'حذف' : 'Delete' }}</button>
-              </div>
+                  <button (click)="deleteChat(chat.chatId); onMenuItemClick()">
+                    {{ userLang === 'ar' ? 'حذف' : 'Delete' }}
+                  </button>
+            </div>
+      </div>
+
+                </div>
             </div>
           </div>
-        </div>
-      </div>
 
       <div class="chat-main">
         <div class="chat-messages" #messageContainer>

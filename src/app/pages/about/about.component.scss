@@ -124,11 +124,11 @@ body {
   color: $text-color;
 }
 
-.features-list, .difference-list {
+.features-list {
   list-style: none;
   padding: 0;
   margin: 0 auto;
-  max-width: 280px;
+  max-width: 300px;
 
   :host {
     background-color: var(--bg-color);
@@ -150,6 +150,70 @@ body {
     }
   }
 }
+
+// .about-grid {
+//   display: flex;
+//   justify-content: center;
+//   padding: 2rem 1rem;
+//   background-color: #f9f9f9;
+// }
+
+.difference-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: auto;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.difference-icon {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+
+.difference-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
+.difference-text {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+.difference-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 1.5rem;
+  text-align: left;
+}
+
+.difference-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-weight: normal; 
+  font-size: 1rem;
+  color: #222;
+}
+
+.difference-list li span {
+  flex: 1;
+}
+
+.difference-goal {
+  font-size: 1.1rem;
+  color: #333;
+  font-style: italic;
+}
+
+
 
 .faq-section {
   max-width: 800px;
