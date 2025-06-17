@@ -119,14 +119,31 @@ export class SnackbarComponent implements OnInit {
   showSnackbar: boolean = false;
 
   constructor() {}
+ngOnInit(): void {
+    const todayDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const storedTipData = localStorage.getItem('dailyTip');
 
-  ngOnInit(): void {
-    const dayIndex = new Date().getDate() % this.tips.length;
-    this.todayTip = this.tips[dayIndex];
+    if (storedTipData) {
+      const parsed = JSON.parse(storedTipData);
+      if (parsed.date === todayDate) {
+        this.todayTip = parsed.tip;
+      } else {
+        this.setNewTip(todayDate);
+      }
+    } else {
+      this.setNewTip(todayDate);
+    }
+
     this.showSnackbar = true;
 
     setTimeout(() => {
       this.showSnackbar = false;
-    }, 5000); 
+    }, 5000);
+  }
+
+  private setNewTip(todayDate: string) {
+    const dayIndex = new Date().getDate() % this.tips.length;
+    this.todayTip = this.tips[dayIndex];
+    localStorage.setItem('dailyTip', JSON.stringify({ date: todayDate, tip: this.todayTip }));
   }
 }

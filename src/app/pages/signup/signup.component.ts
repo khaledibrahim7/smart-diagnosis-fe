@@ -97,7 +97,7 @@ export class SignupComponent {
       });
       return;
     }
-  
+
     const blockedUntil = localStorage.getItem('signupBlockedUntil');
     if (blockedUntil && new Date().getTime() < parseInt(blockedUntil)) {
       const remaining = Math.ceil((parseInt(blockedUntil) - new Date().getTime()) / 60000);
@@ -109,13 +109,13 @@ export class SignupComponent {
       });
       return;
     }
-  
+
     this.isSubmitting = true;
     this.signupForm.disable();
-  
+
     const formData = this.signupForm.value;
     formData.phoneNumber = formData.phoneNumber ? formData.phoneNumber?.internationalNumber : '';
-  
+
     this.authService.signUp(formData).subscribe({
       next: (response) => {
         console.log('✅ تم التسجيل بنجاح!', response);
@@ -123,32 +123,42 @@ export class SignupComponent {
           localStorage.setItem('token', response.token);
           localStorage.setItem('patientId', response.id.toString());
         }
-  
+
         this.snackBar.open('تم التسجيل بنجاح!', 'إغلاق', {
           duration: 3000,
           panelClass: ['success-snackbar'],
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
-  
-        localStorage.removeItem('signupAttempts'); 
+
+        localStorage.removeItem('signupAttempts');
         localStorage.removeItem('signupBlockedUntil');
-  
+
         this.speakGreeting();
         this.router.navigate(['/diagnosis']);
       },
       error: (err) => {
         console.error('❌ فشل في التسجيل', err.error?.message || err);
-  
+
+        // زيادة عدد المحاولات
         let attempts = parseInt(localStorage.getItem('signupAttempts') || '0', 10);
         attempts++;
         localStorage.setItem('signupAttempts', attempts.toString());
-  
+
+        // تسجيل تفاصيل المحاولة الفاشلة
+        const failedLogs = JSON.parse(localStorage.getItem('signupFailedLogs') || '[]');
+        failedLogs.push({
+          timestamp: new Date().toISOString(),
+          email: formData.email,
+          reason: err.error?.message || 'Unknown error'
+        });
+        localStorage.setItem('signupFailedLogs', JSON.stringify(failedLogs));
+
         if (attempts >= 3) {
-          const blockTime = new Date().getTime() + 30 * 60 * 1000; 
+          const blockTime = new Date().getTime() + 30 * 60 * 1000;
           localStorage.setItem('signupBlockedUntil', blockTime.toString());
           localStorage.removeItem('signupAttempts');
-  
+
           this.snackBar.open('تم حظرك مؤقتًا بعد 3 محاولات فاشلة. حاول بعد 30 دقيقة.', 'إغلاق', {
             duration: 4000,
             panelClass: ['error-snackbar'],
@@ -162,7 +172,7 @@ export class SignupComponent {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-  
+
           setTimeout(() => {
             location.reload();
           }, 2000);
@@ -174,11 +184,9 @@ export class SignupComponent {
       },
     });
   }
-  
 
   speakGreeting(): void {
     const message = " أهلاً بك في منصتنا!  Welcome to our platform!";
-
     const utteranceEnglish = new SpeechSynthesisUtterance("Welcome to our platform!");
     utteranceEnglish.lang = 'en-US';
     speechSynthesis.speak(utteranceEnglish);
